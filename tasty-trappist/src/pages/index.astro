@@ -373,6 +373,19 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 			font-size: 1.05em; /* Slightly larger for tagline */
 			box-shadow: 1px 1px 0 var(--accent); /* Different shadow for variety */
 		}
+
+		/* Discreet link style for company names in cards/tags */
+		:global(.company-link-discreet) {
+			text-decoration: none;
+			color: inherit; /* Inherit color from parent (.job-title or .tag) */
+			/*transition: text-decoration 0.2s ease-in-out;*/ /* Optional: smooth underline */
+		}
+
+		:global(.company-link-discreet:hover) {
+			text-decoration: underline;
+			text-decoration-color: var(--accent); /* Use accent color for underline */
+			text-decoration-thickness: 1.5px;
+		}
 	</style>
 </head>
 <body>
@@ -382,7 +395,7 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 		<Header 
 			avatarImagePath="/avatar.png"
 			name="Samantha Myers"
-			role="Corporate Engineering Manager @ Ferocia"
+			role="Corporate Engineering Manager @ <a class='ferocia-link' href='https://ferocia.com.au/' target='_blank' rel='noopener noreferrer'>Ferocia</a>"
 			location="Melbourne, Australia"
 			socials={[
 				{ href: 'https://www.linkedin.com/in/sammyers12/', text: 'LinkedIn' },
@@ -409,22 +422,22 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 		</Section>
 		<Section title="Experience" icon="■" animationDelay="0.2s">
 			<div class="card-list">
-				<Card title="Corporate Engineering Manager – Ferocia" meta="Nov 2024 – Present | Melbourne (Hybrid)">
+				<Card title="Corporate Engineering Manager – <a class='company-link-discreet' href='https://ferocia.com.au/' target='_blank' rel='noopener noreferrer'>Ferocia</a>" meta="Nov 2024 – Present | Melbourne (Hybrid)">
 					<ul><li>Lead projects and strategy while keeping tech and people aligned.</li></ul>
 				</Card>
-				<Card title="Technical Support Engineer – Ferocia" meta="Jan 2023 – Nov 2024">
+				<Card title="Technical Support Engineer – <a class='company-link-discreet' href='https://ferocia.com.au/' target='_blank' rel='noopener noreferrer'>Ferocia</a>" meta="Jan 2023 – Nov 2024">
 					<ul><li>Managed IT infrastructure and support. Door whisperer. Network fixer.</li></ul>
 				</Card>
-				<Card title="Service Desk Lead – Redbubble" meta="Jun 2022 – Dec 2022 | Melbourne">
+				<Card title="Service Desk Lead – <a class='company-link-discreet' href='https://www.redbubble.com/' target='_blank' rel='noopener noreferrer'>Redbubble</a>" meta="Jun 2022 – Dec 2022 | Melbourne">
 					<ul><li>Led a team of 3. 1:1s, team syncs, collaboration, and process tweaks.</li></ul>
 				</Card>
-				<Card title="IT Support Technician – Redbubble" meta="May 2021 – Jun 2022">
+				<Card title="IT Support Technician – <a class='company-link-discreet' href='https://www.redbubble.com/' target='_blank' rel='noopener noreferrer'>Redbubble</a>" meta="May 2021 – Jun 2022">
 					<ul><li>Managed onboarding and support tooling. Made inductions memorable.</li></ul>
 				</Card>
-				<Card title="Service Desk Agent – Kineo" meta="May 2019 – May 2021 | Adelaide">
+				<Card title="Service Desk Agent – <a class='company-link-discreet' href='https://kineo.com/' target='_blank' rel='noopener noreferrer'>Kineo</a>" meta="May 2019 – May 2021 | Adelaide">
 					<ul><li>Supported Totara, SCORM, and client triage. Developer interpreter.</li></ul>
 				</Card>
-				<Card title="At Home Advisor – Apple" meta="Apr 2017 – Feb 2018">
+				<Card title="At Home Advisor – <a class='company-link-discreet' href='https://www.apple.com/' target='_blank' rel='noopener noreferrer'>Apple</a>" meta="Apr 2017 – Feb 2018">
 					<ul><li>iOS/macOS support. Bug reports, escalations, fraud handling.</li></ul>
 				</Card>
 			</div>
@@ -434,7 +447,7 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 				<Card title="Trinity College, Gawler">
 					<span>Grade 11 (2007–2010)</span>
 				</Card>
-				<Card title="Jamf Certified Tech">
+				<Card title="<a class='company-link-discreet' href='https://www.jamf.com/' target='_blank' rel='noopener noreferrer'>Jamf</a> Certified Tech">
 					<span>Issued Jun 2022 (ID: 202407-82259)</span>
 				</Card>
 			</div>
@@ -443,8 +456,8 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 			<div class="skills">
 				<Tag>Team & Ops Management</Tag>
 				<Tag>IT Support (Mac/Windows/Cloud)</Tag>
-				<Tag>Jamf</Tag>
-				<Tag>Okta</Tag>
+				<Tag><a class='company-link-discreet' href='https://www.jamf.com/' target='_blank' rel='noopener noreferrer'>Jamf</a></Tag>
+				<Tag><a class='company-link-discreet' href='https://www.okta.com/' target='_blank' rel='noopener noreferrer'>Okta</a></Tag>
 				<Tag>Google Workspace</Tag>
 				<Tag>Jira</Tag>
 				<Tag>Device Fleet Management</Tag>

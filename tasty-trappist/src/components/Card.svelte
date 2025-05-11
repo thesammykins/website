@@ -38,7 +38,7 @@
   }
 </style>
 <div class="card" in:fly={{ y: 40, duration: 500 }}>
-  <div class="job-title">{title}</div>
+  <div class="job-title">{@html title}</div>
   {#if meta}
     <div class="job-meta">{meta}</div>
   {/if}

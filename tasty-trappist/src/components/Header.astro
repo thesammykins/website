@@ -38,7 +38,7 @@ const randomBorderColor = `var(${borderColorVars[Math.floor(Math.random() * bord
   </div>
   <div class="headline">
     <h1>{name}</h1>
-    <div class="role">{role}</div>
+    <div class="role" set:html={role}></div>
     <div class="location"><i class="fa-solid fa-location-dot"></i> {location}</div>
     <div class="socials">
       {socials.map(s => <a href={s.href} class="social-tag" target="_blank" rel="noopener">{s.text}</a>)}
@@ -111,5 +111,23 @@ const randomBorderColor = `var(${borderColorVars[Math.floor(Math.random() * bord
   .social-tag[href*="blog.sammykins.au"] {
     background: var(--social-tag-blog-bg);
     color: var(--social-tag-blog-text);
+  }
+
+  /* Style for the Ferocia link in the role */
+  .role :global(.ferocia-link) { /* Use :global as the class is on injected HTML */
+    background-color:rgb(173, 0, 247); /* Bright magenta-like color (placeholder) */
+    color: #FFFFFF !important; /* Important to override general link colors if any */
+    padding: 0.15em 0.5em;
+    border-radius: 6px 0 6px 0; /* Top-left & bottom-right rounded, others flat */
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block; /* Allows padding and transform */
+    margin-left: 0.2em; /* Small space before the link */
+  }
+
+  .role :global(.ferocia-link:hover) {
+    transform: translateY(-1px);
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
   }
 </style> 
