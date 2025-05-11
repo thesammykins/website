@@ -1,0 +1,27 @@
+---
+// Section component for major sections (About, Experience, etc)
+export interface Props {
+  title: string;
+  icon?: string;
+  animationDelay?: string;
+}
+const { title, icon, animationDelay } = Astro.props;
+---
+<div class="section" style={animationDelay ? `animation-delay:${animationDelay};` : undefined}>
+  <h2>{icon ? `${icon} ` : ''}{title}</h2>
+  <slot />
+</div>
+
+<style>
+  .section {
+    padding-bottom: 1.5rem; /* Space for the border */
+    margin-bottom: 2.7rem; /* Existing margin, ensure it works with padding */
+    border-bottom: 2px dashed var(--primary);
+    position: relative; /* Keep existing position for z-index if needed */
+    z-index: 1; /* Keep existing z-index */
+    /* animation properties are handled by inline style or global styles for .section */
+  }
+
+  /* If the last section shouldn't have a border, we might need a different approach */
+  /* For now, all sections will get the border */
+</style> 

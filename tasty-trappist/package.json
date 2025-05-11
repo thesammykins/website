@@ -1,0 +1,15 @@
+{
+  "name": "samanthamyers-portfolio",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^7.0.13",
+    "astro": "^5.7.12",
+    "svelte": "^5.28.2"
+  }
+}

@@ -1,0 +1,115 @@
+---
+// Header component for avatar, name, role, location, socials - Avatar image is clipped by a circle, border color is random
+export interface Props {
+  avatarImagePath: string; // e.g., "/avatar.png"
+  name: string;
+  role: string;
+  location: string;
+  socials: { href: string; text: string }[]; // Updated: text instead of icon/title
+}
+const { avatarImagePath, name, role, location, socials } = Astro.props;
+
+const circleShape = { id: 'clipCircle', data: '<circle cx="50" cy="50" r="50" />' };
+const clipPathId = `dynamicClipPath-circle`;
+
+// Randomize border color for the avatar circle
+const borderColorVars = ['--primary', '--accent', '--yellow', '--pink', '--cyan'];
+const randomBorderColor = `var(${borderColorVars[Math.floor(Math.random() * borderColorVars.length)]})`;
+
+---
+<div class="header">
+  <div class="avatar-container" title="Avatar with a circle outline">
+    <svg class="avatar-svg" viewBox="0 0 100 100" width="110" height="110" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <clipPath id={clipPathId}>
+          <Fragment set:html={circleShape.data} />
+        </clipPath>
+        <g id={circleShape.id}>
+          <Fragment set:html={circleShape.data} />
+        </g>
+      </defs>
+      <image href={avatarImagePath} width="100" height="100" clip-path={`url(#${clipPathId})`} />
+      <use href={`#${circleShape.id}`} 
+           xlink:href={`#${circleShape.id}`} 
+           fill="none" 
+           stroke={randomBorderColor} /* Use randomized border color */
+           stroke-width="3" />
+    </svg>
+  </div>
+  <div class="headline">
+    <h1>{name}</h1>
+    <div class="role">{role}</div>
+    <div class="location"><i class="fa-solid fa-location-dot"></i> {location}</div>
+    <div class="socials">
+      {socials.map(s => <a href={s.href} class="social-tag" target="_blank" rel="noopener">{s.text}</a>)}
+    </div>
+  </div>
+</div>
+
+<style>
+  .header {
+    padding-bottom: 1.5rem; /* Add some space for the border */
+    border-bottom: 3px solid var(--primary); /* Moved and made solid for testing */
+    /* Other .header specific styles from index.astro could also be moved here if preferred */
+    display: flex; /* Copied from index.astro for completeness here */
+    align-items: center; /* Copied from index.astro */
+    gap: 2rem; /* Copied from index.astro */
+    margin-bottom: 2.5rem; /* Copied from index.astro */
+    flex-wrap: wrap; /* Copied from index.astro */
+  }
+
+  .avatar-container {
+    position: relative; /* For layering */
+    width: 110px; /* Match .avatar style from index.astro */
+    height: 110px; /* Match .avatar style from index.astro */
+  }
+
+  .avatar-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible; /* Important for stroke on <use> not to be clipped if slightly outside */
+  }
+
+  .avatar-svg image {
+    /* Ensures the image covers the 100x100 viewport of the clipPath */
+    object-fit: cover; /* This won't directly apply but conceptually what we want via clipPath */
+  }
+
+  .socials {
+    margin-top: 1rem; /* Increased top margin slightly */
+    display: flex;
+    flex-wrap: wrap; /* Allow tags to wrap if needed */
+    gap: 0.7rem; /* Use gap for spacing like other tag groups */
+  }
+
+  .social-tag { /* Was .socials a.social-tag in index.astro */
+    border-radius: 2px; /* Matched to .tag */
+    padding: 0.35rem 0.8rem; /* Matched to .tag */
+    font-size: 1rem; /* Matched to .tag */
+    font-family: 'Fira Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+    text-decoration: none;
+    box-shadow: 1px 1px 0px var(--pink);
+  }
+
+  .social-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 3px 0px var(--pink);
+  }
+
+  /* Specific social tag colors */
+  .social-tag[href*="linkedin"] {
+    background: var(--social-tag-linkedin-bg);
+    color: var(--social-tag-linkedin-text);
+  }
+  .social-tag[href*="mailto:"] {
+    background: var(--social-tag-email-bg);
+    color: var(--social-tag-email-text);
+  }
+  .social-tag[href*="blog.sammykins.au"] {
+    background: var(--social-tag-blog-bg);
+    color: var(--social-tag-blog-text);
+  }
+</style> 

@@ -1,0 +1,467 @@
+---
+// Modern 80s portfolio homepage for Samantha Myers - Updated for geometric design, readability, social/role tags, and styled About Me highlights
+import Header from '../components/Header.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.svelte';
+import MemphisBackground from '../components/MemphisBackground.svelte';
+import Tag from '../components/Tag.svelte';
+import ThemeToggle from '../components/ThemeToggle.svelte';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Samantha Myers – 'bout me</title>
+	<link rel="icon" type="image/x-icon" href="/favicon.ico"> {/* Assuming favicon.ico in public */}
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Mono:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap'); /* Already here, but good to ensure Orbitron is primary source */
+		:root {
+			--bg-page: #e0f7fa; /* Light teal/mint for light mode page background */
+			--bg: linear-gradient(135deg, #f8e8ff 0%, #b6e0fe 100%); /* Gradient for container/cards */
+			--primary: #a259ff;
+			--accent: #00eaff;
+			--yellow: #ffe066;
+			--purple: #a259ff;
+			--cyan: #7de2fc;
+			--pink: #ffb3e6;
+			--text: #1f1235; /* Darkened for light mode readability */
+			--heading: #110022; /* Darkened for light mode readability */
+			--card: linear-gradient(135deg, #fff 60%, #e0e7ef 100%);
+			--tag-bg: #ffe066;
+			--tag-color: #110022; /* Darkened for light mode readability */
+			--shadow: 0 8px 32px 0 #a259ff33;
+			--pattern-main: var(--primary);
+			--pattern-accent1: var(--accent);
+			--pattern-accent2: var(--yellow);
+			--pattern-accent3: var(--pink);
+
+			/* New social tag colors */
+			--social-tag-linkedin-bg: #0077b5;
+			--social-tag-linkedin-text: #ffffff;
+			--social-tag-email-bg: #d44638;
+			--social-tag-email-text: #ffffff;
+			--social-tag-blog-bg: #ff9900; /* Example: orange for blog */
+			--social-tag-blog-text: #110022;
+		}
+		[data-theme="dark"] {
+			--bg-page: #004d40; /* Dark teal/cyan for dark mode page background */
+			--bg: linear-gradient(135deg, #1a0033 0%, #2d1b4c 100%); /* Gradient for container/cards */
+			--primary: #ff5af7;
+			--accent: #00eaff;
+			--yellow: #fff200;
+			--purple: #a259ff;
+			--cyan: #00eaff;
+			--pink: #ff5af7;
+			--text: #fffbe6;
+			--heading: #fffbe6;
+			--card: linear-gradient(135deg, #2d1b4c 60%, #1a0033 100%);
+			--tag-bg: #ff5af7;
+			--tag-color: #fffbe6;
+			--shadow: 0 8px 32px 0 #ff5af799;
+			--pattern-main: var(--primary);
+			--pattern-accent1: var(--accent);
+			--pattern-accent2: var(--yellow);
+			--pattern-accent3: var(--pink);
+
+			/* Social tag dark theme overrides (can be same if high contrast already) */
+			--social-tag-linkedin-bg: #008cdd;
+			--social-tag-email-bg: #e55d4f;
+			--social-tag-blog-bg: #ffae42;
+			--social-tag-blog-text: #110022; /* Keep dark text for orange in dark mode if it works */
+		}
+		body {
+			font-family: 'Inter', sans-serif;
+			margin: 0;
+			padding: 0;
+			min-height: 100vh;
+			background: var(--bg-page); /* Use solid color for page background */
+			color: var(--text);
+			transition: background 0.4s, color 0.4s;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			position: relative;
+			overflow-x: hidden;
+			user-select: none; /* Make text non-selectable */
+			-webkit-user-select: none; /* For Safari */
+			-moz-user-select: none; /* For Firefox */
+			-ms-user-select: none; /* For Internet Explorer/Edge */
+		}
+		body::before {
+			content: '';
+			position: fixed;
+			z-index: 0;
+			top: -100px; left: -100px; width: 400px; height: 400px;
+			background: radial-gradient(circle, #ff5af7 60%, transparent 100%);
+			opacity: 0.5;
+			filter: blur(20px);
+			pointer-events: none;
+		}
+		body::after {
+			content: '';
+			position: fixed;
+			z-index: 0;
+			bottom: -120px; right: -120px; width: 350px; height: 350px;
+			background: radial-gradient(circle, #00eaff 60%, transparent 100%);
+			opacity: 0.5;
+			filter: blur(20px);
+			pointer-events: none;
+		}
+		.container {
+			max-width: 1100px;
+			margin: 4.5rem auto 2.5rem auto;
+			padding: 3rem 2.5rem 2.5rem 2.5rem;
+			background: var(--bg);
+			border-radius: 4px; /* Made more geometric */
+			box-shadow: var(--shadow);
+			position: relative;
+			z-index: 1;
+			animation: fadeIn 1s cubic-bezier(.4,0,.2,1);
+		}
+		.headline {
+			flex: 1;
+			min-width: 220px;
+		}
+		h1 {
+			font-family: 'Orbitron', 'Inter', sans-serif;
+			font-size: 2.7rem;
+			font-weight: 700;
+			margin: 0 0 0.3em 0;
+			letter-spacing: 2px;
+			color: var(--heading);
+			text-shadow: 2px 2px 0 #00eaff, 0 2px 0 #ff5af7;
+		}
+		h2 {
+			font-family: 'Orbitron', 'Inter', sans-serif;
+			font-size: 1.6rem;
+			font-weight: 700;
+			margin-top: 2.2rem;
+			margin-bottom: 1.2rem;
+			color: var(--heading);
+			letter-spacing: 1px;
+			/* Adjusted text-shadow for icons */
+			text-shadow: 1px 1px 0 var(--accent), -1px -1px 0 var(--pink);
+		}
+		.role {
+			font-family: 'Orbitron', 'Inter', sans-serif; /* Era-appropriate font */
+			font-size: 1.15rem;
+			font-weight: 700; /* Ensure consistency with imported Orbitron weight */
+			color: var(--primary);
+			margin-bottom: 0.3em;
+			text-shadow: 1px 1px 0 var(--yellow);
+			letter-spacing: 0.05em;
+		}
+		.location {
+			font-family: 'Orbitron', 'Inter', sans-serif; /* Era-appropriate font */
+			font-size: 1.05rem;
+			font-weight: 700; /* Ensure consistency with imported Orbitron weight */
+			color: var(--cyan);
+			margin-bottom: 0.4em;
+			letter-spacing: 0.05em;
+		}
+		.section {
+			/* Styles like margin-bottom, position, z-index, and border are now in Section.astro */
+			animation: slideIn 0.8s cubic-bezier(.4,0,.2,1);
+			animation-fill-mode: both;
+		}
+		.section:nth-child(2) { animation-delay: 0.1s; }
+		.section:nth-child(3) { animation-delay: 0.2s; }
+		.section:nth-child(4) { animation-delay: 0.3s; }
+		.section:nth-child(5) { animation-delay: 0.4s; }
+		.section:nth-child(6) { animation-delay: 0.5s; }
+		.card-list {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			gap: 2rem 1.5rem;
+			margin-bottom: 1.5rem;
+		}
+		@media (max-width: 1200px) {
+			.card-list {
+				grid-template-columns: 1fr 1fr;
+			}
+		}
+		@media (max-width: 700px) {
+			.card-list {
+				grid-template-columns: 1fr;
+				gap: 1.2rem;
+			}
+			.container {
+				padding: 1.2rem 0.5rem;
+				margin: 2.5rem 0 1.5rem 0;
+			}
+		}
+		.card {
+			background: var(--card);
+			border-radius: 4px; /* Made more geometric */
+			box-shadow: 0 2px 12px rgba(59,130,246,0.07);
+			padding: 1.2rem 1.1rem 1.1rem 1.1rem;
+			margin-bottom: 0.5rem;
+			transition: box-shadow 0.2s;
+			border: 1.5px solid #e0e7ef;
+			position: relative;
+			overflow: hidden;
+		}
+		.card:hover {
+			box-shadow: 0 6px 32px rgba(59,130,246,0.13);
+			border-color: var(--primary);
+		}
+		.job-title {
+			font-weight: 700;
+			font-size: 1.08rem;
+			color: var(--accent);
+		}
+		.job-meta {
+			font-size: 0.97rem;
+			color: #6b7280;
+			margin-bottom: 0.5em;
+		}
+		ul {
+			margin: 0.2em 0 0.7em 1.2em;
+			padding: 0;
+		}
+		.skills, .interests {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.8rem 1rem; /* Increased gap for better spacing */
+			margin-top: 0.5em;
+		}
+		.tag {
+			background: var(--tag-bg);
+			border-radius: 2px; /* Made more geometric */
+			padding: 0.35rem 0.8rem;
+			font-size: 1rem;
+			font-family: 'Fira Mono', monospace;
+			color: var(--tag-color);
+			font-weight: 700;
+			letter-spacing: 0.01em;
+			/* margin-bottom: 0.3em; */ /* Rely on parent gap */
+			/* margin-right: 0.5em; */ /* Rely on parent gap */
+			transition: background 0.2s, color 0.2s;
+			box-shadow: 1px 1px 0 #ff5af7;
+			white-space: pre-line;
+			word-break: break-word;
+		}
+		.tag:hover {
+			background: #ff5af7;
+			color: #fff200;
+		}
+		@keyframes fadeIn {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
+		@keyframes slideIn {
+			from { transform: translateY(24px); opacity: 0; }
+			to { transform: translateY(0); opacity: 1; }
+		}
+		.contact-roles {
+			margin-bottom: 0.7em;
+		}
+		.contact-roles strong {
+			color: var(--primary);
+			font-weight: 700;
+			text-shadow: 1px 1px 0 #fff200;
+		}
+		.contact-icons {
+			display: flex;
+			gap: 1.2em;
+			margin-top: 0.7em;
+		}
+		.contact-icons a {
+			color: var(--accent);
+			font-size: 1.7em;
+			transition: color 0.2s;
+		}
+		.contact-icons a:hover {
+			color: var(--yellow);
+		}
+
+		/* Styling for the roles I'm open to, to match .tag */
+		.open-roles-list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.8rem 1rem; /* Consistent with .skills and .interests */
+			margin-top: 0.5em; /* Consistent with .skills and .interests */
+		}
+
+		.role-tag {
+			background: var(--tag-bg);
+			border-radius: 2px;
+			padding: 0.35rem 0.8rem;
+			font-size: 1rem;
+			font-family: 'Fira Mono', monospace;
+			color: var(--tag-color);
+			font-weight: 700;
+			letter-spacing: 0.01em;
+			transition: background 0.2s, color 0.2s;
+			box-shadow: 1px 1px 0 #ff5af7; /* Match .tag shadow */
+			white-space: pre-line;
+			word-break: break-word;
+		}
+
+		.role-tag:hover {
+			background: #ff5af7; /* Match .tag hover */
+			color: #fff200; /* Match .tag hover */
+		}
+
+		/* Styling for highlighted phrases in About Me, to match .tag */
+		.about-me-tagline {
+			font-size: 1.2em; /* Make tagline a bit more prominent */
+			font-weight: 600;
+			color: var(--heading);
+			margin-bottom: 1em;
+			line-height: 1.5;
+		}
+
+		.about-me-points {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.8rem 1rem; /* Consistent with .skills and .interests */
+			margin-bottom: 1em;
+		}
+
+		.about-me-point-tag {
+			background: var(--tag-bg);
+			border-radius: 2px;
+			padding: 0.35rem 0.8rem;
+			font-size: 1rem; /* Standard tag size */
+			font-family: 'Fira Mono', monospace;
+			color: var(--tag-color);
+			font-weight: 700;
+			letter-spacing: 0.01em;
+			box-shadow: 1px 1px 0 #ff5af7; 
+			/* No hover needed for these, they are descriptive tags */
+		}
+
+		.about-me-narrative {
+			font-size: 1em;
+			line-height: 1.6;
+			color: var(--text);
+		}
+
+		.about-me-highlight {
+			display: inline-block; 
+			background: var(--tag-bg); /* Default highlight same as tags */
+			border-radius: 2px;
+			padding: 0.1em 0.5em 0.15em; 
+			font-size: 0.98em; /* Slightly adjust to flow with narrative/tagline text */
+			font-family: 'Fira Mono', monospace;
+			color: var(--tag-color);
+			font-weight: 700;
+			letter-spacing: 0.01em;
+			box-shadow: 1px 1px 0 #ff5af7;
+			line-height: 1.3;
+			margin: 0 0.1em;
+			/* Make it pop a bit more than plain text */
+			transform: translateY(-1px); /* Slight lift */
+		}
+
+		.about-me-highlight.strong {
+			/* For more prominent highlights, e.g., in the tagline */
+			background: var(--primary); /* Use primary color for stronger emphasis */
+			color: var(--yellow); /* Contrasting text for primary bg */
+			padding: 0.15em 0.6em 0.2em;
+			font-size: 1.05em; /* Slightly larger for tagline */
+			box-shadow: 1px 1px 0 var(--accent); /* Different shadow for variety */
+		}
+	</style>
+</head>
+<body>
+	<MemphisBackground client:only="svelte" />
+	<ThemeToggle client:only="svelte" />
+	<div class="container">
+		<Header 
+			avatarImagePath="/avatar.png"
+			name="Samantha Myers"
+			role="Corporate Engineering Manager @ Ferocia"
+			location="Melbourne, Australia"
+			socials={[
+				{ href: 'https://www.linkedin.com/in/sammyers12/', text: 'LinkedIn' },
+				{ href: 'mailto:me+website@samanthamyers.au', text: 'Email' },
+				{ href: 'https://blog.sammykins.au', text: 'Blog' }
+			]}
+		/>
+		<Section title="About Me" icon="▲" animationDelay="0.1s">
+			<div class="about-me-content">
+				<p class="about-me-tagline">
+					Dialed into the digital frontier: I'm your <span class="about-me-highlight strong">Radical Innovator</span> & <span class="about-me-highlight strong">Lightning Learner</span>.
+				</p>
+				<div class="about-me-points">
+					<span class="about-me-point-tag">User-First Systems that Groove</span>
+					<span class="about-me-point-tag">Chaos Tamer Extraordinaire</span>
+					<span class="about-me-point-tag">Elegant Solution Engineer</span>
+					<span class="about-me-point-tag">Team Synergy Catalyst</span>
+					<span class="about-me-point-tag">Master of Glitch-Free Operations</span>
+				</div>
+				<p class="about-me-narrative">
+					With over a decade in the IT game, I thrive on making tech not just work, but work *for people*. I'm all about smoothing out the complexities and engineering systems that are intuitive and effective. Ready for full-time, permanent gigs (8am–6pm) where I can help untangle chaos and build some totally <span class="about-me-highlight">Tubular Tech</span>!
+				</p>
+			</div>
+		</Section>
+		<Section title="Experience" icon="■" animationDelay="0.2s">
+			<div class="card-list">
+				<Card title="Corporate Engineering Manager – Ferocia" meta="Nov 2024 – Present | Melbourne (Hybrid)">
+					<ul><li>Lead projects and strategy while keeping tech and people aligned.</li></ul>
+				</Card>
+				<Card title="Technical Support Engineer – Ferocia" meta="Jan 2023 – Nov 2024">
+					<ul><li>Managed IT infrastructure and support. Door whisperer. Network fixer.</li></ul>
+				</Card>
+				<Card title="Service Desk Lead – Redbubble" meta="Jun 2022 – Dec 2022 | Melbourne">
+					<ul><li>Led a team of 3. 1:1s, team syncs, collaboration, and process tweaks.</li></ul>
+				</Card>
+				<Card title="IT Support Technician – Redbubble" meta="May 2021 – Jun 2022">
+					<ul><li>Managed onboarding and support tooling. Made inductions memorable.</li></ul>
+				</Card>
+				<Card title="Service Desk Agent – Kineo" meta="May 2019 – May 2021 | Adelaide">
+					<ul><li>Supported Totara, SCORM, and client triage. Developer interpreter.</li></ul>
+				</Card>
+				<Card title="At Home Advisor – Apple" meta="Apr 2017 – Feb 2018">
+					<ul><li>iOS/macOS support. Bug reports, escalations, fraud handling.</li></ul>
+				</Card>
+			</div>
+		</Section>
+		<Section title="Education & Certifications" icon="●" animationDelay="0.3s">
+			<div class="card-list">
+				<Card title="Trinity College, Gawler">
+					<span>Grade 11 (2007–2010)</span>
+				</Card>
+				<Card title="Jamf Certified Tech">
+					<span>Issued Jun 2022 (ID: 202407-82259)</span>
+				</Card>
+			</div>
+		</Section>
+		<Section title="Skills" icon="+" animationDelay="0.4s">
+			<div class="skills">
+				<Tag>Team & Ops Management</Tag>
+				<Tag>IT Support (Mac/Windows/Cloud)</Tag>
+				<Tag>Jamf</Tag>
+				<Tag>Okta</Tag>
+				<Tag>Google Workspace</Tag>
+				<Tag>Jira</Tag>
+				<Tag>Device Fleet Management</Tag>
+				<Tag>Service Delivery</Tag>
+				<Tag>Translating Dev to Human</Tag>
+			</div>
+		</Section>
+		<Section title="Interests" icon="○" animationDelay="0.5s"> {/* Using a different circle for variety */}
+			<div class="interests">
+				<Tag>Systems that work for people</Tag>
+				<Tag>Mario Kart</Tag>
+				<Tag>Tech communities & mentorship</Tag>
+			</div>
+		</Section>
+		<Section title="Contact" icon="□" animationDelay="0.6s"> {/* Using a square outline */}
+			<p>Open to roles like:</p> {/* Changed from div to p for the introductory text */}
+			<div class="open-roles-list">
+				<span class="role-tag">Desktop Support Specialist</span>
+				<span class="role-tag">Service Desk Lead</span>
+				<span class="role-tag">Help Desk Lead</span>
+				<span class="role-tag">Corporate Engineering Manager</span>
+				<span class="role-tag">Lead Technical Support Engineer</span>
+			</div>
+		</Section>
+	</div>
+</body>
+</html>

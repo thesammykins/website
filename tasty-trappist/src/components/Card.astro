@@ -1,0 +1,13 @@
+---
+// Card component for jobs, education, etc.
+export interface Props {
+  title: string;
+  meta?: string;
+}
+const { title, meta } = Astro.props;
+---
+<div class="card">
+  <div class="job-title">{title}</div>
+  {meta && <div class="job-meta">{meta}</div>}
+  <slot />
+</div> 
