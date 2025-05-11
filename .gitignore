@@ -15,4 +15,7 @@ node_modules/
 *.log
 
 # System files
-Thumbs.db 
+Thumbs.db
+
+# Ignore build output directory for GitHub Pages
+docs/ 
