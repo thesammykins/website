@@ -1,37 +1,59 @@
-# Build and deploy Astro site to GitHub Pages (/docs)
+# Build and deploy Astro site to GitHub Pages (Artifact Method)
 # Copies CNAME for custom domain
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main] # Or your default branch
   workflow_dispatch:
 
+# Sets permissions for GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read # Changed from write, as build job primarily reads. Upload artifact needs read.
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  build-deploy:
+  build: # Renamed from build-deploy and split into build and deploy jobs
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20 # Or your project's Node version
+          cache: 'npm' # Optional: cache npm dependencies
+          cache-dependency-path: tasty-trappist/package-lock.json # Path to package-lock
       - name: Install dependencies
-        run: |
-          cd tasty-trappist
-          npm ci
+        working-directory: ./tasty-trappist # Run commands in tasty-trappist directory
+        run: npm ci
       - name: Build Astro site
-        run: |
-          cd tasty-trappist
-          npm run build
-      - name: Copy CNAME to /docs
-        run: |
-          cp CNAME tasty-trappist/../docs/CNAME
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        working-directory: ./tasty-trappist # Run commands in tasty-trappist directory
+        # The astro.config.mjs outDir is '../docs', so this builds to the root /docs directory
+        run: npm run build
+      - name: Copy CNAME to build output
+        # Ensure CNAME is in the root of the artifact, which is the root of /docs
+        run: cp CNAME docs/CNAME
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3 # Use latest version
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs 
+          # Path to the directory to upload (Astro builds to /docs at the repo root)
+          path: ./docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # Use latest version 
