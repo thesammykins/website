@@ -1,0 +1,18 @@
+# .gitignore for static GitHub Pages site (HTML/CSS only)
+# No build artifacts or dependencies to ignore, but common OS/editor files are excluded
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/
+.cursor/
+
+# Node/npm (not used, but just in case)
+node_modules/
+
+# Logs
+*.log
+
+# System files
+Thumbs.db 
