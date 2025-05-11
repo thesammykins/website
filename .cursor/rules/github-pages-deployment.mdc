@@ -1,0 +1,17 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Github Pages Deployment Rule
+
+This project is a static website deployed via Github Pages. The deployment process and custom domain setup are as follows:
+
+- The custom domain is specified in the [CNAME](mdc:CNAME) file at the project root. This file should contain the domain name used for the site.
+- DNS for the custom domain is managed through Cloudflare. Ensure that the domain's DNS records (typically CNAME or A records) point to Github Pages as required by Github's documentation.
+- Deployment is automated using Github Actions. The workflow configuration(s) can be found in the [.github/workflows/](mdc:.github/workflows) directory. These workflows handle building and publishing the site to Github Pages.
+
+**To update the domain or deployment process:**
+- Edit the [CNAME](mdc:CNAME) file for domain changes.
+- Update workflow YAML files in [.github/workflows/](mdc:.github/workflows) for deployment changes.
+- Adjust Cloudflare DNS settings as needed for domain or provider changes.
