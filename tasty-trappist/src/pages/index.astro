@@ -489,8 +489,8 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 			const avatarContainer = document.getElementById('bouncing-avatar-container');
 			if (!avatarContainer) return;
 
-			const IDLE_TIMEOUT = 10000; // User updated: 10 seconds
-			const SCALE_FACTOR = 3;     // User updated: Scale up 3x
+			const IDLE_TIMEOUT = 30000; // User updated: 10 seconds
+			const SCALE_FACTOR = 2.5;     // User updated: Scale up 3x
 			const IMAGE_OPACITY_WHEN_BOUNCING = '0.7';
 
 			let idleTimer = null;
