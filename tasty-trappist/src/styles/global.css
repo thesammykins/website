@@ -1,0 +1,133 @@
+/* File: src/styles/global.css */
+/* Global styles including CSS variables and base body styling. */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+:root {
+  --bg-page: #e0f7fa; /* Light teal/mint for light mode page background */
+  --bg: linear-gradient(135deg, #f8e8ff 0%, #b6e0fe 100%); /* Gradient for container/cards */
+  --primary: #a259ff;
+  --accent: #00eaff;
+  --yellow: #ffe066;
+  --purple: #a259ff;
+  --cyan: #7de2fc;
+  --pink: #ffb3e6;
+  --text: #1f1235; /* Darkened for light mode readability */
+  --heading: #110022; /* Darkened for light mode readability */
+  --card: linear-gradient(135deg, #fff 60%, #e0e7ef 100%);
+  --tag-bg: #ffe066;
+  --tag-color: #110022; /* Darkened for light mode readability */
+  --shadow: 0 8px 32px 0 #a259ff33;
+  --pattern-main: var(--primary);
+  --pattern-accent1: var(--accent);
+  --pattern-accent2: var(--yellow);
+  --pattern-accent3: var(--pink);
+
+  /* Social tag colors (can be used by components if needed) */
+  --social-tag-linkedin-bg: #0077b5;
+  --social-tag-linkedin-text: #ffffff;
+  --social-tag-email-bg: #d44638;
+  --social-tag-email-text: #ffffff;
+  --social-tag-blog-bg: #ff9900;
+  --social-tag-blog-text: #110022;
+}
+
+[data-theme="dark"] {
+  --bg-page: #004d40; /* Dark teal/cyan for dark mode page background */
+  --bg: linear-gradient(135deg, #1a0033 0%, #2d1b4c 100%); /* Gradient for container/cards */
+  --primary: #ff5af7;
+  --accent: #00eaff;
+  --yellow: #fff200;
+  --purple: #a259ff;
+  --cyan: #00eaff;
+  --pink: #ff5af7;
+  --text: #fffbe6;
+  --heading: #fffbe6;
+  --card: linear-gradient(135deg, #2d1b4c 60%, #1a0033 100%);
+  --tag-bg: #ff5af7;
+  --tag-color: #fffbe6;
+  --shadow: 0 8px 32px 0 #ff5af799;
+  --pattern-main: var(--primary);
+  --pattern-accent1: var(--accent);
+  --pattern-accent2: var(--yellow);
+  --pattern-accent3: var(--pink);
+
+  /* Social tag dark theme overrides */
+  --social-tag-linkedin-bg: #008cdd;
+  --social-tag-email-bg: #e55d4f;
+  --social-tag-blog-bg: #ffae42;
+  --social-tag-blog-text: #110022;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--bg-page);
+  color: var(--text);
+  transition: background 0.4s, color 0.4s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  /* user-select: none; IS INTENTIONALLY OMITTED HERE */
+  /* It can be added page-specifically if needed */
+}
+
+/* Optional: Basic styling for .container if it's meant to be global */
+/* Or keep .container styles page-specific or component-specific */
+/* For now, I'll include a basic .container as it was in index.astro */
+.container {
+  max-width: 1100px;
+  margin: 4.5rem auto 2.5rem auto;
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  background: var(--bg);
+  border-radius: 4px; /* Made more geometric */
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
+  /* animation: fadeIn 1s cubic-bezier(.4,0,.2,1); */ /* Animations better page-specific */
+}
+
+h1 {
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-size: 2.7rem;
+  font-weight: 700;
+  margin: 0 0 0.3em 0;
+  letter-spacing: 2px;
+  color: var(--heading);
+  text-shadow: 2px 2px 0 #00eaff, 0 2px 0 #ff5af7;
+}
+
+h2 {
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-top: 2.2rem;
+  margin-bottom: 1.2rem;
+  color: var(--heading);
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0 var(--accent), -1px -1px 0 var(--pink);
+}
+
+h3 { /* Added for design system page subheadings */
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-top: 1.8rem;
+  margin-bottom: 0.8rem;
+  color: var(--heading);
+}
+
+p, li {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+ul {
+  margin: 0.2em 0 0.7em 1.2em;
+  padding: 0;
+} 

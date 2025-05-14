@@ -6,6 +6,7 @@ import Card from '../components/Card.svelte';
 import MemphisBackground from '../components/MemphisBackground.svelte';
 import Tag from '../components/Tag.svelte';
 import ThemeToggle from '../components/ThemeToggle.svelte';
+import '../styles/global.css';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -24,80 +25,10 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Mono:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap'); /* Already here, but good to ensure Orbitron is primary source */
-		:root {
-			--bg-page: #e0f7fa; /* Light teal/mint for light mode page background */
-			--bg: linear-gradient(135deg, #f8e8ff 0%, #b6e0fe 100%); /* Gradient for container/cards */
-			--primary: #a259ff;
-			--accent: #00eaff;
-			--yellow: #ffe066;
-			--purple: #a259ff;
-			--cyan: #7de2fc;
-			--pink: #ffb3e6;
-			--text: #1f1235; /* Darkened for light mode readability */
-			--heading: #110022; /* Darkened for light mode readability */
-			--card: linear-gradient(135deg, #fff 60%, #e0e7ef 100%);
-			--tag-bg: #ffe066;
-			--tag-color: #110022; /* Darkened for light mode readability */
-			--shadow: 0 8px 32px 0 #a259ff33;
-			--pattern-main: var(--primary);
-			--pattern-accent1: var(--accent);
-			--pattern-accent2: var(--yellow);
-			--pattern-accent3: var(--pink);
+		/* CSS Variables and global body, h1, h2, h3, p, ul, .container styles moved to src/styles/global.css */
+    /* Kept page-specific styles below */
 
-			/* New social tag colors */
-			--social-tag-linkedin-bg: #0077b5;
-			--social-tag-linkedin-text: #ffffff;
-			--social-tag-email-bg: #d44638;
-			--social-tag-email-text: #ffffff;
-			--social-tag-blog-bg: #ff9900; /* Example: orange for blog */
-			--social-tag-blog-text: #110022;
-		}
-		[data-theme="dark"] {
-			--bg-page: #004d40; /* Dark teal/cyan for dark mode page background */
-			--bg: linear-gradient(135deg, #1a0033 0%, #2d1b4c 100%); /* Gradient for container/cards */
-			--primary: #ff5af7;
-			--accent: #00eaff;
-			--yellow: #fff200;
-			--purple: #a259ff;
-			--cyan: #00eaff;
-			--pink: #ff5af7;
-			--text: #fffbe6;
-			--heading: #fffbe6;
-			--card: linear-gradient(135deg, #2d1b4c 60%, #1a0033 100%);
-			--tag-bg: #ff5af7;
-			--tag-color: #fffbe6;
-			--shadow: 0 8px 32px 0 #ff5af799;
-			--pattern-main: var(--primary);
-			--pattern-accent1: var(--accent);
-			--pattern-accent2: var(--yellow);
-			--pattern-accent3: var(--pink);
-
-			/* Social tag dark theme overrides (can be same if high contrast already) */
-			--social-tag-linkedin-bg: #008cdd;
-			--social-tag-email-bg: #e55d4f;
-			--social-tag-blog-bg: #ffae42;
-			--social-tag-blog-text: #110022; /* Keep dark text for orange in dark mode if it works */
-		}
-		body {
-			font-family: 'Inter', sans-serif;
-			margin: 0;
-			padding: 0;
-			min-height: 100vh;
-			background: var(--bg-page); /* Use solid color for page background */
-			color: var(--text);
-			transition: background 0.4s, color 0.4s;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			position: relative;
-			overflow-x: hidden;
-			user-select: none; /* Make text non-selectable */
-			-webkit-user-select: none; /* For Safari */
-			-moz-user-select: none; /* For Firefox */
-			-ms-user-select: none; /* For Internet Explorer/Edge */
-		}
-		body::before {
+    body::before {
 			content: '';
 			position: fixed;
 			z-index: 0;
@@ -117,40 +48,13 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 			filter: blur(20px);
 			pointer-events: none;
 		}
-		.container {
-			max-width: 1100px;
-			margin: 4.5rem auto 2.5rem auto;
-			padding: 3rem 2.5rem 2.5rem 2.5rem;
-			background: var(--bg);
-			border-radius: 4px; /* Made more geometric */
-			box-shadow: var(--shadow);
-			position: relative;
-			z-index: 1;
-			animation: fadeIn 1s cubic-bezier(.4,0,.2,1);
-		}
+    .container {
+      /* fadeIn animation is specific to index.astro */
+      animation: fadeIn 1s cubic-bezier(.4,0,.2,1);
+    }
 		.headline {
 			flex: 1;
 			min-width: 220px;
-		}
-		h1 {
-			font-family: 'Orbitron', 'Inter', sans-serif;
-			font-size: 2.7rem;
-			font-weight: 700;
-			margin: 0 0 0.3em 0;
-			letter-spacing: 2px;
-			color: var(--heading);
-			text-shadow: 2px 2px 0 #00eaff, 0 2px 0 #ff5af7;
-		}
-		h2 {
-			font-family: 'Orbitron', 'Inter', sans-serif;
-			font-size: 1.6rem;
-			font-weight: 700;
-			margin-top: 2.2rem;
-			margin-bottom: 1.2rem;
-			color: var(--heading);
-			letter-spacing: 1px;
-			/* Adjusted text-shadow for icons */
-			text-shadow: 1px 1px 0 var(--accent), -1px -1px 0 var(--pink);
 		}
 		.role {
 			font-family: 'Orbitron', 'Inter', sans-serif; /* Era-appropriate font */
@@ -171,6 +75,7 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 		}
 		.section {
 			/* Styles like margin-bottom, position, z-index, and border are now in Section.astro */
+      /* section animations are specific to index.astro */
 			animation: slideIn 0.8s cubic-bezier(.4,0,.2,1);
 			animation-fill-mode: both;
 		}
@@ -195,10 +100,11 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 				grid-template-columns: 1fr;
 				gap: 1.2rem;
 			}
-			.container {
-				padding: 1.2rem 0.5rem;
+			/* .container padding/margin adjustments for mobile are page-specific */
+      .container {
+        padding: 1.2rem 0.5rem;
 				margin: 2.5rem 0 1.5rem 0;
-			}
+      }
 		}
 		.card {
 			background: var(--card);
@@ -225,14 +131,10 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 			color: #6b7280;
 			margin-bottom: 0.5em;
 		}
-		ul {
-			margin: 0.2em 0 0.7em 1.2em;
-			padding: 0;
-		}
 		.skills, .interests {
 			display: flex;
 			flex-wrap: wrap;
-			gap: 0.8rem 1rem; /* Increased gap for better spacing */
+			gap: 1.2rem 1.5rem; /* Increased gap for better spacing */
 			margin-top: 0.5em;
 		}
 		.tag {
@@ -302,15 +204,17 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 			color: var(--tag-color);
 			font-weight: 700;
 			letter-spacing: 0.01em;
-			transition: background 0.2s, color 0.2s;
-			box-shadow: 1px 1px 0 #ff5af7; /* Match .tag shadow */
+			transition: transform 0.18s, background 0.18s, color 0.18s, box-shadow 0.18s;
+			box-shadow: 1px 1px 0 #ff5af7;
 			white-space: pre-line;
 			word-break: break-word;
 		}
 
 		.role-tag:hover {
-			background: #ff5af7; /* Match .tag hover */
-			color: #fff200; /* Match .tag hover */
+			background: #ff5af7;
+			color: #fff200;
+			transform: scale(1.08) rotate(-2deg);
+			box-shadow: 4px 4px 0 #00eaff;
 		}
 
 		/* Styling for highlighted phrases in About Me, to match .tag */
@@ -338,8 +242,15 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 			color: var(--tag-color);
 			font-weight: 700;
 			letter-spacing: 0.01em;
-			box-shadow: 1px 1px 0 #ff5af7; 
-			/* No hover needed for these, they are descriptive tags */
+			box-shadow: 1px 1px 0 #ff5af7;
+			transition: transform 0.18s, background 0.18s, color 0.18s, box-shadow 0.18s;
+		}
+
+		.about-me-point-tag:hover {
+			background: #ff5af7;
+			color: #fff200;
+			transform: scale(1.08) rotate(-2deg);
+			box-shadow: 4px 4px 0 #00eaff;
 		}
 
 		.about-me-narrative {
@@ -372,25 +283,42 @@ import ThemeToggle from '../components/ThemeToggle.svelte';
 			padding: 0.15em 0.6em 0.2em;
 			font-size: 1.05em; /* Slightly larger for tagline */
 			box-shadow: 1px 1px 0 var(--accent); /* Different shadow for variety */
+			transition: transform 0.18s, background 0.18s, color 0.18s, box-shadow 0.18s;
 		}
 
-		/* Discreet link style for company names in cards/tags */
-		:global(.company-link-discreet) {
+		.about-me-highlight.strong:hover {
+			background: #ff5af7; /* pink, like tag hover */
+			color: #fff200;    /* yellow, like tag hover */
+			transform: scale(1.2) rotate(3deg);
+			box-shadow: 4px 4px 0 #00eaff; /* cyan, like tag hover */
+		}
+
+		/* Add this for the dev link */
+		.dev-link {
+			position: fixed;
+			top: 24px; /* Align with ThemeToggle */
+			right: 100px; /* Space it out from ThemeToggle */
+			z-index: 201; /* Above ThemeToggle\'s z-index (200) */
+			background: var(--yellow);
+			color: var(--heading);
+			padding: 0.3rem 0.6rem;
+			border-radius: 3px;
+			font-family: 'Fira Mono', monospace;
+			font-size: 0.8rem;
 			text-decoration: none;
-			color: inherit; /* Inherit color from parent (.job-title or .tag) */
-			/*transition: text-decoration 0.2s ease-in-out;*/ /* Optional: smooth underline */
+			box-shadow: 1px 1px 0 var(--primary);
+			opacity: 0.8;
+			transition: opacity 0.2s;
 		}
-
-		:global(.company-link-discreet:hover) {
-			text-decoration: underline;
-			text-decoration-color: var(--accent); /* Use accent color for underline */
-			text-decoration-thickness: 1.5px;
+		.dev-link:hover {
+			opacity: 1;
 		}
+		/* End of dev link style */
 	</style>
 </head>
 <body>
-	<MemphisBackground client:only="svelte" />
-	<ThemeToggle client:only="svelte" />
+	<ThemeToggle client:load />
+	<MemphisBackground client:load />
 	<div class="container">
 		<Header 
 			avatarImagePath="/avatar.png"
