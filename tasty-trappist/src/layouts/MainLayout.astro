@@ -121,6 +121,7 @@ const fullTitle = `${title} | Samantha Myers`;
     :global(body) {
         position: relative;
         z-index: 1;
+        max-width: 100vw;
     }
 
     .main-content {
@@ -150,6 +151,8 @@ const fullTitle = `${title} | Samantha Myers`;
         z-index: -1;
         pointer-events: none;
         view-transition-name: page-background;
+        max-width: 100vw;
+        overflow: hidden;
     }
 
     /* Ensure backgrounds stay behind during transitions */

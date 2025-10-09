@@ -356,7 +356,9 @@ const navLinks = [
             top: 0;
             right: -100%;
             width: 280px;
+            max-width: 80vw;
             height: 100vh;
+            height: 100dvh; /* Use dynamic viewport height on mobile */
             background: var(--bg-elevated);
             border-left: var(--border-thick) solid var(--border-heavy);
             flex-direction: column;
@@ -364,6 +366,9 @@ const navLinks = [
             gap: 0;
             padding-top: 80px;
             transition: right var(--transition-base);
+            /* Prevent menu from extending beyond viewport */
+            overflow-y: auto;
+            overscroll-behavior: contain;
         }
 
         .nav-links--open {
@@ -397,6 +402,12 @@ const navLinks = [
         /* Prevent body scroll when menu is open */
         :global(body.nav-open) {
             overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            /* Prevent any horizontal movement */
+            overscroll-behavior: none;
+            touch-action: none;
         }
     }
 
