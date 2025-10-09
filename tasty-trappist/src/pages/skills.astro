@@ -1,506 +1,651 @@
 ---
 // Skills Page - Systems & Capabilities
-import MainLayout from '../layouts/MainLayout.astro';
-import BorderBox from '../components/BorderBox.astro';
+import MainLayout from "../layouts/MainLayout.astro";
+import BorderBox from "../components/BorderBox.astro";
+import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
 
 const skillCategories = [
-  {
-    title: 'TECHNICAL OPERATIONS',
-    icon: '◆',
-    color: 'orange',
-    skills: [
-      { name: 'Corporate IT Infrastructure', level: 95 },
-      { name: 'Device Fleet Management (Jamf)', level: 90 },
-      { name: 'Google Workspace Administration', level: 95 },
-      { name: 'Okta Identity Management', level: 85 },
-      { name: 'Network Operations', level: 80 },
-      { name: 'Security & Compliance', level: 85 }
-    ]
-  },
-  {
-    title: 'LEADERSHIP & MANAGEMENT',
-    icon: '▲',
-    color: 'green',
-    skills: [
-      { name: 'Engineering Team Leadership', level: 90 },
-      { name: 'Service Desk Management', level: 95 },
-      { name: 'Strategic Planning', level: 85 },
-      { name: 'Process Optimization', level: 90 },
-      { name: 'Cross-functional Collaboration', level: 95 },
-      { name: 'Stakeholder Communication', level: 90 }
-    ]
-  },
-  {
-    title: 'TOOLS & PLATFORMS',
-    icon: '■',
-    color: 'blue',
-    skills: [
-      { name: 'Jamf Pro (macOS/iOS MDM)', level: 90 },
-      { name: 'Google Workspace', level: 95 },
-      { name: 'Okta', level: 85 },
-      { name: 'Jira & Confluence', level: 90 },
-      { name: 'Slack & Communication Tools', level: 95 },
-      { name: 'macOS & Windows Support', level: 95 }
-    ]
-  },
-  {
-    title: 'SPECIALIZED EXPERTISE',
-    icon: '●',
-    color: 'red',
-    skills: [
-      { name: 'User Experience & Accessibility', level: 85 },
-      { name: 'Technical Documentation', level: 95 },
-      { name: 'Onboarding & Training', level: 90 },
-      { name: 'Incident Response', level: 85 },
-      { name: 'Developer-to-User Translation', level: 95 },
-      { name: 'Change Management', level: 80 }
-    ]
-  }
+    {
+        title: "TECHNICAL OPERATIONS",
+        icon: "◆",
+        color: "orange",
+        skills: [
+            { name: "Corporate IT Infrastructure", level: 95 },
+            { name: "Device Fleet Management (Jamf)", level: 90 },
+            { name: "Google Workspace Administration", level: 95 },
+            { name: "Okta Identity Management", level: 85 },
+            { name: "Network Operations", level: 80 },
+            { name: "Security & Compliance", level: 85 },
+        ],
+    },
+    {
+        title: "LEADERSHIP & MANAGEMENT",
+        icon: "▲",
+        color: "green",
+        skills: [
+            { name: "Engineering Team Leadership", level: 90 },
+            { name: "Service Desk Management", level: 95 },
+            { name: "Strategic Planning", level: 85 },
+            { name: "Process Optimization", level: 90 },
+            { name: "Cross-functional Collaboration", level: 95 },
+            { name: "Stakeholder Communication", level: 90 },
+        ],
+    },
+    {
+        title: "TOOLS & PLATFORMS",
+        icon: "■",
+        color: "blue",
+        skills: [
+            { name: "Jamf Pro (macOS/iOS MDM)", level: 90 },
+            { name: "Google Workspace", level: 95 },
+            { name: "Okta", level: 85 },
+            { name: "Jira & Confluence", level: 90 },
+            { name: "Slack & Communication Tools", level: 95 },
+            { name: "macOS & Windows Support", level: 95 },
+        ],
+    },
+    {
+        title: "SPECIALIZED EXPERTISE",
+        icon: "●",
+        color: "red",
+        skills: [
+            { name: "User Experience & Accessibility", level: 85 },
+            { name: "Technical Documentation", level: 95 },
+            { name: "Onboarding & Training", level: 90 },
+            { name: "Incident Response", level: 85 },
+            { name: "Developer-to-User Translation", level: 95 },
+            { name: "Change Management", level: 80 },
+        ],
+    },
 ];
 
 const certifications = [
-  {
-    title: 'JAMF CERTIFIED TECH',
-    issuer: 'Jamf',
-    date: 'Jun 2022',
-    id: '202407-82259',
-    active: true
-  }
+    {
+        title: "JAMF CERTIFIED TECH",
+        issuer: "Jamf",
+        date: "Jun 2022",
+        id: "202407-82259",
+        active: true,
+    },
 ];
 ---
 
 <MainLayout
-  title="Skills"
-  description="Systems & Capabilities - Technical skills, certifications, and specialized expertise across IT operations and engineering management."
+    title="Skills"
+    description="Systems & Capabilities - Technical skills, certifications, and specialized expertise across IT operations and engineering management."
 >
-  <!-- Page Header -->
-  <section class="page-header">
-    <div class="container">
-      <div class="header-content">
-        <span class="header-label">TECHNICAL SPECIFICATIONS</span>
-        <h1 class="page-title">SYSTEMS & CAPABILITIES</h1>
-        <p class="header-description">
-          Comprehensive operational capabilities across infrastructure, leadership,
-          and specialized technical domains. Field-tested and mission-ready.
-        </p>
-      </div>
+    <!-- Page-Level Background Portrait -->
+    <div slot="page-background" class="hero-background">
+        <PixelatedCanvas
+            src="/hero-skills.png"
+            alt=""
+            className="background-portrait"
+            pixelSize={12}
+            fadeInterval={1500}
+            fadePixelsPerTick={1200}
+            fadeSpeed={0.02}
+            initialOpacityMin={0.6}
+            initialOpacityMax={1.0}
+            fadeOutMin={0.2}
+            fadeOutMax={0.4}
+            fadeInMin={0.8}
+            fadeInMax={1.0}
+            hoverRadius={3}
+            hoverFadeStrength={0.6}
+            enableHover={true}
+            autoRestore={true}
+            edgeBlurTop={20}
+            edgeBlurLeft={120}
+            edgeBlurBottom={120}
+            pixelOffsetX={0}
+            pixelOffsetY={0}
+            enableAlignment={false}
+            enableRandomFade={true}
+            client:load
+        />
+        <div class="background-gradient"></div>
     </div>
-  </section>
 
-  <!-- Skills Matrix -->
-  <section class="skills-section">
-    <div class="container">
-      <h2 class="section-heading">◆ CAPABILITY MATRIX</h2>
-
-      <div class="skills-grid">
-        {skillCategories.map(category => (
-          <BorderBox variant="accent" accentColor={category.color}>
-            <div class="category-header">
-              <span class="category-icon">{category.icon}</span>
-              <h3 class="category-title">{category.title}</h3>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="header-content">
+                <span class="header-label">TECHNICAL SPECIFICATIONS</span>
+                <h1 class="page-title">SYSTEMS & CAPABILITIES</h1>
+                <p class="header-description">
+                    Comprehensive operational capabilities across
+                    infrastructure, leadership, and specialized technical
+                    domains. Field-tested and mission-ready.
+                </p>
             </div>
+        </div>
+    </section>
 
-            <div class="skills-list">
-              {category.skills.map(skill => (
-                <div class="skill-item">
-                  <div class="skill-info">
-                    <span class="skill-name">{skill.name}</span>
-                    <span class="skill-percentage">{skill.level}%</span>
-                  </div>
-                  <div class="skill-bar">
-                    <div
-                      class="skill-progress"
-                      style={`width: ${skill.level}%`}
-                      data-level={skill.level}
-                    ></div>
-                  </div>
+    <!-- Skills Matrix -->
+    <section class="skills-section">
+        <div class="container">
+            <h2 class="section-heading">◆ CAPABILITY MATRIX</h2>
+
+            <div class="skills-grid">
+                {
+                    skillCategories.map((category) => (
+                        <BorderBox
+                            variant="accent"
+                            accentColor={category.color}
+                        >
+                            <div class="category-header">
+                                <span class="category-icon">
+                                    {category.icon}
+                                </span>
+                                <h3 class="category-title">{category.title}</h3>
+                            </div>
+
+                            <div class="skills-list">
+                                {category.skills.map((skill) => (
+                                    <div class="skill-item">
+                                        <div class="skill-info">
+                                            <span class="skill-name">
+                                                {skill.name}
+                                            </span>
+                                            <span class="skill-percentage">
+                                                {skill.level}%
+                                            </span>
+                                        </div>
+                                        <div class="skill-bar">
+                                            <div
+                                                class="skill-progress"
+                                                style={`--target-width: ${skill.level}%`}
+                                                data-level={skill.level}
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </BorderBox>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="certifications-section">
+        <div class="container">
+            <h2 class="section-heading">■ CERTIFICATIONS & CREDENTIALS</h2>
+
+            <div class="cert-grid">
+                {
+                    certifications.map((cert) => (
+                        <BorderBox
+                            variant={cert.active ? "corners" : "default"}
+                        >
+                            <div class="cert-card">
+                                <div class="cert-header">
+                                    <h3 class="cert-title">{cert.title}</h3>
+                                    {cert.active && (
+                                        <span class="cert-badge">ACTIVE</span>
+                                    )}
+                                </div>
+                                <p class="cert-issuer">{cert.issuer}</p>
+                                <div class="cert-meta">
+                                    <span class="cert-date">
+                                        Issued: {cert.date}
+                                    </span>
+                                    {cert.id && (
+                                        <span class="cert-id">
+                                            ID: {cert.id}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </BorderBox>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Display Section -->
+    <section class="data-display-section">
+        <div class="container">
+            <h2 class="section-heading">▲ OPERATIONAL PROFICIENCY</h2>
+
+            <BorderBox variant="elevated">
+                <div class="display-grid">
+                    <div class="display-item">
+                        <div class="display-label">
+                            INFRASTRUCTURE MANAGEMENT
+                        </div>
+                        <div class="display-meter">
+                            <div class="meter-fill" style="--target-width: 95%">
+                                <span class="meter-value">95%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="display-item">
+                        <div class="display-label">TEAM LEADERSHIP</div>
+                        <div class="display-meter">
+                            <div class="meter-fill" style="--target-width: 90%">
+                                <span class="meter-value">90%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="display-item">
+                        <div class="display-label">SERVICE DELIVERY</div>
+                        <div class="display-meter">
+                            <div class="meter-fill" style="--target-width: 95%">
+                                <span class="meter-value">95%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="display-item">
+                        <div class="display-label">STRATEGIC PLANNING</div>
+                        <div class="display-meter">
+                            <div class="meter-fill" style="--target-width: 85%">
+                                <span class="meter-value">85%</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              ))}
-            </div>
-          </BorderBox>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Certifications Section -->
-  <section class="certifications-section">
-    <div class="container">
-      <h2 class="section-heading">■ CERTIFICATIONS & CREDENTIALS</h2>
-
-      <div class="cert-grid">
-        {certifications.map(cert => (
-          <BorderBox variant={cert.active ? 'corners' : 'default'}>
-            <div class="cert-card">
-              <div class="cert-header">
-                <h3 class="cert-title">{cert.title}</h3>
-                {cert.active && <span class="cert-badge">ACTIVE</span>}
-              </div>
-              <p class="cert-issuer">{cert.issuer}</p>
-              <div class="cert-meta">
-                <span class="cert-date">Issued: {cert.date}</span>
-                {cert.id && <span class="cert-id">ID: {cert.id}</span>}
-              </div>
-            </div>
-          </BorderBox>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Data Display Section -->
-  <section class="data-display-section">
-    <div class="container">
-      <h2 class="section-heading">▲ OPERATIONAL PROFICIENCY</h2>
-
-      <BorderBox variant="elevated">
-        <div class="display-grid">
-          <div class="display-item">
-            <div class="display-label">INFRASTRUCTURE MANAGEMENT</div>
-            <div class="display-meter">
-              <div class="meter-fill" style="width: 95%">
-                <span class="meter-value">95%</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="display-item">
-            <div class="display-label">TEAM LEADERSHIP</div>
-            <div class="display-meter">
-              <div class="meter-fill" style="width: 90%">
-                <span class="meter-value">90%</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="display-item">
-            <div class="display-label">SERVICE DELIVERY</div>
-            <div class="display-meter">
-              <div class="meter-fill" style="width: 95%">
-                <span class="meter-value">95%</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="display-item">
-            <div class="display-label">STRATEGIC PLANNING</div>
-            <div class="display-meter">
-              <div class="meter-fill" style="width: 85%">
-                <span class="meter-value">85%</span>
-              </div>
-            </div>
-          </div>
+            </BorderBox>
         </div>
-      </BorderBox>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA Section -->
-  <section class="cta-section">
-    <div class="container">
-      <div class="cta-content">
-        <h2 class="cta-title">DEPLOY CAPABILITIES</h2>
-        <p class="cta-text">
-          Ready to leverage these skills for your organization's success.
-        </p>
-        <div class="cta-buttons">
-          <a href="/contact" class="btn btn-primary">INITIATE CONTACT</a>
-          <a href="/experience" class="btn btn-outline">VIEW OPERATIONS LOG</a>
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">DEPLOY CAPABILITIES</h2>
+                <p class="cta-text">
+                    Ready to leverage these skills for your organization's
+                    success.
+                </p>
+                <div class="cta-buttons">
+                    <a href="/contact" class="btn btn-primary"
+                        >INITIATE CONTACT</a
+                    >
+                    <a href="/experience" class="btn btn-outline"
+                        >VIEW OPERATIONS LOG</a
+                    >
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 </MainLayout>
 
-<style>
-  /* Page Header */
-  .page-header {
-    padding: var(--space-8) 0 var(--space-6);
-    border-bottom: var(--border-thick) solid var(--border-heavy);
-  }
+<script>
+    function animateProgressBars() {
+        // Animate skill progress bars
+        const skillBars = document.querySelectorAll(".skill-progress");
+        skillBars.forEach((bar, index) => {
+            setTimeout(
+                () => {
+                    bar.classList.add("loaded");
+                },
+                100 + index * 50,
+            ); // Stagger the animations
+        });
 
-  .header-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wider);
-    color: var(--accent-orange);
-    display: block;
-    margin-bottom: var(--space-2);
-  }
-
-  .page-title {
-    font-size: var(--text-5xl);
-    margin-bottom: var(--space-3);
-  }
-
-  .header-description {
-    font-family: var(--font-mono);
-    font-size: var(--text-lg);
-    line-height: var(--leading-relaxed);
-    color: var(--text-secondary);
-    max-width: 700px;
-  }
-
-  /* Skills Section */
-  .skills-section {
-    padding: var(--space-8) 0;
-  }
-
-  .section-heading {
-    font-size: var(--text-3xl);
-    margin-bottom: var(--space-6);
-  }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-4);
-  }
-
-  .category-header {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin-bottom: var(--space-4);
-    padding-bottom: var(--space-3);
-    border-bottom: var(--border-medium) solid var(--border-light);
-  }
-
-  .category-icon {
-    font-size: var(--text-2xl);
-    color: var(--accent-orange);
-  }
-
-  .category-title {
-    font-family: var(--font-primary);
-    font-size: var(--text-xl);
-    font-weight: var(--font-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    margin: 0;
-  }
-
-  .skills-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .skill-item {
-    /* Skill item styles */
-  }
-
-  .skill-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-1);
-  }
-
-  .skill-name {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
-  }
-
-  .skill-percentage {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: var(--font-bold);
-    color: var(--text-tertiary);
-  }
-
-  .skill-bar {
-    height: 8px;
-    background: var(--bg-secondary);
-    border: var(--border-thin) solid var(--border-light);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .skill-progress {
-    height: 100%;
-    background: var(--accent-blue);
-    transition: width 1s ease-out;
-  }
-
-  .skill-progress[data-level="95"],
-  .skill-progress[data-level="90"] {
-    background: var(--accent-green);
-  }
-
-  .skill-progress[data-level="85"] {
-    background: var(--accent-blue);
-  }
-
-  .skill-progress[data-level="80"] {
-    background: var(--accent-orange);
-  }
-
-  /* Certifications Section */
-  .certifications-section {
-    padding: var(--space-8) 0;
-    background: var(--bg-secondary);
-    border-top: var(--border-thick) solid var(--border-heavy);
-    border-bottom: var(--border-thick) solid var(--border-heavy);
-  }
-
-  .cert-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: var(--space-4);
-  }
-
-  .cert-card {
-    /* Cert card styles */
-  }
-
-  .cert-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-2);
-  }
-
-  .cert-title {
-    font-family: var(--font-primary);
-    font-size: var(--text-xl);
-    font-weight: var(--font-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    margin: 0;
-  }
-
-  .cert-badge {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: var(--font-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wider);
-    padding: var(--space-1) var(--space-2);
-    background: var(--accent-green);
-    color: var(--text-inverted);
-    border: var(--border-thin) solid var(--border-heavy);
-  }
-
-  .cert-issuer {
-    font-family: var(--font-mono);
-    font-size: var(--text-base);
-    color: var(--text-secondary);
-    margin-bottom: var(--space-2);
-  }
-
-  .cert-meta {
-    display: flex;
-    gap: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--text-tertiary);
-  }
-
-  /* Data Display Section */
-  .data-display-section {
-    padding: var(--space-8) 0;
-  }
-
-  .display-grid {
-    display: grid;
-    gap: var(--space-4);
-  }
-
-  .display-item {
-    /* Display item styles */
-  }
-
-  .display-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: var(--font-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wider);
-    color: var(--text-tertiary);
-    margin-bottom: var(--space-2);
-  }
-
-  .display-meter {
-    height: 40px;
-    background: var(--bg-secondary);
-    border: var(--border-medium) solid var(--border-heavy);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .meter-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: var(--space-2);
-    transition: width 1.5s ease-out;
-  }
-
-  .meter-value {
-    font-family: var(--font-primary);
-    font-size: var(--text-lg);
-    font-weight: var(--font-bold);
-    color: var(--text-inverted);
-  }
-
-  /* CTA Section */
-  .cta-section {
-    padding: var(--space-8) 0 var(--space-12);
-  }
-
-  .cta-content {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .cta-title {
-    font-size: var(--text-4xl);
-    margin-bottom: var(--space-3);
-  }
-
-  .cta-text {
-    font-family: var(--font-mono);
-    font-size: var(--text-lg);
-    color: var(--text-secondary);
-    margin-bottom: var(--space-6);
-  }
-
-  .cta-buttons {
-    display: flex;
-    gap: var(--space-3);
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  /* Responsive */
-  @media (max-width: 1024px) {
-    .skills-grid {
-      grid-template-columns: 1fr;
+        // Animate meter fills
+        const meterFills = document.querySelectorAll(".meter-fill");
+        meterFills.forEach((fill, index) => {
+            setTimeout(
+                () => {
+                    fill.classList.add("loaded");
+                },
+                600 + index * 150,
+            ); // Start after skills, with stagger
+        });
     }
-  }
 
-  @media (max-width: 768px) {
+    // Run on initial page load
+    document.addEventListener("astro:page-load", () => {
+        animateProgressBars();
+    });
+
+    // Also run immediately if script loads after DOMContentLoaded
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", animateProgressBars);
+    } else {
+        animateProgressBars();
+    }
+</script>
+
+<style>
+    /* Hero Background */
+    :global(.hero-background .background-portrait) {
+        position: absolute;
+        right: -5%;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 100vh;
+        width: auto;
+        object-fit: contain;
+        opacity: 0.25;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+    }
+
+    :global(.hero-background .background-gradient) {
+        display: none;
+    }
+
+    /* Page Header */
+    .page-header {
+        padding: var(--space-8) 0 var(--space-6);
+        background: transparent;
+        position: relative;
+        z-index: 10;
+    }
+
+    .header-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        color: var(--accent-orange);
+        display: block;
+        margin-bottom: var(--space-2);
+    }
+
     .page-title {
-      font-size: var(--text-4xl);
+        font-size: var(--text-5xl);
+        margin-bottom: var(--space-3);
     }
 
     .header-description {
-      font-size: var(--text-base);
+        font-family: var(--font-mono);
+        font-size: var(--text-lg);
+        line-height: var(--leading-relaxed);
+        color: var(--text-secondary);
+        max-width: 700px;
+    }
+
+    /* Skills Section */
+    .skills-section {
+        padding: var(--space-8) 0;
+        position: relative;
+        z-index: 10;
+    }
+
+    .section-heading {
+        font-size: var(--text-3xl);
+        margin-bottom: var(--space-6);
+    }
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+        padding-bottom: var(--space-3);
+        border-bottom: var(--border-medium) solid var(--border-light);
+    }
+
+    .category-icon {
+        font-size: var(--text-2xl);
+        color: var(--accent-orange);
+    }
+
+    .category-title {
+        font-family: var(--font-primary);
+        font-size: var(--text-xl);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        margin: 0;
+    }
+
+    .skills-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+
+    .skill-item {
+        /* Skill item styles */
+    }
+
+    .skill-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-1);
+    }
+
+    .skill-name {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+    }
+
+    .skill-percentage {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: var(--font-bold);
+        color: var(--text-tertiary);
+    }
+
+    .skill-bar {
+        height: 8px;
+        background: var(--bg-secondary);
+        border: var(--border-thin) solid var(--border-light);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .skill-progress {
+        height: 100%;
+        background: var(--accent-blue);
+        width: 0 !important;
+        transition: width 1s ease-out;
+    }
+
+    .skill-progress.loaded {
+        width: var(--target-width) !important;
+    }
+
+    .skill-progress[data-level="95"],
+    .skill-progress[data-level="90"] {
+        background: var(--accent-green);
+    }
+
+    .skill-progress[data-level="85"] {
+        background: var(--accent-blue);
+    }
+
+    .skill-progress[data-level="80"] {
+        background: var(--accent-orange);
+    }
+
+    /* Certifications Section */
+    .certifications-section {
+        padding: var(--space-8) 0;
+        background: var(--bg-secondary);
+        border-top: var(--border-thick) solid var(--border-heavy);
+        border-bottom: var(--border-thick) solid var(--border-heavy);
+        position: relative;
+        z-index: 10;
     }
 
     .cert-grid {
-      grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: var(--space-4);
+    }
+
+    .cert-card {
+        /* Cert card styles */
+    }
+
+    .cert-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-2);
+    }
+
+    .cert-title {
+        font-family: var(--font-primary);
+        font-size: var(--text-xl);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        margin: 0;
+    }
+
+    .cert-badge {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        padding: var(--space-1) var(--space-2);
+        background: var(--accent-green);
+        color: var(--text-inverted);
+        border: var(--border-thin) solid var(--border-heavy);
+    }
+
+    .cert-issuer {
+        font-family: var(--font-mono);
+        font-size: var(--text-base);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-2);
+    }
+
+    .cert-meta {
+        display: flex;
+        gap: var(--space-3);
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--text-tertiary);
+    }
+
+    /* Data Display Section */
+    .data-display-section {
+        padding: var(--space-8) 0;
+        position: relative;
+        z-index: 10;
+    }
+
+    .display-grid {
+        display: grid;
+        gap: var(--space-4);
+    }
+
+    .display-item {
+        /* Display item styles */
+    }
+
+    .display-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        color: var(--text-tertiary);
+        margin-bottom: var(--space-2);
+    }
+
+    .display-meter {
+        height: 40px;
+        background: var(--bg-secondary);
+        border: var(--border-medium) solid var(--border-heavy);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .meter-fill {
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            var(--accent-blue),
+            var(--accent-green)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: var(--space-2);
+        width: 0 !important;
+        transition: width 1.5s ease-out;
+    }
+
+    .meter-fill.loaded {
+        width: var(--target-width) !important;
+    }
+
+    .meter-value {
+        font-family: var(--font-primary);
+        font-size: var(--text-lg);
+        font-weight: var(--font-bold);
+        color: var(--text-inverted);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: var(--space-8) 0 var(--space-12);
+        position: relative;
+        z-index: 10;
+    }
+
+    .cta-content {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
     }
 
     .cta-title {
-      font-size: var(--text-3xl);
+        font-size: var(--text-4xl);
+        margin-bottom: var(--space-3);
     }
-  }
+
+    .cta-text {
+        font-family: var(--font-mono);
+        font-size: var(--text-lg);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-6);
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: var(--space-3);
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .skills-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: var(--text-4xl);
+        }
+
+        .header-description {
+            font-size: var(--text-base);
+        }
+
+        .cert-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-title {
+            font-size: var(--text-3xl);
+        }
+    }
 </style>

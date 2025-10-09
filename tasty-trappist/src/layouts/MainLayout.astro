@@ -1,5 +1,6 @@
 ---
 // MainLayout - Base layout for all pages
+import { ViewTransitions } from "astro:transitions";
 import Navigation from "../components/Navigation.astro";
 import Footer from "../components/Footer.astro";
 import GridPattern from "../components/GridPattern.svelte";
@@ -15,17 +16,19 @@ export interface Props {
 
 const {
     title,
-    description = "Technical Support Engineer and Lead specializing in IT operations, infrastructure, and team leadership.",
+    description = "Corporate Engineering Manager specializing in IT operations, infrastructure, and team leadership.",
     showStatusBar = true,
     statusBarItems = [
         "FIELD TESTED IN ADELAIDE, AU",
         "OPERATIONAL IN MELBOURNE, AU",
         "SYSTEMS OPERATIONAL",
         "LAST UPDATED: OCT 2025",
-        "AVAILABLE FOR DEPLOYMENT",
-        "VIBE CODES THINGS",
-        "OPEN TO OPPORTUNITIES",
-        "CONTACT TODAY",
+        "AVAILABLE FOR OPPORTUNITIES",
+        "10+ YEARS EXPERIENCE",
+        "ENGINEERING LEADERSHIP",
+        "IT SUPPORT",
+        "AI EVANGELISM",
+        "CONTACT FOR INQUIRIES",
     ],
 } = Astro.props;
 
@@ -76,11 +79,11 @@ const fullTitle = `${title} | Samantha Myers`;
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={fullTitle} />
         <meta name="twitter:description" content={description} />
+
+        <!-- View Transitions for smooth page changes -->
+        <ViewTransitions />
     </head>
     <body>
-        <!-- Skip to main content link for accessibility -->
-        <a href="#main-content" class="skip-link">Skip to main content</a>
-
         <!-- Background grid pattern -->
         <GridPattern client:load opacity={0.3} gridSize={40} animate={true} />
 
@@ -115,6 +118,11 @@ const fullTitle = `${title} | Samantha Myers`;
         scroll-padding-top: 80px; /* Account for sticky nav */
     }
 
+    :global(body) {
+        position: relative;
+        z-index: 1;
+    }
+
     .main-content {
         position: relative;
         z-index: 50;
@@ -141,5 +149,49 @@ const fullTitle = `${title} | Samantha Myers`;
         left: 0;
         z-index: -1;
         pointer-events: none;
+        view-transition-name: page-background;
+    }
+
+    /* Ensure backgrounds stay behind during transitions */
+    ::view-transition-old(page-background),
+    ::view-transition-new(page-background) {
+        z-index: -1 !important;
+        mix-blend-mode: normal;
+        animation: none !important; /* Disable default fade animation */
+    }
+
+    /* Prevent background from covering content during transition */
+    ::view-transition-group(page-background) {
+        z-index: -1 !important;
+    }
+
+    ::view-transition-image-pair(page-background) {
+        isolation: isolate;
+    }
+
+    /* Keep background portraits visible during transitions - no animation */
+    :global(.background-portrait) {
+        view-transition-name: none !important;
+    }
+
+    /* Also prevent canvas elements from animating */
+    :global(canvas) {
+        view-transition-name: none !important;
+    }
+
+    /* Customize transition duration for smoother effect */
+    @media (prefers-reduced-motion: no-preference) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: 0.3s;
+            animation-timing-function: ease-in-out;
+        }
+
+        ::view-transition-old(page-background),
+        ::view-transition-new(page-background) {
+            animation-duration: 0.6s;
+            animation-timing-function: ease-in-out;
+            z-index: -1 !important;
+        }
     }
 </style>

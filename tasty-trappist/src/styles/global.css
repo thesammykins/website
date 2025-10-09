@@ -359,21 +359,6 @@ label {
   border-width: 0;
 }
 
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--accent-orange);
-  color: var(--text-inverted);
-  padding: var(--space-2) var(--space-3);
-  z-index: 1000;
-  font-weight: var(--font-bold);
-}
-
-.skip-link:focus {
-  top: 0;
-}
-
 /* Focus visible styles */
 *:focus-visible {
   outline: 2px solid var(--accent-blue);

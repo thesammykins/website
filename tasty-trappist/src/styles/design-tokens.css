@@ -157,11 +157,11 @@
   --bg-elevated: #003333;       /* Elevated surfaces */
   --bg-overlay: rgba(255, 255, 255, 0.05);
 
-  /* Borders & Lines */
-  --border-heavy: #00eaff;      /* Cyan - primary borders */
-  --border-medium: #00bfcc;     /* Darker cyan - secondary */
-  --border-light: #008899;      /* Even darker cyan */
-  --border-accent: #00ff88;     /* Green - interactive */
+  /* Borders & Lines - Brightened for better visibility */
+  --border-heavy: #00eaff;      /* Bright cyan - primary borders (5px) */
+  --border-medium: #00d4e6;     /* Mid-bright cyan - secondary borders (2-3px) */
+  --border-light: #00b3cc;      /* Light cyan - tertiary borders (1px) */
+  --border-accent: #00ff88;     /* Bright green - interactive */
 
   /* Text */
   --text-primary: #ffffff;      /* White - headings */

@@ -37,6 +37,8 @@ jobs:
       - name: Build Astro site
         working-directory: ./tasty-trappist # Run commands in tasty-trappist directory
         # The astro.config.mjs outDir is '../docs', so this builds to the root /docs directory
+        env:
+          PUBLIC_LOGO_DEV_TOKEN: ${{ secrets.LOGO_DEV_TOKEN }}
         run: npm run build
       - name: Copy CNAME to build output
         # Ensure CNAME is in the root of the artifact, which is the root of /docs

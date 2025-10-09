@@ -485,6 +485,72 @@ Scrolling status bar at top/bottom of pages.
 
 ---
 
+### PixelatedCanvas Component
+**Location:** `tasty-trappist/src/components/PixelatedCanvas.svelte`
+
+**Usage:**
+```astro
+<PixelatedCanvas
+  src="/avatar-pixelated.png"
+  alt="Profile image"
+  className="background-portrait"
+  pixelSize={16}
+  fadeInterval={100}
+  fadePixelsPerTick={5}
+  fadeSpeed={0.05}
+  initialOpacityMin={0.6}
+  initialOpacityMax={1.0}
+  fadeOutMin={0.2}
+  fadeOutMax={0.4}
+  fadeInMin={0.8}
+  fadeInMax={1.0}
+  hoverRadius={3}
+  hoverFadeStrength={0.6}
+  enableRandomFade={true}
+  enableHover={true}
+  autoRestore={true}
+  client:load
+/>
+```
+
+**Core Props:**
+- `src` (required) - Image source URL
+- `alt` (optional) - Alt text for accessibility
+- `className` (optional) - Additional CSS classes
+- `pixelSize` (optional, default: 8) - Size of each pixel block in pixels
+
+**Animation Props:**
+- `fadeInterval` (optional, default: 100) - Milliseconds between random fades
+- `fadePixelsPerTick` (optional, default: 10) - Pixels to fade per interval
+- `fadeSpeed` (optional, default: 0.1) - Speed of opacity interpolation (0-1)
+- `enableRandomFade` (optional, default: true) - Enable/disable random fading
+- `autoRestore` (optional, default: true) - Auto-restore to full opacity when not hovering
+
+**Opacity Range Props:**
+- `initialOpacityMin` (optional, default: 0.5) - Starting opacity minimum (0-1)
+- `initialOpacityMax` (optional, default: 1.0) - Starting opacity maximum (0-1)
+- `fadeOutMin` (optional, default: 0) - Fade out opacity minimum (0-1)
+- `fadeOutMax` (optional, default: 0.3) - Fade out opacity maximum (0-1)
+- `fadeInMin` (optional, default: 0.7) - Fade in opacity minimum (0-1)
+- `fadeInMax` (optional, default: 1.0) - Fade in opacity maximum (0-1)
+
+**Hover Props:**
+- `enableHover` (optional, default: true) - Enable/disable hover interaction
+- `hoverRadius` (optional, default: 2) - Radius of hover effect in pixel blocks
+- `hoverFadeStrength` (optional, default: 0.7) - How much hover reduces opacity (0-1)
+
+**Features:**
+- Interactive canvas that renders images with pixelated fade effects
+- Random pixels fade in/out with configurable opacity ranges
+- Hover creates ripple effect revealing pixels
+- Granular per-page customization for every parameter
+- Aligns with military/tactical glitch aesthetic
+- Performance optimized with canvas clipping and requestAnimationFrame
+
+**Documentation:** See `tasty-trappist/src/components/PixelatedCanvas.README.md` for detailed technical specs and examples
+
+---
+
 ## Examples: Understanding User Requests
 
 ### Example 1: Role Update
@@ -738,6 +804,9 @@ Use military/technical language consistently:
 | `components/Navigation.astro` | Site navigation |
 | `components/BorderBox.astro` | Styled container component |
 | `components/TechnicalCard.astro` | Card component for content |
+| `components/PixelatedCanvas.svelte` | Interactive pixelated image canvas |
+| `components/GridPattern.svelte` | Background grid pattern |
+| `components/StatusBar.astro` | Scrolling status bar |
 | `styles/design-tokens.css` | All CSS variables |
 | `styles/global.css` | Global styles |
 

@@ -2,18 +2,37 @@
 // About/Team Page - Advanced Operations Unit
 import MainLayout from "../layouts/MainLayout.astro";
 import BorderBox from "../components/BorderBox.astro";
+import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
 ---
 
 <MainLayout
     title="About"
-    description="Advanced Operations Unit - Over a decade of field-tested IT operations and engineering management expertise."
+    description="Advanced Operations Unit - 14+ years of field-tested IT operations and engineering management expertise."
 >
     <!-- Page-Level Background Portrait - rendered at body level -->
     <div slot="page-background" class="profile-background">
-        <img
-            src="/avatar-pixelated-face.png"
+        <PixelatedCanvas
+            src="/hero-about.png"
             alt=""
-            class="background-portrait"
+            className="background-portrait"
+            pixelSize={32}
+            fadeInterval={1500}
+            fadePixelsPerTick={800}
+            fadeSpeed={0.02}
+            initialOpacityMin={0.6}
+            initialOpacityMax={1.0}
+            fadeOutMin={0.2}
+            fadeOutMax={0.4}
+            fadeInMin={0.8}
+            fadeInMax={1.0}
+            hoverRadius={3}
+            hoverFadeStrength={0.6}
+            enableHover={true}
+            autoRestore={true}
+            edgeBlurTop={150}
+            edgeBlurLeft={200}
+            edgeBlurBottom={150}
+            client:load
         />
         <div class="background-gradient"></div>
     </div>
@@ -42,7 +61,7 @@ import BorderBox from "../components/BorderBox.astro";
                         />
                     </div>
                     <h3 class="profile-name">SAMANTHA MYERS</h3>
-                    <p class="profile-role">CORPORATE ENGINEERING MANAGER</p>
+                    <p class="profile-role">TECHNICAL SUPPORT ENGINEER</p>
                     <div class="profile-meta">
                         <div class="meta-item">
                             <span class="meta-label">LOCATION:</span>
@@ -64,19 +83,21 @@ import BorderBox from "../components/BorderBox.astro";
                     <BorderBox variant="accent" accentColor="blue">
                         <h2 class="section-heading">■ MISSION PROFILE</h2>
                         <p class="bio-text">
-                            With over a decade of field-tested IT operations and
-                            engineering management, I specialize in building
-                            user-first systems that scale. From device fleet
-                            management to corporate infrastructure, I architect
-                            solutions that work for people, not against them.
+                            With 14+ years of field-tested IT support experience
+                            and some leadership under my belt, I specialise in
+                            building user-first systems that actually work. From
+                            Jamf fleet management to corporate infrastructure, I
+                            keep the lights on while making IT support something
+                            people don't dread.
                         </p>
                         <p class="bio-text">
-                            My approach combines technical precision with
-                            operational efficiency—managing the chaos of complex
-                            environments while keeping teams aligned and systems
-                            running smoothly. Every solution is designed with
-                            the end user in mind, translating complex technical
-                            requirements into intuitive, reliable systems.
+                            My approach combines technical know-how with
+                            operational efficiency—managing complex
+                            environments, translating 'developer' into
+                            human-readable instructions, and occasionally fixing
+                            plumbing. Every system is designed with the end user
+                            in mind, because technology should serve people, not
+                            frustrate them.
                         </p>
                     </BorderBox>
 
@@ -239,7 +260,7 @@ import BorderBox from "../components/BorderBox.astro";
     /* Page Header */
     .page-header {
         padding: var(--space-8) 0 var(--space-6);
-        border-bottom: var(--border-thick) solid var(--border-heavy);
+        background: transparent;
         position: relative;
         z-index: 10;
     }
@@ -269,29 +290,29 @@ import BorderBox from "../components/BorderBox.astro";
 
     :global(.profile-background .background-portrait) {
         position: absolute;
-        right: 1%;
+        right: -5%;
         top: 50%;
-        transform: translateY(-60%);
+        transform: translateY(-50%);
         height: 100vh;
         width: auto;
         object-fit: contain;
-        opacity: 0.2;
+        opacity: 0.25;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
     }
 
     :global(.profile-background .background-gradient) {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(
-            to right,
-            var(--bg-primary) 0%,
-            var(--bg-primary) 30%,
-            rgba(208, 247, 244, 0.9) 50%,
-            rgba(208, 247, 244, 0.5) 70%,
-            transparent 100%
-        );
+        display: none;
+    }
+
+    @keyframes scan {
+        0% {
+            top: 0%;
+        }
+        100% {
+            top: 100%;
+        }
     }
 
     .profile-section .container {
@@ -309,7 +330,9 @@ import BorderBox from "../components/BorderBox.astro";
     .profile-card {
         text-align: center;
         position: sticky;
-        top: 100px;
+        top: calc(
+            80px + var(--space-2)
+        ); /* Nav height (approx 60-70px) + spacing */
     }
 
     .profile-image-wrapper {
@@ -547,17 +570,17 @@ import BorderBox from "../components/BorderBox.astro";
     /* Large tablets and small desktops */
     @media (max-width: 1200px) {
         :global(.profile-background .background-portrait) {
-            height: 90vh;
-            opacity: 0.19;
-            right: -3%;
+            height: 85vh;
+            opacity: 0.2;
+            right: -10%;
         }
     }
 
     @media (max-width: 1024px) {
         :global(.profile-background .background-portrait) {
-            height: 80vh;
-            opacity: 0.17;
-            right: -8%;
+            height: 75vh;
+            opacity: 0.15;
+            right: -15%;
         }
 
         .profile-grid {
@@ -579,9 +602,9 @@ import BorderBox from "../components/BorderBox.astro";
 
     @media (max-width: 768px) {
         :global(.profile-background .background-portrait) {
-            height: 70vh;
-            opacity: 0.14;
-            right: -12%;
+            right: -20%;
+            height: 65vh;
+            opacity: 0.12;
         }
 
         .page-title {
@@ -607,6 +630,10 @@ import BorderBox from "../components/BorderBox.astro";
             height: 60vh;
             opacity: 0.12;
             right: -15%;
+        }
+
+        :global(.profile-background .background-gradient) {
+            display: none;
         }
     }
 
