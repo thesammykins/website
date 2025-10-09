@@ -1,133 +1,496 @@
-/* File: src/styles/global.css */
-/* Global styles including CSS variables and base body styling. */
+/* Global Styles - Military/Defense Tech Brutalist Aesthetic */
+/* Import design tokens first */
+@import './design-tokens.css';
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+/* Import fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
 
-:root {
-  --bg-page: #e0f7fa; /* Light teal/mint for light mode page background */
-  --bg: linear-gradient(135deg, #f8e8ff 0%, #b6e0fe 100%); /* Gradient for container/cards */
-  --primary: #a259ff;
-  --accent: #00eaff;
-  --yellow: #ffe066;
-  --purple: #a259ff;
-  --cyan: #7de2fc;
-  --pink: #ffb3e6;
-  --text: #1f1235; /* Darkened for light mode readability */
-  --heading: #110022; /* Darkened for light mode readability */
-  --card: linear-gradient(135deg, #fff 60%, #e0e7ef 100%);
-  --tag-bg: #ffe066;
-  --tag-color: #110022; /* Darkened for light mode readability */
-  --shadow: 0 8px 32px 0 #a259ff33;
-  --pattern-main: var(--primary);
-  --pattern-accent1: var(--accent);
-  --pattern-accent2: var(--yellow);
-  --pattern-accent3: var(--pink);
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
 
-  /* Social tag colors (can be used by components if needed) */
-  --social-tag-linkedin-bg: #0077b5;
-  --social-tag-linkedin-text: #ffffff;
-  --social-tag-email-bg: #d44638;
-  --social-tag-email-text: #ffffff;
-  --social-tag-blog-bg: #ff9900;
-  --social-tag-blog-text: #110022;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-[data-theme="dark"] {
-  --bg-page: #004d40; /* Dark teal/cyan for dark mode page background */
-  --bg: linear-gradient(135deg, #1a0033 0%, #2d1b4c 100%); /* Gradient for container/cards */
-  --primary: #ff5af7;
-  --accent: #00eaff;
-  --yellow: #fff200;
-  --purple: #a259ff;
-  --cyan: #00eaff;
-  --pink: #ff5af7;
-  --text: #fffbe6;
-  --heading: #fffbe6;
-  --card: linear-gradient(135deg, #2d1b4c 60%, #1a0033 100%);
-  --tag-bg: #ff5af7;
-  --tag-color: #fffbe6;
-  --shadow: 0 8px 32px 0 #ff5af799;
-  --pattern-main: var(--primary);
-  --pattern-accent1: var(--accent);
-  --pattern-accent2: var(--yellow);
-  --pattern-accent3: var(--pink);
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
 
-  /* Social tag dark theme overrides */
-  --social-tag-linkedin-bg: #008cdd;
-  --social-tag-email-bg: #e55d4f;
-  --social-tag-blog-bg: #ffae42;
-  --social-tag-blog-text: #110022;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+  background: var(--bg-primary);
   min-height: 100vh;
-  background: var(--bg-page);
-  color: var(--text);
-  transition: background 0.4s, color 0.4s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
   overflow-x: hidden;
-  /* user-select: none; IS INTENTIONALLY OMITTED HERE */
-  /* It can be added page-specifically if needed */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Optional: Basic styling for .container if it's meant to be global */
-/* Or keep .container styles page-specific or component-specific */
-/* For now, I'll include a basic .container as it was in index.astro */
-.container {
-  max-width: 1100px;
-  margin: 4.5rem auto 2.5rem auto;
-  padding: 3rem 2.5rem 2.5rem 2.5rem;
-  background: var(--bg);
-  border-radius: 4px; /* Made more geometric */
-  box-shadow: var(--shadow);
-  position: relative;
-  z-index: 1;
-  /* animation: fadeIn 1s cubic-bezier(.4,0,.2,1); */ /* Animations better page-specific */
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
 }
 
 h1 {
-  font-family: 'Orbitron', 'Inter', sans-serif;
-  font-size: 2.7rem;
-  font-weight: 700;
-  margin: 0 0 0.3em 0;
-  letter-spacing: 2px;
-  color: var(--heading);
-  text-shadow: 2px 2px 0 #00eaff, 0 2px 0 #ff5af7;
+  font-size: var(--text-5xl);
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-4);
 }
 
 h2 {
-  font-family: 'Orbitron', 'Inter', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-top: 2.2rem;
-  margin-bottom: 1.2rem;
-  color: var(--heading);
-  letter-spacing: 1px;
-  text-shadow: 1px 1px 0 var(--accent), -1px -1px 0 var(--pink);
+  font-size: var(--text-4xl);
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--space-3);
 }
 
-h3 { /* Added for design system page subheadings */
-  font-family: 'Orbitron', 'Inter', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-top: 1.8rem;
-  margin-bottom: 0.8rem;
-  color: var(--heading);
+h3 {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-3);
 }
 
-p, li {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--text);
+h4 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
 }
 
-ul {
-  margin: 0.2em 0 0.7em 1.2em;
+h5 {
+  font-size: var(--text-xl);
+}
+
+h6 {
+  font-size: var(--text-lg);
+}
+
+p {
+  margin-bottom: var(--space-3);
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  font-weight: var(--font-medium);
+}
+
+a:hover {
+  color: var(--accent-green);
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+strong, b {
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+em, i {
+  font-style: italic;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--bg-secondary);
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background: var(--bg-secondary);
+  padding: var(--space-3);
+  border: var(--border-medium) solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  margin-bottom: var(--space-3);
+}
+
+pre code {
+  background: none;
   padding: 0;
-} 
+  border: none;
+}
+
+/* Lists */
+ul, ol {
+  margin-left: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+li {
+  margin-bottom: var(--space-1);
+  line-height: var(--leading-relaxed);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Text utilities */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-inverted { color: var(--text-inverted); }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+.text-capitalize { text-transform: capitalize; }
+
+.font-primary { font-family: var(--font-primary); }
+.font-mono { font-family: var(--font-mono); }
+
+.font-light { font-weight: var(--font-light); }
+.font-regular { font-weight: var(--font-regular); }
+.font-medium { font-weight: var(--font-medium); }
+.font-semibold { font-weight: var(--font-semibold); }
+.font-bold { font-weight: var(--font-bold); }
+
+/* Spacing utilities */
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+
+.pt-2 { padding-top: var(--space-2); }
+.pt-4 { padding-top: var(--space-4); }
+.pt-6 { padding-top: var(--space-6); }
+.pt-8 { padding-top: var(--space-8); }
+
+.pb-2 { padding-bottom: var(--space-2); }
+.pb-4 { padding-bottom: var(--space-4); }
+.pb-6 { padding-bottom: var(--space-6); }
+.pb-8 { padding-bottom: var(--space-8); }
+
+/* Display utilities */
+.block { display: block; }
+.inline { display: inline; }
+.inline-block { display: inline-block; }
+.flex { display: flex; }
+.grid { display: grid; }
+.hidden { display: none; }
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: var(--space-2);
+    padding-right: var(--space-2);
+  }
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn {
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-thick) solid var(--border-heavy);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--border-heavy);
+}
+
+.btn:active {
+  transform: translate(0, 0);
+  box-shadow: 0 0 0 var(--border-heavy);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--accent-orange);
+  color: var(--text-inverted);
+  border-color: var(--border-heavy);
+}
+
+.btn-primary:hover {
+  background: var(--accent-red);
+  box-shadow: 4px 4px 0 var(--border-heavy);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-heavy);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-blue);
+  color: var(--text-inverted);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.btn-outline:hover {
+  background: var(--accent-blue);
+  color: var(--text-inverted);
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+
+input,
+textarea,
+select {
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  padding: var(--space-2);
+  border: var(--border-medium) solid var(--border-medium);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  width: 100%;
+  transition: border-color var(--transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px var(--accent-blue);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+label {
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: var(--space-1);
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-orange);
+  color: var(--text-inverted);
+  padding: var(--space-2) var(--space-3);
+  z-index: 1000;
+  font-weight: var(--font-bold);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Focus visible styles */
+*:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes blink {
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+/* Animation utility classes */
+.animate-fade-in {
+  animation: fadeIn var(--transition-base) ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp var(--transition-base) ease-out;
+}
+
+.animate-slide-down {
+  animation: slideDown var(--transition-base) ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+  }
+}

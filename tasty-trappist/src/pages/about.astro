@@ -1,0 +1,617 @@
+---
+// About/Team Page - Advanced Operations Unit
+import MainLayout from "../layouts/MainLayout.astro";
+import BorderBox from "../components/BorderBox.astro";
+---
+
+<MainLayout
+    title="About"
+    description="Advanced Operations Unit - Over a decade of field-tested IT operations and engineering management expertise."
+>
+    <!-- Page-Level Background Portrait - rendered at body level -->
+    <div slot="page-background" class="profile-background">
+        <img
+            src="/avatar-pixelated-face.png"
+            alt=""
+            class="background-portrait"
+        />
+        <div class="background-gradient"></div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="header-content">
+                <span class="header-label">ADVANCED OPERATIONS UNIT</span>
+                <h1 class="page-title">MELBOURNE LAB</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-grid">
+                <!-- Profile Card -->
+                <BorderBox variant="corners" class="profile-card">
+                    <div class="profile-image-wrapper">
+                        <img
+                            src="/avatar.png"
+                            alt="Samantha Myers"
+                            class="profile-image"
+                        />
+                    </div>
+                    <h3 class="profile-name">SAMANTHA MYERS</h3>
+                    <p class="profile-role">CORPORATE ENGINEERING MANAGER</p>
+                    <div class="profile-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">LOCATION:</span>
+                            <span class="meta-value">Melbourne, AU</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">CLEARANCE:</span>
+                            <span class="meta-value">OPERATIONAL</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">STATUS:</span>
+                            <span class="meta-value status-active">ACTIVE</span>
+                        </div>
+                    </div>
+                </BorderBox>
+
+                <!-- Bio Content -->
+                <div class="bio-content">
+                    <BorderBox variant="accent" accentColor="blue">
+                        <h2 class="section-heading">■ MISSION PROFILE</h2>
+                        <p class="bio-text">
+                            With over a decade of field-tested IT operations and
+                            engineering management, I specialize in building
+                            user-first systems that scale. From device fleet
+                            management to corporate infrastructure, I architect
+                            solutions that work for people, not against them.
+                        </p>
+                        <p class="bio-text">
+                            My approach combines technical precision with
+                            operational efficiency—managing the chaos of complex
+                            environments while keeping teams aligned and systems
+                            running smoothly. Every solution is designed with
+                            the end user in mind, translating complex technical
+                            requirements into intuitive, reliable systems.
+                        </p>
+                    </BorderBox>
+
+                    <BorderBox
+                        variant="accent"
+                        accentColor="green"
+                        class="mt-4"
+                    >
+                        <h2 class="section-heading">
+                            ▲ OPERATIONAL PHILOSOPHY
+                        </h2>
+                        <div class="philosophy-grid">
+                            <div class="philosophy-item">
+                                <h4 class="philosophy-title">
+                                    USER-FIRST SYSTEMS
+                                </h4>
+                                <p class="philosophy-text">
+                                    Technology should serve people, not
+                                    complicate their work. Every system I build
+                                    prioritizes user experience and operational
+                                    efficiency.
+                                </p>
+                            </div>
+                            <div class="philosophy-item">
+                                <h4 class="philosophy-title">
+                                    STRATEGIC EXECUTION
+                                </h4>
+                                <p class="philosophy-text">
+                                    Bridging the gap between technical
+                                    complexity and business objectives. Clear
+                                    communication, systematic planning,
+                                    measurable results.
+                                </p>
+                            </div>
+                            <div class="philosophy-item">
+                                <h4 class="philosophy-title">
+                                    CONTINUOUS IMPROVEMENT
+                                </h4>
+                                <p class="philosophy-text">
+                                    Systems evolve, teams grow, and challenges
+                                    change. I adapt quickly, learn constantly,
+                                    and optimize relentlessly.
+                                </p>
+                            </div>
+                            <div class="philosophy-item">
+                                <h4 class="philosophy-title">TEAM SYNERGY</h4>
+                                <p class="philosophy-text">
+                                    Great systems require great teams. I focus
+                                    on collaboration, clear documentation, and
+                                    knowledge sharing across all levels.
+                                </p>
+                            </div>
+                        </div>
+                    </BorderBox>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section class="capabilities-section">
+        <div class="container">
+            <h2 class="section-heading">◆ OPERATIONAL CAPABILITIES</h2>
+
+            <div class="capabilities-layout">
+                <BorderBox variant="elevated">
+                    <h3 class="capability-category">TECHNICAL OPERATIONS</h3>
+                    <ul class="capability-list">
+                        <li>Corporate IT Infrastructure Management</li>
+                        <li>Device Fleet Operations (Jamf, MDM)</li>
+                        <li>
+                            Cloud Systems Administration (Google Workspace,
+                            Okta)
+                        </li>
+                        <li>Network Operations & Security</li>
+                        <li>Service Delivery Optimization</li>
+                        <li>Technical Documentation & Knowledge Management</li>
+                    </ul>
+                </BorderBox>
+
+                <BorderBox variant="elevated">
+                    <h3 class="capability-category">LEADERSHIP & MANAGEMENT</h3>
+                    <ul class="capability-list">
+                        <li>Engineering Team Leadership</li>
+                        <li>Service Desk Management</li>
+                        <li>Cross-Functional Project Coordination</li>
+                        <li>Strategic Planning & Execution</li>
+                        <li>Process Design & Improvement</li>
+                        <li>Stakeholder Communication</li>
+                    </ul>
+                </BorderBox>
+
+                <BorderBox variant="elevated">
+                    <h3 class="capability-category">SPECIALIZED SKILLS</h3>
+                    <ul class="capability-list">
+                        <li>User Experience & Accessibility</li>
+                        <li>Incident Response & Troubleshooting</li>
+                        <li>Vendor & Tool Evaluation</li>
+                        <li>Onboarding & Training Programs</li>
+                        <li>Technical-to-Business Translation</li>
+                        <li>Change Management</li>
+                    </ul>
+                </BorderBox>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="certifications-section">
+        <div class="container">
+            <h2 class="section-heading">● CERTIFICATIONS & EDUCATION</h2>
+
+            <div class="cert-grid">
+                <BorderBox variant="default">
+                    <div class="cert-item">
+                        <h4 class="cert-title">JAMF CERTIFIED TECH</h4>
+                        <p class="cert-issuer">Jamf</p>
+                        <p class="cert-meta">
+                            Issued: Jun 2022 | ID: 202407-82259
+                        </p>
+                    </div>
+                </BorderBox>
+
+                <BorderBox variant="default">
+                    <div class="cert-item">
+                        <h4 class="cert-title">SECONDARY EDUCATION</h4>
+                        <p class="cert-issuer">Trinity College, Gawler</p>
+                        <p class="cert-meta">2007 – 2010 | Year 11</p>
+                    </div>
+                </BorderBox>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <BorderBox variant="corners">
+                <div class="cta-content">
+                    <h2 class="cta-title">READY TO DEPLOY?</h2>
+                    <p class="cta-text">
+                        Open to leadership roles in corporate engineering, IT
+                        operations, and service delivery management.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="/contact" class="btn btn-primary"
+                            >INITIATE CONTACT</a
+                        >
+                        <a href="/experience" class="btn btn-outline"
+                            >VIEW OPERATIONS LOG</a
+                        >
+                    </div>
+                </div>
+            </BorderBox>
+        </div>
+    </section>
+</MainLayout>
+
+<style>
+    /* Page Header */
+    .page-header {
+        padding: var(--space-8) 0 var(--space-6);
+        border-bottom: var(--border-thick) solid var(--border-heavy);
+        position: relative;
+        z-index: 10;
+    }
+
+    .header-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        color: var(--accent-orange);
+        display: block;
+        margin-bottom: var(--space-2);
+    }
+
+    .page-title {
+        font-size: var(--text-5xl);
+        margin: 0;
+    }
+
+    /* Profile Section */
+    .profile-section {
+        padding: var(--space-8) 0;
+        position: relative;
+        z-index: 10;
+    }
+
+    :global(.profile-background .background-portrait) {
+        position: absolute;
+        right: 1%;
+        top: 50%;
+        transform: translateY(-60%);
+        height: 100vh;
+        width: auto;
+        object-fit: contain;
+        opacity: 0.2;
+    }
+
+    :global(.profile-background .background-gradient) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            to right,
+            var(--bg-primary) 0%,
+            var(--bg-primary) 30%,
+            rgba(208, 247, 244, 0.9) 50%,
+            rgba(208, 247, 244, 0.5) 70%,
+            transparent 100%
+        );
+    }
+
+    .profile-section .container {
+        position: relative;
+        z-index: 10;
+    }
+
+    .profile-grid {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: var(--space-6);
+        align-items: start;
+    }
+
+    .profile-card {
+        text-align: center;
+        position: sticky;
+        top: 100px;
+    }
+
+    .profile-image-wrapper {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto var(--space-4);
+        border: var(--border-thick) solid var(--border-heavy);
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-name {
+        font-family: var(--font-primary);
+        font-size: var(--text-2xl);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        margin-bottom: var(--space-1);
+    }
+
+    .profile-role {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-4);
+    }
+
+    .profile-meta {
+        border-top: var(--border-thin) solid var(--border-light);
+        padding-top: var(--space-3);
+    }
+
+    .meta-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: var(--space-2);
+    }
+
+    .meta-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        color: var(--text-tertiary);
+    }
+
+    .meta-value {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: var(--font-bold);
+        color: var(--text-primary);
+    }
+
+    .status-active {
+        color: var(--accent-green);
+    }
+
+    .bio-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .section-heading {
+        font-size: var(--text-2xl);
+        margin-bottom: var(--space-3);
+    }
+
+    .bio-text {
+        font-family: var(--font-mono);
+        font-size: var(--text-base);
+        line-height: var(--leading-relaxed);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-3);
+    }
+
+    .bio-text:last-child {
+        margin-bottom: 0;
+    }
+
+    .philosophy-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+
+    .philosophy-item {
+        /* Item styles */
+    }
+
+    .philosophy-title {
+        font-family: var(--font-primary);
+        font-size: var(--text-base);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        color: var(--accent-green);
+        margin-bottom: var(--space-2);
+    }
+
+    .philosophy-text {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        line-height: var(--leading-relaxed);
+        color: var(--text-secondary);
+    }
+
+    /* Capabilities Section */
+    .capabilities-section {
+        padding: var(--space-8) 0;
+        position: relative;
+        z-index: 10;
+    }
+
+    .capabilities-layout {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-4);
+    }
+
+    .capability-category {
+        font-family: var(--font-primary);
+        font-size: var(--text-lg);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        margin-bottom: var(--space-3);
+        color: var(--accent-orange);
+    }
+
+    .capability-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .capability-list li {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        padding-left: var(--space-3);
+        margin-bottom: var(--space-2);
+        position: relative;
+    }
+
+    .capability-list li::before {
+        content: "▸";
+        position: absolute;
+        left: 0;
+        color: var(--accent-blue);
+        font-weight: var(--font-bold);
+    }
+
+    /* Certifications Section */
+    .certifications-section {
+        padding: var(--space-6) 0;
+        position: relative;
+        z-index: 10;
+    }
+
+    .cert-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+
+    .cert-item {
+        /* Cert item styles */
+    }
+
+    .cert-title {
+        font-family: var(--font-primary);
+        font-size: var(--text-lg);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        margin-bottom: var(--space-2);
+    }
+
+    .cert-issuer {
+        font-family: var(--font-mono);
+        font-size: var(--text-base);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-1);
+    }
+
+    .cert-meta {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--text-tertiary);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: var(--space-8) 0 var(--space-12);
+        position: relative;
+        z-index: 10;
+    }
+
+    .cta-content {
+        text-align: center;
+        padding: var(--space-6);
+    }
+
+    .cta-title {
+        font-size: var(--text-4xl);
+        margin-bottom: var(--space-3);
+    }
+
+    .cta-text {
+        font-family: var(--font-mono);
+        font-size: var(--text-lg);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-6);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: var(--space-3);
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Responsive */
+    /* Large tablets and small desktops */
+    @media (max-width: 1200px) {
+        :global(.profile-background .background-portrait) {
+            height: 90vh;
+            opacity: 0.19;
+            right: -3%;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        :global(.profile-background .background-portrait) {
+            height: 80vh;
+            opacity: 0.17;
+            right: -8%;
+        }
+
+        .profile-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-card {
+            max-width: 500px;
+        }
+
+        .capabilities-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .philosophy-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        :global(.profile-background .background-portrait) {
+            height: 70vh;
+            opacity: 0.14;
+            right: -12%;
+        }
+
+        .page-title {
+            font-size: var(--text-3xl);
+        }
+
+        .cert-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-title {
+            font-size: var(--text-3xl);
+        }
+
+        .cta-text {
+            font-size: var(--text-base);
+        }
+    }
+
+    /* Mobile - smallest screens */
+    @media (max-width: 640px) {
+        :global(.profile-background .background-portrait) {
+            height: 60vh;
+            opacity: 0.12;
+            right: -15%;
+        }
+    }
+
+    /* Utility class for spacing */
+    .mt-4 {
+        margin-top: var(--space-4);
+    }
+</style>

@@ -1,0 +1,234 @@
+/* Design Tokens - Military/Defense Tech Brutalist Aesthetic */
+/* Updated: October 2025 */
+
+:root {
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+
+  /* Font Families */
+  --font-primary: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Font Sizes - Desktop */
+  --text-xs: 0.75rem;    /* 12px - metadata, captions */
+  --text-sm: 0.875rem;   /* 14px - secondary text */
+  --text-base: 1rem;     /* 16px - body text */
+  --text-lg: 1.125rem;   /* 18px - emphasized text */
+  --text-xl: 1.25rem;    /* 20px - subheadings */
+  --text-2xl: 1.5rem;    /* 24px - section titles */
+  --text-3xl: 2rem;      /* 32px - page titles */
+  --text-4xl: 2.5rem;    /* 40px - hero text */
+  --text-5xl: 3.5rem;    /* 56px - display text */
+
+  /* Line Heights */
+  --leading-tight: 1.1;      /* Headings */
+  --leading-normal: 1.5;     /* Body text */
+  --leading-relaxed: 1.75;   /* Long-form content */
+
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;  /* Large headings */
+  --tracking-normal: 0;       /* Body text */
+  --tracking-wide: 0.05em;    /* Uppercase, labels */
+  --tracking-wider: 0.1em;    /* All-caps technical text */
+
+  /* Font Weights */
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* ============================================
+     COLORS - LIGHT MODE
+     ============================================ */
+
+  /* Backgrounds */
+  --bg-primary: #d0f7f4;        /* Mint/cyan - main background */
+  --bg-secondary: #e8fffe;      /* Lighter mint - cards, sections */
+  --bg-elevated: #ffffff;       /* White - elevated cards */
+  --bg-overlay: rgba(0, 0, 0, 0.05); /* Subtle overlays */
+
+  /* Borders & Lines */
+  --border-heavy: #000000;      /* Black - primary borders (3-5px) */
+  --border-medium: #1a1a1a;     /* Near-black - secondary borders (2px) */
+  --border-light: #333333;      /* Dark grey - tertiary borders (1px) */
+  --border-accent: #00eaff;     /* Cyan - interactive borders */
+
+  /* Text */
+  --text-primary: #000000;      /* Black - headings, primary text */
+  --text-secondary: #333333;    /* Dark grey - body text */
+  --text-tertiary: #666666;     /* Medium grey - metadata, captions */
+  --text-inverted: #ffffff;     /* White - on dark backgrounds */
+
+  /* Accents */
+  --accent-orange: #ff5722;     /* Primary CTA, highlights */
+  --accent-green: #00ff88;      /* Success, active states */
+  --accent-blue: #00eaff;       /* Links, interactive elements */
+  --accent-red: #ff0055;        /* Alerts, emphasis, warnings */
+  --accent-yellow: #ffd700;     /* Warnings, attention */
+
+  /* Patterns & Overlays */
+  --pattern-grid: rgba(0, 0, 0, 0.08);
+  --pattern-checker: #f0f0f0;
+
+  /* Shadows */
+  --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+  /* ============================================
+     SPACING
+     ============================================ */
+
+  /* Base unit: 8px */
+  --space-1: 0.5rem;   /* 8px */
+  --space-2: 1rem;     /* 16px */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2rem;     /* 32px */
+  --space-6: 3rem;     /* 48px */
+  --space-8: 4rem;     /* 64px */
+  --space-12: 6rem;    /* 96px */
+  --space-16: 8rem;    /* 128px */
+
+  /* Semantic spacing */
+  --spacing-section: var(--space-12);
+  --spacing-component: var(--space-6);
+  --spacing-element: var(--space-4);
+  --spacing-inline: var(--space-2);
+
+  /* ============================================
+     BORDERS
+     ============================================ */
+
+  /* Border widths */
+  --border-thin: 1px;
+  --border-medium: 2px;
+  --border-thick: 3px;
+  --border-heavy-width: 5px;
+  --border-ultra: 8px;
+
+  /* Border radius (minimal for brutalist style) */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* ============================================
+     Z-INDEX
+     ============================================ */
+
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 300;
+  --z-overlay: 400;
+  --z-tooltip: 500;
+
+  /* ============================================
+     TRANSITIONS
+     ============================================ */
+
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+  --transition-elastic: 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ============================================
+     BREAKPOINTS (for reference in JS)
+     ============================================ */
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-primary: #001a1a;        /* Dark teal/black */
+  --bg-secondary: #002626;      /* Slightly lighter dark teal */
+  --bg-elevated: #003333;       /* Elevated surfaces */
+  --bg-overlay: rgba(255, 255, 255, 0.05);
+
+  /* Borders & Lines */
+  --border-heavy: #00eaff;      /* Cyan - primary borders */
+  --border-medium: #00bfcc;     /* Darker cyan - secondary */
+  --border-light: #008899;      /* Even darker cyan */
+  --border-accent: #00ff88;     /* Green - interactive */
+
+  /* Text */
+  --text-primary: #ffffff;      /* White - headings */
+  --text-secondary: #d0f7f4;    /* Mint - body text */
+  --text-tertiary: #8fccca;     /* Muted mint - metadata */
+  --text-inverted: #000000;     /* Black - on light backgrounds */
+
+  /* Accents */
+  --accent-orange: #ff7a59;     /* Lighter orange for dark mode */
+  --accent-green: #00ff88;      /* Same green (bright enough) */
+  --accent-blue: #00eaff;       /* Same cyan */
+  --accent-red: #ff3377;        /* Lighter red */
+  --accent-yellow: #ffe54d;     /* Lighter yellow */
+
+  /* Patterns & Overlays */
+  --pattern-grid: rgba(0, 234, 255, 0.1);
+  --pattern-checker: #002020;
+
+  /* Shadows */
+  --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================ */
+
+@media (max-width: 768px) {
+  :root {
+    /* Font Sizes - Mobile (reduced by ~20%) */
+    --text-xs: 0.7rem;
+    --text-sm: 0.8rem;
+    --text-base: 0.9rem;
+    --text-lg: 1rem;
+    --text-xl: 1.1rem;
+    --text-2xl: 1.3rem;
+    --text-3xl: 1.75rem;
+    --text-4xl: 2rem;
+    --text-5xl: 2.5rem;
+
+    /* Spacing - Mobile (reduced) */
+    --spacing-section: var(--space-8);
+    --spacing-component: var(--space-4);
+    --spacing-element: var(--space-3);
+
+    /* Borders - Mobile (slightly thinner) */
+    --border-thick: 2px;
+    --border-heavy-width: 3px;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0.01ms;
+    --transition-base: 0.01ms;
+    --transition-slow: 0.01ms;
+    --transition-elastic: 0.01ms;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

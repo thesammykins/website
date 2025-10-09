@@ -1,0 +1,146 @@
+---
+// TechnicalCard Component - Data-style cards for experience, projects, etc.
+export interface Props {
+  title: string;
+  meta?: string;
+  subtitle?: string;
+  showCorners?: boolean;
+  class?: string;
+}
+
+const {
+  title,
+  meta,
+  subtitle,
+  showCorners = false,
+  class: className = ''
+} = Astro.props;
+---
+
+<div class={`technical-card ${showCorners ? 'technical-card--corners' : ''} ${className}`}>
+  <div class="card-header">
+    <h3 class="card-title">{title}</h3>
+    {subtitle && <p class="card-subtitle">{subtitle}</p>}
+    {meta && <span class="card-meta">{meta}</span>}
+  </div>
+  <div class="card-body">
+    <slot />
+  </div>
+  {Astro.slots.has('footer') && (
+    <div class="card-footer">
+      <slot name="footer" />
+    </div>
+  )}
+</div>
+
+<style>
+  .technical-card {
+    background: var(--bg-elevated);
+    border: var(--border-thick) solid var(--border-heavy);
+    padding: var(--space-4);
+    position: relative;
+    transition: all var(--transition-base);
+  }
+
+  .technical-card:hover {
+    border-color: var(--accent-blue);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--border-heavy);
+  }
+
+  /* Corner registration marks */
+  .technical-card--corners::before,
+  .technical-card--corners::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: var(--border-medium) solid var(--accent-orange);
+  }
+
+  .technical-card--corners::before {
+    top: -2px;
+    left: -2px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .technical-card--corners::after {
+    bottom: -2px;
+    right: -2px;
+    border-left: none;
+    border-top: none;
+  }
+
+  .card-header {
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .card-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--space-1);
+    line-height: var(--leading-tight);
+  }
+
+  .card-subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-1);
+  }
+
+  .card-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    display: block;
+  }
+
+  .card-body {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .card-body :global(ul) {
+    margin-left: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .card-body :global(li) {
+    margin-bottom: var(--space-1);
+  }
+
+  .card-footer {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .technical-card {
+      padding: var(--space-3);
+    }
+
+    .card-title {
+      font-size: var(--text-lg);
+    }
+
+    .card-meta {
+      font-size: var(--text-xs);
+    }
+  }
+</style>

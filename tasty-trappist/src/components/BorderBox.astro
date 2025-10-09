@@ -1,0 +1,98 @@
+---
+// BorderBox Component - Primary container with heavy borders and optional corner accents
+export interface Props {
+  variant?: 'default' | 'accent' | 'corners' | 'elevated';
+  accentColor?: 'orange' | 'green' | 'blue' | 'red';
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  accentColor = 'orange',
+  class: className = ''
+} = Astro.props;
+---
+
+<div class={`border-box border-box--${variant} ${className}`} data-accent={accentColor}>
+  <slot />
+</div>
+
+<style>
+  .border-box {
+    border: var(--border-thick) solid var(--border-heavy);
+    padding: var(--space-4);
+    background: var(--bg-elevated);
+    position: relative;
+    transition: border-color var(--transition-base);
+  }
+
+  /* Default variant - standard black border */
+  .border-box--default {
+    /* Uses base styles */
+  }
+
+  /* Accent variant - colored left border */
+  .border-box--accent {
+    border-left-width: var(--border-heavy-width);
+  }
+
+  .border-box--accent[data-accent="orange"] {
+    border-left-color: var(--accent-orange);
+  }
+
+  .border-box--accent[data-accent="green"] {
+    border-left-color: var(--accent-green);
+  }
+
+  .border-box--accent[data-accent="blue"] {
+    border-left-color: var(--accent-blue);
+  }
+
+  .border-box--accent[data-accent="red"] {
+    border-left-color: var(--accent-red);
+  }
+
+  /* Corners variant - registration marks in corners */
+  .border-box--corners::before,
+  .border-box--corners::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: var(--border-medium) solid var(--border-heavy);
+  }
+
+  .border-box--corners::before {
+    top: -2px;
+    left: -2px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .border-box--corners::after {
+    bottom: -2px;
+    right: -2px;
+    border-left: none;
+    border-top: none;
+  }
+
+  /* Elevated variant - with shadow */
+  .border-box--elevated {
+    box-shadow: var(--shadow-medium);
+  }
+
+  .border-box--elevated:hover {
+    box-shadow: var(--shadow-heavy);
+  }
+
+  /* Hover state for all variants */
+  .border-box:hover {
+    border-color: var(--accent-blue);
+  }
+
+  @media (max-width: 768px) {
+    .border-box {
+      padding: var(--space-3);
+    }
+  }
+</style>

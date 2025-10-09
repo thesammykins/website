@@ -1,0 +1,96 @@
+---
+// StatusBar Component - Ticker bar with metadata and system status
+export interface Props {
+  position?: 'top' | 'bottom';
+  items: string[];
+  separator?: string;
+}
+
+const {
+  position = 'bottom',
+  items,
+  separator = ' / '
+} = Astro.props;
+---
+
+<div class={`status-bar status-bar--${position}`}>
+  <div class="status-bar__content">
+    <div class="status-bar__ticker">
+      {items.map((item, index) => (
+        <>
+          <span class="status-bar__item">{item}</span>
+          {index < items.length - 1 && <span class="status-bar__separator">{separator}</span>}
+        </>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .status-bar {
+    background: var(--bg-secondary);
+    border: var(--border-thin) solid var(--border-light);
+    padding: var(--space-1) var(--space-2);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .status-bar--top {
+    border-bottom-width: var(--border-medium);
+  }
+
+  .status-bar--bottom {
+    border-top-width: var(--border-medium);
+  }
+
+  .status-bar__content {
+    overflow: hidden;
+  }
+
+  .status-bar__ticker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    white-space: nowrap;
+    animation: ticker 30s linear infinite;
+  }
+
+  .status-bar__item {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--text-tertiary);
+  }
+
+  .status-bar__separator {
+    color: var(--accent-blue);
+    font-weight: var(--font-bold);
+  }
+
+  @keyframes ticker {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-bar__ticker {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .status-bar {
+      padding: var(--space-1);
+    }
+
+    .status-bar__item {
+      font-size: 0.65rem;
+    }
+  }
+</style>

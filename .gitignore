@@ -18,4 +18,9 @@ node_modules/
 Thumbs.db
 
 # Ignore build output directory for GitHub Pages
-docs/ 
+docs/
+
+# Design documentation (local reference only)
+DESIGN_MIGRATION_PLAN.md
+design-notes/
+*.design.md 

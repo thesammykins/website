@@ -1,0 +1,191 @@
+---
+// Footer Component
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4 class="footer-title">SAMANTHA MYERS</h4>
+                <p class="footer-text">
+                    Corporate Engineering Manager<br />Melbourne, Australia
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-title">CONNECT</h4>
+                <ul class="footer-links">
+                    <li>
+                        <a
+                            href="https://www.linkedin.com/in/sammyers12/"
+                            target="_blank"
+                            rel="noopener">LinkedIn</a>
+                    </li>
+                    <li>
+                        <a href="mailto:me+website@samanthamyers.au">Email</a>
+                    </li>
+                    <li>
+                        <a
+                            href="https://blog.sammykins.au"
+                            target="_blank"
+                            rel="noopener">Blog</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4 class="footer-title">NAVIGATE</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/experience">Experience</a></li>
+                    <li><a href="/skills">Skills</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-copyright">
+                © {currentYear} SAMANTHA MYERS. SYSTEMS OPERATIONAL.
+            </p>
+            <p class="footer-meta">
+                BUILT WITH ASTRO / DEPLOYED ON GITHUB PAGES
+            </p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .site-footer {
+        background: var(--bg-elevated);
+        border-top: var(--border-heavy-width) solid var(--border-heavy);
+        margin-top: var(--space-12);
+        position: relative;
+        z-index: 10;
+    }
+
+    .footer-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: var(--space-8) var(--space-4) var(--space-4);
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-6);
+        margin-bottom: var(--space-6);
+        padding-bottom: var(--space-6);
+        border-bottom: var(--border-thin) solid var(--border-light);
+    }
+
+    .footer-section {
+        /* Section styles */
+    }
+
+    .footer-title {
+        font-family: var(--font-primary);
+        font-size: var(--text-sm);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        color: var(--text-primary);
+        margin-bottom: var(--space-2);
+    }
+
+    .footer-text {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        line-height: var(--leading-relaxed);
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .footer-links {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: var(--space-1);
+    }
+
+    .footer-links a {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color var(--transition-fast);
+        display: inline-block;
+        position: relative;
+    }
+
+    .footer-links a::before {
+        content: "▸ ";
+        color: var(--accent-orange);
+        opacity: 0;
+        transition: opacity var(--transition-fast);
+        margin-right: -12px;
+    }
+
+    .footer-links a:hover {
+        color: var(--accent-blue);
+    }
+
+    .footer-links a:hover::before {
+        opacity: 1;
+        margin-right: 4px;
+    }
+
+    .footer-bottom {
+        text-align: center;
+    }
+
+    .footer-copyright,
+    .footer-meta {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        margin: var(--space-1) 0;
+    }
+
+    .footer-copyright {
+        color: var(--text-primary);
+        font-weight: var(--font-bold);
+    }
+
+    .footer-meta {
+        color: var(--text-tertiary);
+    }
+
+    @media (max-width: 1024px) {
+        .footer-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .footer-section:last-child {
+            grid-column: 1 / -1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .footer-content {
+            padding: var(--space-6) var(--space-2) var(--space-3);
+        }
+
+        .footer-grid {
+            grid-template-columns: 1fr;
+            gap: var(--space-4);
+            margin-bottom: var(--space-4);
+            padding-bottom: var(--space-4);
+        }
+
+        .footer-section:last-child {
+            grid-column: auto;
+        }
+    }
+</style>
