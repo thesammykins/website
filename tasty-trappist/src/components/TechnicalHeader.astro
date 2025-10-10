@@ -1,0 +1,118 @@
+---
+// TechnicalHeader Component - Military-style header with metadata readout
+export interface Props {
+  sector?: string;
+  status?: string;
+  showTimestamp?: boolean;
+  showCoordinates?: boolean;
+}
+
+const {
+  sector = 'MELBOURNE',
+  status = 'OPERATIONAL',
+  showTimestamp = true,
+  showCoordinates = false
+} = Astro.props;
+
+// Get current timestamp in military/ISO format
+const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19) + 'Z';
+
+// Mock coordinates (can be customized)
+const coordinates = '37°48\'S 144°57\'E';
+---
+
+<div class="technical-header">
+  <div class="header-readout">
+    <span class="readout-item">
+      <span class="readout-label">SECTOR:</span>
+      <span class="readout-value">{sector}</span>
+    </span>
+
+    {showTimestamp && (
+      <span class="readout-item">
+        <span class="readout-label">TIMESTAMP:</span>
+        <span class="readout-value">{timestamp}</span>
+      </span>
+    )}
+
+    {showCoordinates && (
+      <span class="readout-item">
+        <span class="readout-label">COORD:</span>
+        <span class="readout-value">{coordinates}</span>
+      </span>
+    )}
+
+    <span class="readout-item">
+      <span class="readout-label">STATUS:</span>
+      <span class={`readout-value readout-value--${status.toLowerCase()}`}>{status}</span>
+    </span>
+  </div>
+</div>
+
+<style>
+  .technical-header {
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+    margin-bottom: var(--space-4);
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  .header-readout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+  }
+
+  .readout-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .readout-label {
+    color: var(--text-tertiary);
+    font-weight: var(--font-bold);
+  }
+
+  .readout-value {
+    color: var(--text-secondary);
+    font-weight: var(--font-regular);
+  }
+
+  .readout-value--operational {
+    color: var(--accent-green);
+    font-weight: var(--font-bold);
+  }
+
+  .readout-value--standby {
+    color: var(--accent-yellow);
+    font-weight: var(--font-bold);
+  }
+
+  .readout-value--offline {
+    color: var(--text-tertiary);
+    font-weight: var(--font-bold);
+  }
+
+  .readout-value--alert {
+    color: var(--accent-red);
+    font-weight: var(--font-bold);
+    animation: blink 1s infinite;
+  }
+
+  @media (max-width: 768px) {
+    .header-readout {
+      gap: var(--space-2);
+      font-size: 0.65rem;
+    }
+
+    .readout-item {
+      gap: 0.25rem;
+    }
+  }
+</style>

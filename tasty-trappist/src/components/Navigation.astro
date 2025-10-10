@@ -1,5 +1,7 @@
 ---
 // Navigation Component - Military-style top navigation
+import SpinningGlobe from "./SpinningGlobe.svelte";
+
 const currentPath = Astro.url.pathname;
 
 const navLinks = [
@@ -13,24 +15,9 @@ const navLinks = [
 <nav class="main-nav">
     <div class="nav-container">
         <a href="/" class="nav-logo">
-            <svg
-                class="logo-icon"
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-            >
-                <rect
-                    x="4"
-                    y="4"
-                    width="24"
-                    height="24"
-                    stroke="currentColor"
-                    stroke-width="3"
-                    fill="none"></rect>
-                <rect x="10" y="10" width="12" height="12" fill="currentColor"
-                ></rect>
-            </svg>
+            <div class="logo-icon">
+                <SpinningGlobe client:load />
+            </div>
             <span class="logo-text">SAMANTHA MYERS</span>
         </a>
 

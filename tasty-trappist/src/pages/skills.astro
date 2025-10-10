@@ -334,6 +334,13 @@ const certifications = [
         display: none;
     }
 
+    /* Mobile - Make description text white for readability */
+    @media (max-width: 768px) {
+        .header-description {
+            color: var(--text-inverted) !important;
+        }
+    }
+
     /* Page Header */
     .page-header {
         padding: var(--space-8) 0 var(--space-6);

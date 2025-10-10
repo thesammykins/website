@@ -3,6 +3,9 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import BorderBox from "../components/BorderBox.astro";
 import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
+import TechnicalHeader from "../components/TechnicalHeader.astro";
+import TechnicalDivider from "../components/TechnicalDivider.astro";
+import StatusIndicator from "../components/StatusIndicator.astro";
 ---
 
 <MainLayout
@@ -37,11 +40,19 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         <div class="background-gradient"></div>
     </div>
 
+    <!-- Technical Header -->
+    <div class="container">
+        <TechnicalHeader sector="MELBOURNE LAB" status="OPERATIONAL" showTimestamp={true} showCoordinates={true} />
+    </div>
+
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
             <div class="header-content">
-                <span class="header-label">ADVANCED OPERATIONS UNIT</span>
+                <span class="header-label">
+                    ADVANCED OPERATIONS UNIT
+                    <StatusIndicator status="active" label="" showLabel={false} size="sm" />
+                </span>
                 <h1 class="page-title">MELBOURNE LAB</h1>
             </div>
         </div>
@@ -157,6 +168,8 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         </div>
     </section>
 
+    <TechnicalDivider label="OPERATIONAL CAPABILITIES" variant="thick" />
+
     <!-- Capabilities Section -->
     <section class="capabilities-section">
         <div class="container">
@@ -204,6 +217,8 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
             </div>
         </div>
     </section>
+
+    <TechnicalDivider label="CREDENTIALS" variant="default" />
 
     <!-- Certifications Section -->
     <section class="certifications-section">
@@ -272,7 +287,9 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         text-transform: uppercase;
         letter-spacing: var(--tracking-wider);
         color: var(--accent-orange);
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
         margin-bottom: var(--space-2);
     }
 

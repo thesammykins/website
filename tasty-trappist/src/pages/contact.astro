@@ -3,6 +3,9 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import BorderBox from "../components/BorderBox.astro";
 import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
+import TechnicalHeader from "../components/TechnicalHeader.astro";
+import TechnicalDivider from "../components/TechnicalDivider.astro";
+import StatusIndicator from "../components/StatusIndicator.astro";
 ---
 
 <MainLayout
@@ -41,11 +44,19 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         <div class="background-gradient"></div>
     </div>
 
+    <!-- Technical Header -->
+    <div class="container">
+        <TechnicalHeader sector="COMMS CENTER" status="OPERATIONAL" showTimestamp={true} />
+    </div>
+
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
             <div class="header-content">
-                <span class="header-label">COMMUNICATIONS CENTER</span>
+                <span class="header-label">
+                    COMMUNICATIONS CENTER
+                    <StatusIndicator status="active" label="" showLabel={false} size="sm" />
+                </span>
                 <h1 class="page-title">INITIATE CONTACT</h1>
                 <p class="header-description">
                     Available for engineering management, IT operations
@@ -59,9 +70,11 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
     <!-- Contact Section -->
     <section class="contact-section">
         <div class="container">
+            <TechnicalDivider label="CONTACT PROTOCOL" variant="thick" />
+
             <div class="contact-grid">
                 <!-- Contact Info -->
-                <BorderBox variant="corners" class="contact-info">
+                <BorderBox variant="tactical" class="contact-info">
                     <h2 class="info-heading">■ CONTACT DETAILS</h2>
 
                     <div class="info-items">
@@ -125,7 +138,7 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
                 </BorderBox>
 
                 <!-- Contact Form -->
-                <BorderBox variant="elevated" class="contact-form-wrapper">
+                <BorderBox variant="clipped" class="contact-form-wrapper">
                     <h2 class="form-heading">▲ SEND MESSAGE</h2>
 
                     <form
@@ -257,6 +270,8 @@ ${message}`;
         </div>
     </section>
 
+    <TechnicalDivider label="NAVIGATION LINKS" variant="default" />
+
     <!-- Additional Links Section -->
     <section class="links-section">
         <div class="container">
@@ -344,7 +359,9 @@ ${message}`;
         text-transform: uppercase;
         letter-spacing: var(--tracking-wider);
         color: var(--accent-orange);
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
         margin-bottom: var(--space-2);
     }
 

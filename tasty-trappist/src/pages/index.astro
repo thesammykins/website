@@ -3,6 +3,9 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import BorderBox from "../components/BorderBox.astro";
 import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
+import TechnicalHeader from "../components/TechnicalHeader.astro";
+import TechnicalDivider from "../components/TechnicalDivider.astro";
+import StatusIndicator from "../components/StatusIndicator.astro";
 ---
 
 <MainLayout
@@ -35,6 +38,11 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
             client:load
         />
         <div class="background-gradient"></div>
+    </div>
+
+    <!-- Technical Header -->
+    <div class="container">
+        <TechnicalHeader sector="MELBOURNE" status="OPERATIONAL" showTimestamp={true} />
     </div>
 
     <!-- Hero Section -->
@@ -84,10 +92,12 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         </div>
     </section>
 
+    <TechnicalDivider label="CAPABILITY OVERVIEW" variant="thick" />
+
     <!-- Quick Capabilities - Condensed -->
     <section class="capabilities-compact">
         <div class="container">
-            <BorderBox variant="elevated">
+            <BorderBox variant="tactical">
                 <div class="capabilities-row">
                     <div class="cap-item">
                         <div class="cap-icon">◆</div>
@@ -116,12 +126,17 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         </div>
     </section>
 
+    <TechnicalDivider label="DEPLOYMENT STATUS" variant="default" />
+
     <!-- Current Role Highlight - Minimal -->
     <section class="current-role">
         <div class="container">
-            <h2 class="section-title">■ CURRENT DEPLOYMENT</h2>
+            <h2 class="section-title">
+                ■ CURRENT DEPLOYMENT
+                <StatusIndicator status="active" label="" showLabel={false} size="md" />
+            </h2>
 
-            <BorderBox variant="corners">
+            <BorderBox variant="clipped">
                 <div class="role-grid">
                     <div class="role-info">
                         <h3 class="role-title">TECHNICAL SUPPORT ENGINEER</h3>
@@ -191,7 +206,7 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         background: var(--accent-green);
         color: var(--text-inverted);
         margin-bottom: var(--space-3);
-        box-shadow: 3px 3px 0 var(--border-heavy);
+        box-shadow: var(--shadow-brutal-sm);
     }
 
     .badge-text {
@@ -314,6 +329,9 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         letter-spacing: var(--tracking-wide);
         margin-bottom: var(--space-1);
         color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
     }
 
     .role-grid {
@@ -483,7 +501,16 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
         }
 
         :global(.hero-background .background-gradient) {
-            display: none;
+            display: block;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                var(--bg-primary) 0%,
+                var(--bg-primary) 40%,
+                transparent 80%
+            );
+            pointer-events: none;
         }
 
         .hero-badge {

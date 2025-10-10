@@ -48,6 +48,100 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+/* Military Grid Overlay - Tactical mapping grid */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      var(--grid-line-color) 0px,
+      var(--grid-line-color) 1px,
+      transparent 1px,
+      transparent var(--grid-size)
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--grid-line-color) 0px,
+      var(--grid-line-color) 1px,
+      transparent 1px,
+      transparent var(--grid-size)
+    ),
+    /* Accent lines every 5th line */
+    repeating-linear-gradient(
+      0deg,
+      var(--grid-line-accent) 0px,
+      var(--grid-line-accent) 2px,
+      transparent 2px,
+      transparent calc(var(--grid-size) * 5)
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--grid-line-accent) 0px,
+      var(--grid-line-accent) 2px,
+      transparent 2px,
+      transparent calc(var(--grid-size) * 5)
+    );
+  pointer-events: none;
+  z-index: 1;
+  opacity: 1;
+}
+
+/* Noise/Grain Texture - CRT monitor effect using repeating pattern */
+body::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+  background-size: 4px 4px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+  animation: noise 8s infinite;
+}
+
+@keyframes noise {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translate(-2px, 2px);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(2px, -2px);
+    opacity: 0.45;
+  }
+  75% {
+    transform: translate(-2px, -2px);
+    opacity: 0.38;
+  }
+}
+
+/* Scan Line Effect - Slowly moving horizontal line */
+body {
+  --scan-line-display: block; /* Can be toggled to 'none' */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    --scan-line-display: none;
+  }
 }
 
 /* ============================================
@@ -446,6 +540,15 @@ label {
   }
   25%, 75% {
     opacity: 0;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
   }
 }
 

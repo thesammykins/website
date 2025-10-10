@@ -73,10 +73,21 @@
   --pattern-grid: rgba(0, 0, 0, 0.08);
   --pattern-checker: #f0f0f0;
 
-  /* Shadows */
-  --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.2);
+  /* Military Grid Overlay - Tactical mapping style */
+  --grid-line-color: rgba(0, 0, 0, 0.04);
+  --grid-line-accent: rgba(255, 87, 34, 0.08);
+  --grid-size: 40px;
+
+  /* Noise/Grain Texture - CRT monitor effect */
+  --noise-opacity: 0.04;
+
+  /* Shadows - Brutalist offset shadows (no blur) */
+  --shadow-subtle: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-medium: 4px 4px 0 var(--border-heavy);
+  --shadow-heavy: 8px 8px 0 var(--border-heavy);
+  --shadow-brutal-sm: 3px 3px 0 var(--border-heavy);
+  --shadow-brutal-md: 5px 5px 0 var(--border-heavy);
+  --shadow-brutal-lg: 10px 10px 0 var(--border-heavy);
 
   /* ============================================
      SPACING
@@ -156,6 +167,10 @@
   --bg-secondary: #002626;      /* Slightly lighter dark teal */
   --bg-elevated: #003333;       /* Elevated surfaces */
   --bg-overlay: rgba(255, 255, 255, 0.05);
+
+  /* Military Grid Overlay - Dark mode */
+  --grid-line-color: rgba(0, 234, 255, 0.06);
+  --grid-line-accent: rgba(0, 255, 136, 0.08);
 
   /* Borders & Lines - Brightened for better visibility */
   --border-heavy: #00eaff;      /* Bright cyan - primary borders (5px) */

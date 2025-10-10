@@ -1,0 +1,143 @@
+---
+// TechnicalDivider Component - Military-style section divider with inline labels
+export interface Props {
+  label?: string;
+  variant?: 'default' | 'thick' | 'dashed';
+  align?: 'left' | 'center' | 'right';
+  showMarkers?: boolean;
+}
+
+const {
+  label = 'SECTOR BREAK',
+  variant = 'default',
+  align = 'center',
+  showMarkers = true
+} = Astro.props;
+---
+
+<div class={`technical-divider technical-divider--${variant} technical-divider--${align}`}>
+  {showMarkers && <span class="divider-marker">◢</span>}
+  <div class="divider-line"></div>
+  {label && <span class="divider-label">{label}</span>}
+  <div class="divider-line"></div>
+  {showMarkers && <span class="divider-marker">◣</span>}
+</div>
+
+<style>
+  .technical-divider {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: var(--space-6) 0;
+    width: 100%;
+  }
+
+  /* Alignment variants */
+  .technical-divider--left {
+    justify-content: flex-start;
+  }
+
+  .technical-divider--left .divider-line:first-of-type {
+    flex: 0 0 var(--space-4);
+  }
+
+  .technical-divider--left .divider-line:last-of-type {
+    flex: 1;
+  }
+
+  .technical-divider--center {
+    justify-content: center;
+  }
+
+  .technical-divider--center .divider-line {
+    flex: 1;
+  }
+
+  .technical-divider--right {
+    justify-content: flex-end;
+  }
+
+  .technical-divider--right .divider-line:first-of-type {
+    flex: 1;
+  }
+
+  .technical-divider--right .divider-line:last-of-type {
+    flex: 0 0 var(--space-4);
+  }
+
+  /* Markers */
+  .divider-marker {
+    font-size: var(--text-sm);
+    color: var(--accent-orange);
+    font-weight: var(--font-bold);
+    line-height: 1;
+  }
+
+  /* Label */
+  .divider-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--text-tertiary);
+    white-space: nowrap;
+    padding: 0 var(--space-2);
+    background: var(--bg-primary);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Line styles */
+  .divider-line {
+    height: 2px;
+    background: var(--border-light);
+    position: relative;
+  }
+
+  /* Default variant */
+  .technical-divider--default .divider-line {
+    background: var(--border-light);
+  }
+
+  /* Thick variant */
+  .technical-divider--thick .divider-line {
+    height: 3px;
+    background: var(--border-heavy);
+  }
+
+  .technical-divider--thick .divider-label {
+    color: var(--text-primary);
+  }
+
+  .technical-divider--thick .divider-marker {
+    font-size: var(--text-base);
+  }
+
+  /* Dashed variant */
+  .technical-divider--dashed .divider-line {
+    background: repeating-linear-gradient(
+      to right,
+      var(--border-medium) 0px,
+      var(--border-medium) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+    height: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .technical-divider {
+      margin: var(--space-4) 0;
+    }
+
+    .divider-label {
+      font-size: 0.65rem;
+      padding: 0 var(--space-1);
+    }
+
+    .divider-marker {
+      font-size: 0.7rem;
+    }
+  }
+</style>
