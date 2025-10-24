@@ -18,7 +18,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             src="/hero-about.png"
             alt=""
             className="background-portrait"
-            pixelSize={32}
+            pixelSize={16}
             fadeInterval={1500}
             fadePixelsPerTick={800}
             fadeSpeed={0.02}
@@ -42,7 +42,12 @@ import StatusIndicator from "../components/StatusIndicator.astro";
 
     <!-- Technical Header -->
     <div class="container">
-        <TechnicalHeader sector="MELBOURNE LAB" status="OPERATIONAL" showTimestamp={true} showCoordinates={true} />
+        <TechnicalHeader
+            sector="MELBOURNE LAB"
+            status="OPERATIONAL"
+            showTimestamp={true}
+            showCoordinates={true}
+        />
     </div>
 
     <!-- Page Header -->
@@ -51,7 +56,12 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             <div class="header-content">
                 <span class="header-label">
                     ADVANCED OPERATIONS UNIT
-                    <StatusIndicator status="active" label="" showLabel={false} size="sm" />
+                    <StatusIndicator
+                        status="active"
+                        label=""
+                        showLabel={false}
+                        size="sm"
+                    />
                 </span>
                 <h1 class="page-title">MELBOURNE LAB</h1>
             </div>
