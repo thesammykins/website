@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20 # Or your project's Node version
+          node-version: 22 # Astro 6 requires >=22.12.0
           cache: 'npm' # Optional: cache npm dependencies
           cache-dependency-path: tasty-trappist/package-lock.json # Path to package-lock
       - name: Install dependencies
