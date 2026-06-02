@@ -1,3 +1,8 @@
+<script context="module" lang="ts">
+    // Module-level image cache shared across all instances of this component
+    const imageCache = new Map<string, HTMLImageElement>();
+</script>
+
 <script lang="ts">
     import { onMount } from "svelte";
 
@@ -48,7 +53,6 @@
     let canvas: HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D | null;
     let img: HTMLImageElement;
-    let loaded = false;
     let imageData: ImageData | null = null;
     let pixelGrid: PixelData[][] = [];
     let pixelStates: PixelState[][] = [];
@@ -61,29 +65,41 @@
         ctx = canvas.getContext("2d", { willReadFrequently: true });
         if (!ctx) return;
 
+        const cached = imageCache.get(src);
+        if (cached && cached.complete && cached.naturalWidth > 0) {
+            img = cached;
+            initializeCanvas();
+            animate();
+            startFadeInterval();
+            return;
+        }
+
         img = new Image();
         img.crossOrigin = "anonymous";
-        img.src = src;
 
         img.onload = () => {
+            imageCache.set(src, img);
             initializeCanvas();
-            loaded = true;
             animate();
-
-            // Start continuous fade trigger
-            if (enableRandomFade) {
-                fadeIntervalId = window.setInterval(
-                    triggerRandomFades,
-                    fadeInterval,
-                );
-            }
+            startFadeInterval();
         };
+
+        img.src = src;
 
         return () => {
             if (animationId) cancelAnimationFrame(animationId);
             if (fadeIntervalId) clearInterval(fadeIntervalId);
         };
     });
+
+    function startFadeInterval() {
+        if (enableRandomFade) {
+            fadeIntervalId = window.setInterval(
+                triggerRandomFades,
+                fadeInterval,
+            );
+        }
+    }
 
     function initializeCanvas() {
         if (!ctx || !img) return;
@@ -361,7 +377,7 @@
 
 <canvas
     bind:this={canvas}
-    class="{className} {loaded ? 'loaded' : ''}"
+    class={className}
     on:mousemove={handleMouseMove}
     on:mouseenter={handleMouseEnter}
     on:mouseleave={handleMouseLeave}
@@ -376,11 +392,5 @@
         image-rendering: pixelated;
         image-rendering: -moz-crisp-edges;
         image-rendering: crisp-edges;
-        opacity: 0;
-        transition: opacity 0.6s ease-in-out;
-    }
-
-    canvas.loaded {
-        opacity: 1;
     }
 </style>

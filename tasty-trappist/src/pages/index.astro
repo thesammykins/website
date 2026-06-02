@@ -18,11 +18,11 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             src="/hero-home.png"
             alt=""
             className="background-portrait"
-            pixelSize={8}
+            pixelSize={7}
             fadeInterval={1500}
             fadePixelsPerTick={800}
             fadeSpeed={0.02}
-            initialOpacityMin={0.6}
+            initialOpacityMin={0.85}
             initialOpacityMax={1.0}
             fadeOutMin={0.2}
             fadeOutMax={0.4}
@@ -132,22 +132,26 @@ import StatusIndicator from "../components/StatusIndicator.astro";
     <section class="current-role">
         <div class="container">
             <h2 class="section-title">
-                ■ CURRENT DEPLOYMENT
+                ■ DEPLOYMENT STATUS
                 <StatusIndicator status="active" label="" showLabel={false} size="md" />
             </h2>
 
             <BorderBox variant="clipped">
                 <div class="role-grid">
                     <div class="role-info">
-                        <h3 class="role-title">TECHNICAL SUPPORT ENGINEER</h3>
-                        <p class="role-company">Ferocia | Melbourne (Hybrid)</p>
-                        <p class="role-period">Jan 2023 – Present</p>
+                        <h3 class="role-title">AVAILABLE FOR DEPLOYMENT</h3>
+                        <p class="role-company">Actively Seeking New Opportunities</p>
+                        <p class="role-period">Jun 2026 – Present</p>
                         <p class="role-desc">
-                            Keeping organizational systems aligned, operational,
-                            and ready for whatever comes next.
+                            Wrapping up at Ferocia and looking for my next role.
+                            If you know of something that might be a good fit,
+                            I'd love to hear from you.
                         </p>
                     </div>
                     <div class="role-actions">
+                        <a href="/contact" class="btn btn-primary"
+                            >INITIATE CONTACT →</a
+                        >
                         <a href="/experience" class="btn btn-outline"
                             >FULL HISTORY →</a
                         >

@@ -21,13 +21,29 @@ const getLogoUrl = (domain: string | null) => {
 
 const experiences = [
     {
+        title: "AVAILABLE FOR DEPLOYMENT",
+        company: "Actively Seeking New Opportunities",
+        companyUrl: null,
+        companyDomain: null,
+        logoFallback: null,
+        location: "Melbourne",
+        period: "Jun 2026 – Present",
+        description:
+            "After wrapping up at Ferocia, I'm actively exploring my next move. If you know of a role — or someone who might — that you think would be a good fit, I'd love to hear about it.",
+        achievements: [
+            "Open to Corporate Engineering Manager, Technical Support Lead, and IT Operations roles",
+            "If something comes to mind, reach out via the contact page — I'd appreciate the lead",
+        ],
+        tags: ["OPEN TO WORK", "SEEKING", "LEADERSHIP", "OPERATIONS"],
+    },
+    {
         title: "TECHNICAL SUPPORT ENGINEER",
         company: "Ferocia",
         companyUrl: "https://ferocia.com.au/",
         companyDomain: "ferocia.com.au",
         logoFallback: null,
         location: "Melbourne (Hybrid)",
-        period: "Jun 2025 – Present",
+        period: "Jun 2025 – May 2026",
         description:
             "Doing things.",
         achievements: [
@@ -249,11 +265,11 @@ const experiences = [
             src="/hero-experience.png"
             alt=""
             className="background-portrait"
-            pixelSize={12}
+            pixelSize={6}
             fadeInterval={1500}
             fadePixelsPerTick={800}
             fadeSpeed={0.02}
-            initialOpacityMin={0.6}
+            initialOpacityMin={0.85}
             initialOpacityMax={1.0}
             fadeOutMin={0.2}
             fadeOutMax={0.4}
