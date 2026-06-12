@@ -196,6 +196,11 @@ const navLinks = [
         transition: color var(--transition-fast);
     }
 
+    .nav-logo::before,
+    .nav-logo::after {
+        text-decoration: none;
+    }
+
     .nav-logo:hover {
         color: var(--accent-blue);
     }
@@ -261,6 +266,13 @@ const navLinks = [
         transition: all var(--transition-fast);
     }
 
+    /* Prevent global underline from leaking into nav links or their ::before */
+    .nav-link,
+    .nav-link::before,
+    .nav-link::after {
+        text-decoration: none;
+    }
+
     .nav-link:hover {
         color: var(--accent-blue);
         border-bottom-color: var(--accent-blue);
@@ -273,7 +285,7 @@ const navLinks = [
     }
 
     .nav-link--active::before {
-        content: "▸";
+        content: "\25B8";
         margin-right: 0.25em;
     }
 
@@ -323,6 +335,11 @@ const navLinks = [
         border: var(--border-medium) solid var(--border-heavy);
         text-decoration: none;
         transition: all var(--transition-fast);
+    }
+
+    .nav-cta::before,
+    .nav-cta::after {
+        text-decoration: none;
     }
 
     .nav-cta:hover {
