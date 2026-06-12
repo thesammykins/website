@@ -142,6 +142,10 @@ body {
   body {
     --scan-line-display: none;
   }
+
+  body::after {
+    animation: none;
+  }
 }
 
 /* ============================================
@@ -195,18 +199,19 @@ p {
 
 a {
   color: var(--accent-blue);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: from-font;
   transition: color var(--transition-fast);
   font-weight: var(--font-medium);
 }
 
 a:hover {
   color: var(--accent-green);
-  text-decoration: underline;
 }
 
 a:focus-visible {
-  outline: 2px solid var(--accent-blue);
+  outline: 3px solid var(--accent-orange);
   outline-offset: 2px;
 }
 
@@ -368,7 +373,7 @@ li {
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--accent-blue);
+  outline: 3px solid var(--accent-orange);
   outline-offset: 2px;
 }
 
@@ -464,7 +469,7 @@ label {
 
 /* Focus visible styles */
 *:focus-visible {
-  outline: 2px solid var(--accent-blue);
+  outline: 3px solid var(--accent-orange);
   outline-offset: 2px;
 }
 

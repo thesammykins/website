@@ -144,6 +144,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                     <form
                         class="contact-form"
                         id="contact-form"
+                        novalidate
                     >
                         <div class="form-group">
                             <label for="name" class="form-label">NAME:</label>
@@ -154,7 +155,9 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                                 required
                                 class="form-input"
                                 placeholder="Enter your name"
+                                aria-describedby="name-error"
                             />
+                            <span id="name-error" class="form-error" role="alert" aria-live="polite"></span>
                         </div>
 
                         <div class="form-group">
@@ -166,7 +169,9 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                                 required
                                 class="form-input"
                                 placeholder="your@email.com"
+                                aria-describedby="email-error"
                             />
+                            <span id="email-error" class="form-error" role="alert" aria-live="polite"></span>
                         </div>
 
                         <div class="form-group">
@@ -193,7 +198,9 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                                 rows="6"
                                 class="form-textarea"
                                 placeholder="Tell me about the opportunity or project..."
+                                aria-describedby="message-error"
                             ></textarea>
+                            <span id="message-error" class="form-error" role="alert" aria-live="polite"></span>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-full">
@@ -205,10 +212,38 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                         document.getElementById('contact-form')?.addEventListener('submit', function(e) {
                             e.preventDefault();
 
+                            const errors = [];
                             const name = (document.getElementById('name') as HTMLInputElement)?.value || '';
                             const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
                             const company = (document.getElementById('company') as HTMLInputElement)?.value || '';
                             const message = (document.getElementById('message') as HTMLTextAreaElement)?.value || '';
+
+                            // Clear previous errors
+                            document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
+
+                            // Validate
+                            if (!name.trim()) {
+                                errors.push('NAME');
+                                document.getElementById('name-error')!.textContent = 'Name is required';
+                            }
+                            if (!email.trim()) {
+                                errors.push('EMAIL');
+                                document.getElementById('email-error')!.textContent = 'Email is required';
+                            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                errors.push('EMAIL');
+                                document.getElementById('email-error')!.textContent = 'Enter a valid email address';
+                            }
+                            if (!message.trim()) {
+                                errors.push('MESSAGE');
+                                document.getElementById('message-error')!.textContent = 'Message is required';
+                            }
+
+                            if (errors.length > 0) {
+                                // Focus the first errored field
+                                const firstError = document.getElementById(errors[0].toLowerCase());
+                                if (firstError) firstError.focus();
+                                return;
+                            }
 
                             const subject = company
                                 ? `Website Contact: ${name} (${company})`
@@ -270,7 +305,9 @@ ${message}`;
         </div>
     </section>
 
-    <TechnicalDivider label="NAVIGATION LINKS" variant="default" />
+    <div class="container">
+      <TechnicalDivider label="NAVIGATION LINKS" variant="default" />
+    </div>
 
     <!-- Additional Links Section -->
     <section class="links-section">
@@ -429,6 +466,16 @@ ${message}`;
         word-break: break-word;
     }
 
+    a.info-value {
+        color: var(--accent-blue);
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+    }
+
+    a.info-value:hover {
+        color: var(--accent-green);
+    }
+
     .info-value.status-active {
         color: var(--accent-green);
         font-weight: var(--font-bold);
@@ -494,6 +541,15 @@ ${message}`;
     .form-input,
     .form-textarea {
         width: 100%;
+    }
+
+    .form-error {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        color: var(--accent-red);
+        margin-top: var(--space-1);
+        min-height: 1.2em;
     }
 
     .form-textarea {

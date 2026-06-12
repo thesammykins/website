@@ -13,9 +13,16 @@ const {
 } = Astro.props;
 ---
 
-<div class={`status-bar status-bar--${position}`}>
+<div class={`status-bar status-bar--${position}`} role="presentation" aria-hidden="true" tabindex="-1">
   <div class="status-bar__content">
-    <div class="status-bar__ticker">
+<div class="status-bar__ticker">
+      {items.map((item, index) => (
+        <>
+          <span class="status-bar__item">{item}</span>
+          {index < items.length - 1 && <span class="status-bar__separator">{separator}</span>}
+        </>
+      ))}
+      <span class="status-bar__separator">{separator}</span>
       {items.map((item, index) => (
         <>
           <span class="status-bar__item">{item}</span>
@@ -73,10 +80,10 @@ const {
 
   @keyframes ticker {
     0% {
-      transform: translateX(100%);
+      transform: translateX(0);
     }
     100% {
-      transform: translateX(-100%);
+      transform: translateX(-50%);
     }
   }
 

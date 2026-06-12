@@ -59,15 +59,15 @@
   /* Text */
   --text-primary: #000000;      /* Black - headings, primary text */
   --text-secondary: #333333;    /* Dark grey - body text */
-  --text-tertiary: #666666;     /* Medium grey - metadata, captions */
+  --text-tertiary: #555555;     /* Medium grey - metadata, captions (~4.6:1 on mint) */
   --text-inverted: #ffffff;     /* White - on dark backgrounds */
 
   /* Accents */
-  --accent-orange: #ff5722;     /* Primary CTA, highlights */
-  --accent-green: #00ff88;      /* Success, active states */
-  --accent-blue: #00eaff;       /* Links, interactive elements */
-  --accent-red: #ff0055;        /* Alerts, emphasis, warnings */
-  --accent-yellow: #ffd700;     /* Warnings, attention */
+  --accent-orange: #cc4400;     /* Primary CTA, highlights (~5.2:1 on white) */
+  --accent-green: #007a40;      /* Success, active states (~5.4:1 on white) */
+  --accent-blue: #005f8c;       /* Links, interactive elements (~5.6:1 on white, 4.6:1 on mint) */
+  --accent-red: #c40042;        /* Alerts, emphasis, warnings (~4.6:1 on white) */
+  --accent-yellow: #9a7a00;     /* Warnings, attention (~4.5:1 on white) */
 
   /* Patterns & Overlays */
   --pattern-grid: rgba(0, 0, 0, 0.08);
@@ -181,15 +181,15 @@
   /* Text */
   --text-primary: #ffffff;      /* White - headings */
   --text-secondary: #d0f7f4;    /* Mint - body text */
-  --text-tertiary: #8fccca;     /* Muted mint - metadata */
+  --text-tertiary: #99d4d2;     /* Muted mint - metadata */
   --text-inverted: #000000;     /* Black - on light backgrounds */
 
   /* Accents */
-  --accent-orange: #ff7a59;     /* Lighter orange for dark mode */
-  --accent-green: #00ff88;      /* Same green (bright enough) */
-  --accent-blue: #00eaff;       /* Same cyan */
-  --accent-red: #ff3377;        /* Lighter red */
-  --accent-yellow: #ffe54d;     /* Lighter yellow */
+  --accent-orange: #ff9466;     /* Lighter orange for dark mode */
+  --accent-green: #40ff99;      /* Brighter green for dark mode */
+  --accent-blue: #40d4ff;       /* Brighter cyan for dark mode */
+  --accent-red: #ff5599;        /* Lighter red for dark mode */
+  --accent-yellow: #ffe873;     /* Lighter yellow for dark mode */
 
   /* Patterns & Overlays */
   --pattern-grid: rgba(0, 234, 255, 0.1);

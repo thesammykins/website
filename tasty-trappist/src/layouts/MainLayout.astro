@@ -120,6 +120,9 @@ const fullTitle = `${title} | Samantha Myers`;
         </script>
     </head>
     <body>
+        <!-- Skip to main content link for keyboard users -->
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+
         <!-- Background grid pattern -->
         <GridPattern client:load opacity={0.3} gridSize={40} animate={true} />
 
@@ -164,6 +167,34 @@ const fullTitle = `${title} | Samantha Myers`;
         position: relative;
         z-index: 50;
         min-height: 60vh;
+    }
+
+    /* Skip link — visually hidden until focused */
+    :global(.skip-link) {
+        position: absolute;
+        top: -100%;
+        left: var(--space-2);
+        z-index: 10000;
+        font-family: var(--font-primary);
+        font-size: var(--text-base);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        background: var(--accent-orange);
+        color: var(--text-inverted);
+        padding: var(--space-2) var(--space-4);
+        border: var(--border-thick) solid var(--border-heavy);
+        text-decoration: none;
+        transition: top 150ms ease;
+    }
+
+    :global(.skip-link:focus) {
+        top: var(--space-2);
+    }
+
+    :global(.skip-link:focus-visible) {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 2px;
     }
 
     /* Dark mode toggle (if needed later) */
