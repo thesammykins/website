@@ -54,16 +54,21 @@ const navLinks = [
 </nav>
 
 <script>
-    // Theme toggle functionality
-    let currentThemeButton: HTMLButtonElement | null = null;
+    // Set active nav link based on current pathname (handles static build trailing slashes)
+    function updateActiveNav() {
+        const path = window.location.pathname.replace(/\/$/, "");
+        document.querySelectorAll(".nav-link").forEach((link) => {
+            const href = new URL(link.href).pathname.replace(/\/$/, "");
+            const isActive = path === href;
+            link.classList.toggle("nav-link--active", isActive);
+            link.setAttribute("aria-current", isActive ? "page" : null);
+        });
+    }
 
     function applyTheme() {
-        // Check for saved theme preference or default to 'light'
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         const currentTheme = savedTheme || (prefersDark ? "dark" : "light");
-
-        // Apply theme
         document.documentElement.setAttribute("data-theme", currentTheme);
         return currentTheme;
     }
@@ -71,100 +76,56 @@ const navLinks = [
     function handleThemeToggle() {
         const currentTheme = document.documentElement.getAttribute("data-theme");
         const newTheme = currentTheme === "dark" ? "light" : "dark";
-
         document.documentElement.setAttribute("data-theme", newTheme);
         localStorage.setItem("theme", newTheme);
+        const btn = document.querySelector(".theme-toggle");
+        if (btn) btn.setAttribute("aria-pressed", newTheme === "dark" ? "true" : "false");
+    }
 
+    function init() {
+        updateActiveNav();
+        const currentTheme = applyTheme();
         const themeToggle = document.querySelector(".theme-toggle");
         if (themeToggle) {
-            themeToggle.setAttribute("aria-pressed", newTheme === "dark" ? "true" : "false");
-        }
-    }
-
-    function initTheme() {
-        const currentTheme = applyTheme();
-        const themeToggle = document.querySelector(".theme-toggle") as HTMLButtonElement | null;
-
-        // Update toggle button state
-        if (themeToggle) {
             themeToggle.setAttribute("aria-pressed", currentTheme === "dark" ? "true" : "false");
-
-            // Remove old event listener if button changed (View Transitions)
-            if (currentThemeButton && currentThemeButton !== themeToggle) {
-                currentThemeButton.removeEventListener("click", handleThemeToggle);
-            }
-
-            // Add event listener if it's a new button or first time
-            if (currentThemeButton !== themeToggle) {
-                themeToggle.addEventListener("click", handleThemeToggle);
-                currentThemeButton = themeToggle;
-            }
+            themeToggle.addEventListener("click", handleThemeToggle);
         }
-    }
-
-    // Use astro:page-load for View Transitions compatibility
-    document.addEventListener("astro:page-load", () => {
-        // Always apply theme on page load
-        applyTheme();
-
-        // Initialize theme toggle (handles new button after navigation)
-        initTheme();
 
         const toggle = document.querySelector(".mobile-menu-toggle");
-        const navLinks = document.querySelector(".nav-links");
+        const navEl = document.querySelector(".nav-links");
         const logo = document.querySelector(".nav-logo");
 
-        // Prevent logo from refreshing if on home page
         if (logo) {
             logo.addEventListener("click", (e) => {
-                const currentPath = window.location.pathname;
-                const logoPath = new URL(logo.href).pathname;
-
-                if (currentPath === logoPath) {
+                if (window.location.pathname === new URL(logo.href).pathname) {
                     e.preventDefault();
-                    return false;
                 }
             });
         }
 
-        if (toggle && navLinks) {
+        if (toggle && navEl) {
             toggle.addEventListener("click", () => {
-                const isExpanded =
-                    toggle.getAttribute("aria-expanded") === "true";
-                toggle.setAttribute("aria-expanded", (!isExpanded).toString());
-                navLinks.classList.toggle("nav-links--open");
+                const expanded = toggle.getAttribute("aria-expanded") === "true";
+                toggle.setAttribute("aria-expanded", (!expanded).toString());
+                navEl.classList.toggle("nav-links--open");
                 document.body.classList.toggle("nav-open");
             });
 
-            // Handle navigation link clicks
-            const links = navLinks.querySelectorAll("a.nav-link, a.nav-cta");
-            links.forEach((link) => {
-                link.addEventListener("click", (e) => {
-                    // Close mobile menu
+            navEl.querySelectorAll("a.nav-link, a.nav-cta").forEach((link) => {
+                link.addEventListener("click", () => {
                     toggle.setAttribute("aria-expanded", "false");
-                    navLinks.classList.remove("nav-links--open");
+                    navEl.classList.remove("nav-links--open");
                     document.body.classList.remove("nav-open");
-
-                    // Prevent navigation if clicking on current page
-                    const currentPath = window.location.pathname;
-                    const linkPath = new URL(link.href).pathname;
-
-                    if (currentPath === linkPath) {
-                        e.preventDefault();
-                        return false;
-                    }
                 });
             });
         }
-    });
+    }
 
-    // Initialize theme immediately on first load (before DOMContentLoaded to prevent flash)
     applyTheme();
-
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initTheme);
+        document.addEventListener("DOMContentLoaded", init);
     } else {
-        initTheme();
+        init();
     }
 </script>
 
