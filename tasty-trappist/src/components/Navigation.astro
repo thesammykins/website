@@ -9,6 +9,7 @@ const navLinks = [
     { href: "/about", label: "ABOUT" },
     { href: "/experience", label: "EXPERIENCE" },
     { href: "/skills", label: "SKILLS" },
+    { href: "/projects", label: "PROJECTS" },
 ];
 ---
 
@@ -37,12 +38,13 @@ const navLinks = [
                     <a
                         href={link.href}
                         class={`nav-link ${currentPath === link.href ? "nav-link--active" : ""}`}
+                        aria-current={currentPath === link.href ? "page" : undefined}
                     >
                         {link.label}
                     </a>
                 ))
             }
-            <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+            <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">
                 <span class="theme-icon theme-icon--light">☀</span>
                 <span class="theme-icon theme-icon--dark">☾</span>
             </button>
@@ -75,7 +77,7 @@ const navLinks = [
 
         const themeToggle = document.querySelector(".theme-toggle");
         if (themeToggle) {
-            themeToggle.setAttribute("aria-checked", newTheme === "dark" ? "true" : "false");
+            themeToggle.setAttribute("aria-pressed", newTheme === "dark" ? "true" : "false");
         }
     }
 
@@ -85,7 +87,7 @@ const navLinks = [
 
         // Update toggle button state
         if (themeToggle) {
-            themeToggle.setAttribute("aria-checked", currentTheme === "dark" ? "true" : "false");
+            themeToggle.setAttribute("aria-pressed", currentTheme === "dark" ? "true" : "false");
 
             // Remove old event listener if button changed (View Transitions)
             if (currentThemeButton && currentThemeButton !== themeToggle) {
@@ -268,6 +270,12 @@ const navLinks = [
     .nav-link--active {
         color: var(--accent-orange);
         border-bottom-color: var(--accent-orange);
+        position: relative;
+    }
+
+    .nav-link--active::before {
+        content: "▸";
+        margin-right: 0.25em;
     }
 
     .theme-toggle {

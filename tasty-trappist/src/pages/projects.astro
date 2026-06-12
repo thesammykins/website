@@ -1,0 +1,421 @@
+---
+// Projects Page - Active Deployments Log
+import MainLayout from "../layouts/MainLayout.astro";
+import TechnicalCard from "../components/TechnicalCard.astro";
+import TechnicalHeader from "../components/TechnicalHeader.astro";
+import TechnicalDivider from "../components/TechnicalDivider.astro";
+
+// Language → accent color mapping
+const langColor: Record<string, string> = {
+  Swift: "orange",
+  Go: "blue",
+  TypeScript: "blue",
+  Python: "green",
+  Rust: "red",
+};
+
+// Static project definitions (repo names, not full URLs)
+const projectDefs = [
+  {
+    name: "LGTV MENU BAR",
+    language: "Swift",
+    repo: "LGTVMenuBar",
+    description:
+      "A native macOS menu bar app for controlling LG WebOS TVs. Power, volume, input switching, and channel control — all from the menu bar.",
+  },
+  {
+    name: "PTV_CLI",
+    language: "Go",
+    repo: "ptv_cli",
+    description:
+      "A CLI tool for automations or agents to do cursed things with PTV credentials. Go-based, composable, and built from first principles — scrapes, signs, and queries the PTV API.",
+  },
+  {
+    name: "PTV_MCP",
+    language: "TypeScript",
+    repo: "ptv_mcp",
+    description:
+      "An MCP server that wraps the Victorian PTV API for use by AI agents. Enables LLMs to query real-time public transport data through the Model Context Protocol.",
+  },
+  {
+    name: "PTV-API",
+    language: "TypeScript",
+    repo: "ptv-api",
+    description:
+      "TypeScript client for the PTV (Public Transport Victoria) Timetable API v3. Clean, typed wrapper around departures, directions, routes, stops, and disruptions.",
+  },
+  {
+    name: "SUNO-ALBUM-FACTORY",
+    language: "Python",
+    repo: "suno-album-factory",
+    description:
+      "Automated pipeline for generating cohesive album packs for Suno v5.5 Custom Mode. Designed in an agentic-loop style — randomized seeds feed into lyric generation, metadata tagging, and batch processing.",
+  },
+  {
+    name: "DISCORD_OPENCODE",
+    language: "TypeScript",
+    repo: "discord_opencode",
+    description:
+      "Discord tools plugin for OpenCode — lets AI agents send messages, embeds, and buttons, and manage Discord interactions programmatically.",
+  },
+  {
+    name: "MACCARUNLOCK",
+    language: "Swift",
+    repo: "maccarunlock",
+    description:
+      "Menu bar app that plays car lock/unlock sounds on macOS. A whimsical Swift/SwiftUI project — because sometimes the best tools are the ones that make you smile.",
+  },
+];
+
+// Fetch live star counts + pushed dates from GitHub API at build time
+const mon = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const ghToken = import.meta.env.PUBLIC_GITHUB_TOKEN || "";
+
+const projects = await Promise.all(
+  projectDefs.map(async (p) => {
+    try {
+      const headers: Record<string, string> = {
+        "User-Agent": "samanthamyers-portfolio/1.0",
+        Accept: "application/vnd.github+json",
+      };
+      if (ghToken) headers.Authorization = `Bearer ${ghToken}`;
+      const res = await fetch(`https://api.github.com/repos/thesammykins/${p.repo}`, { headers });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const d = new Date(data.pushed_at);
+      return {
+        ...p,
+        stars: data.stargazers_count,
+        url: data.html_url,
+        updated: `${mon[d.getUTCMonth()]} ${d.getUTCFullYear()}`,
+      };
+    } catch {
+      return {
+        ...p,
+        stars: null,
+        url: `https://github.com/thesammykins/${p.repo}`,
+        updated: "—",
+      };
+    }
+  })
+);
+
+const languages = [...new Set(projects.map((p) => p.language))];
+---
+
+<MainLayout
+  title="Projects"
+  description="Active Deployments Log — open-source projects, tools, and experiments from the field."
+>
+  <!-- Technical Header -->
+  <div class="container">
+    <TechnicalHeader sector="GITHUB" status="OPERATIONAL" showTimestamp={true} />
+  </div>
+
+  <!-- Page Header -->
+  <section class="page-header" aria-labelledby="page-heading">
+    <div class="container">
+      <div class="header-content">
+        <span class="header-label">ACTIVE DEPLOYMENTS</span>
+        <h1 id="page-heading" class="page-title">PROJECTS LOG</h1>
+        <p class="header-description">
+          Open-source tools, experiments, and side-projects built across {languages.join(", ")}.
+          Field-tested code, deployed to GitHub.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <TechnicalDivider label="CURRENT DEPLOYMENTS" variant="thick" />
+  </div>
+
+  <!-- Projects Grid -->
+  <section class="projects-section" aria-label="Project cards">
+    <div class="container">
+      <div class="projects-grid">
+        {
+          projects.map((project) => (
+            <TechnicalCard
+              title={project.name}
+              subtitle={`${project.language}  |  \u2B50 ${project.stars != null ? project.stars : "—"}`}
+              meta={`PUSHED: ${project.updated}`}
+              showCorners={true}
+            >
+              <p class="project-description">{project.description}</p>
+
+              <div slot="footer">
+                <span class={`lang-badge lang-badge--${langColor[project.language] || "blue"}`} role="img" aria-label={`Language: ${project.language}`}>
+                  {project.language}
+                </span>
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="github-link"
+                  aria-label={`View ${project.name} on GitHub (opens in new tab)`}
+                >
+                  VIEW ON GITHUB &rarr;
+                </a>
+              </div>
+            </TechnicalCard>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <div class="container">
+      <div class="cta-content">
+        <h2 id="cta-heading" class="cta-title">SEE MORE ON GITHUB</h2>
+        <p class="cta-text">
+          Browse the full repository list, including forks, experiments, and
+          works in progress.
+        </p>
+        <a
+          href="https://github.com/thesammykins"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary"
+          aria-label="View full GitHub profile (opens in new tab)"
+        >
+          GITHUB PROFILE &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Staggered card entrance animation
+    function animateCards() {
+      const cards = document.querySelectorAll(".projects-grid > *");
+      cards.forEach((card, i) => {
+        (card as HTMLElement).style.setProperty("--card-index", String(i));
+        card.classList.add("card-visible");
+      });
+    }
+
+    document.addEventListener("astro:page-load", animateCards);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", animateCards);
+    } else {
+      animateCards();
+    }
+  </script>
+</MainLayout>
+
+<style>
+  /* ============================================
+     PAGE HEADER
+     ============================================ */
+  .page-header {
+    padding: var(--space-8) 0 var(--space-6);
+    position: relative;
+    z-index: 10;
+  }
+
+  .header-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--accent-orange);
+    display: block;
+    margin-bottom: var(--space-2);
+  }
+
+  .page-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-5xl);
+    font-weight: var(--font-bold);
+    line-height: 0.9;
+    letter-spacing: var(--tracking-tight);
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+    color: var(--text-primary);
+  }
+
+  .header-description {
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 650px;
+  }
+
+  /* ============================================
+     PROJECTS GRID
+     ============================================ */
+  .projects-section {
+    padding: var(--space-8) 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  /* Staggered card entrance animation */
+  .projects-grid > * {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .projects-grid > *.card-visible {
+    animation: card-enter 0.5s ease-out forwards;
+    animation-delay: calc(var(--card-index, 0) * 80ms);
+  }
+
+  @keyframes card-enter {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .project-description {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ============================================
+     LANGUAGE BADGE
+     ============================================ */
+  :global(.lang-badge) {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    padding: var(--space-1) var(--space-2);
+    border: var(--border-thin) solid var(--border-heavy);
+    display: inline-block;
+    color: var(--text-inverted);
+  }
+
+  :global(.lang-badge--blue)  { background: var(--accent-blue);   }
+  :global(.lang-badge--orange){ background: var(--accent-orange); }
+  :global(.lang-badge--green) { background: var(--accent-green);  }
+  :global(.lang-badge--red)   { background: var(--accent-red);    }
+  :global(.lang-badge--yellow){ background: var(--accent-yellow); color: var(--text-primary); }
+
+  /* ============================================
+     GITHUB LINK
+     ============================================ */
+  :global(.github-link) {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--accent-blue);
+    text-decoration: none;
+    padding: var(--space-1) var(--space-2);
+    border: var(--border-medium) solid var(--accent-blue);
+    transition: all var(--transition-fast);
+    margin-left: auto;
+  }
+
+  :global(.github-link:hover) {
+    background: var(--accent-blue);
+    color: var(--text-inverted);
+    transform: translate(-2px, -2px);
+  }
+
+  :global(.github-link:focus-visible) {
+    outline: var(--border-thick) solid var(--accent-orange);
+    outline-offset: 2px;
+  }
+
+  /* ============================================
+     CTA SECTION
+     ============================================ */
+  .cta-section {
+    padding: var(--space-8) 0 var(--space-12);
+    position: relative;
+    z-index: 10;
+  }
+
+  .cta-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  .cta-text {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-6);
+  }
+
+  /* ============================================
+     ACCESSIBILITY & FOCUS
+     ============================================ */
+  :global(.btn:focus-visible),
+  :global(.github-link:focus-visible) {
+    outline: var(--border-thick) solid var(--accent-orange);
+    outline-offset: 2px;
+  }
+
+  /* ============================================
+     REDUCED MOTION
+     ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .projects-grid > * {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    :global(.github-link) {
+      transition: none;
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: var(--text-4xl);
+    }
+
+    .header-description {
+      font-size: var(--text-base);
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+
+    .cta-title {
+      font-size: var(--text-2xl);
+    }
+
+    /* Let github link take natural width on single-col */
+    :global(.github-link) {
+      margin-left: 0;
+    }
+  }
+</style>

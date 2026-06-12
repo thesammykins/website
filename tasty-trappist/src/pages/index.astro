@@ -97,6 +97,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
     <!-- Quick Capabilities - Condensed -->
     <section class="capabilities-compact">
         <div class="container">
+            <h2 class="sr-only">CAPABILITIES</h2>
             <BorderBox variant="tactical">
                 <div class="capabilities-row">
                     <div class="cap-item">
@@ -161,6 +162,59 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                     </div>
                 </div>
             </BorderBox>
+        </div>
+    </section>
+
+    <TechnicalDivider label="FEATURED PROJECTS" variant="default" />
+
+    <!-- Featured Projects - Homepage Teaser -->
+    <section class="featured-projects">
+        <div class="container">
+            <h2 class="section-title">
+                ■ FEATURED PROJECTS
+            </h2>
+
+            <div class="featured-grid">
+        <a href="/projects" class="featured-card">
+                    <div class="featured-icon">◆</div>
+                    <h3 class="featured-name">LGTV MENU BAR</h3>
+                    <span class="featured-lang lang-tag--swift">SWIFT</span>
+                    <p class="featured-desc">
+                        Native macOS menu bar app for LG WebOS TVs
+                    </p>
+                </a>
+
+                <a href="/projects" class="featured-card">
+                    <div class="featured-icon">▲</div>
+                    <h3 class="featured-name">PTV_CLI</h3>
+                    <span class="featured-lang lang-tag--go">GO</span>
+                    <p class="featured-desc">
+                        CLI tool for agentic PTV automation
+                    </p>
+                </a>
+
+                <a href="/projects" class="featured-card">
+                    <div class="featured-icon">■</div>
+                    <h3 class="featured-name">PTV_MCP</h3>
+                    <span class="featured-lang lang-tag--ts">TYPESCRIPT</span>
+                    <p class="featured-desc">
+                        MCP server for the Victorian PTV API
+                    </p>
+                </a>
+            </div>
+
+            <div class="featured-cta">
+                <a href="/projects" class="btn btn-outline"
+                    >VIEW ALL PROJECTS →</a
+                >
+                <a
+                    href="https://github.com/thesammykins"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-outline"
+                    >GITHUB PROFILE →</a
+                >
+            </div>
         </div>
     </section>
 </MainLayout>
@@ -461,6 +515,23 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         .role-actions {
             flex-direction: row;
         }
+
+        .featured-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-2);
+        }
+
+        .featured-card {
+            padding: var(--space-3) var(--space-2);
+        }
+
+        .featured-name {
+            font-size: var(--text-base);
+        }
+
+        .featured-desc {
+            font-size: var(--text-xs);
+        }
     }
 
     /* Small tablets - 1 column with border style */
@@ -490,6 +561,100 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         .cap-icon {
             font-size: var(--text-2xl);
         }
+
+        .featured-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Featured Projects Section */
+    .featured-projects {
+        padding: var(--space-6) 0 var(--space-8);
+        position: relative;
+        z-index: 10;
+    }
+
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
+    }
+
+    .featured-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: var(--space-4) var(--space-3);
+        background: var(--bg-elevated);
+        border: var(--border-thick) solid var(--border-heavy);
+        text-decoration: none;
+        transition: all var(--transition-base);
+        position: relative;
+    }
+
+    .featured-card:hover {
+        border-color: var(--accent-blue);
+        transform: translate(-2px, -2px);
+        box-shadow: var(--shadow-brutal-sm);
+    }
+
+    .featured-icon {
+        font-size: var(--text-2xl);
+        color: var(--accent-orange);
+        margin-bottom: var(--space-2);
+    }
+
+    .featured-name {
+        font-family: var(--font-primary);
+        font-size: var(--text-lg);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-primary);
+        margin-bottom: var(--space-2);
+    }
+
+    .featured-lang {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: var(--font-bold);
+        text-transform: uppercase;
+        padding: 2px var(--space-1);
+        margin-bottom: var(--space-2);
+        color: var(--text-inverted);
+    }
+
+    :global(.lang-tag--swift) {
+        background: var(--accent-orange);
+    }
+
+    :global(.lang-tag--go) {
+        background: var(--accent-blue);
+    }
+
+    :global(.lang-tag--ts) {
+        background: var(--accent-blue);
+    }
+
+    :global(.lang-tag--python) {
+        background: var(--accent-green);
+    }
+
+    .featured-desc {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        line-height: var(--leading-normal);
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .featured-cta {
+        display: flex;
+        gap: var(--space-3);
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
     /* Mobile - smallest screens */

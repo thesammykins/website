@@ -39,6 +39,7 @@ jobs:
         # The astro.config.mjs outDir is '../docs', so this builds to the root /docs directory
         env:
           PUBLIC_LOGO_DEV_TOKEN: ${{ secrets.LOGO_DEV_TOKEN }}
+          PUBLIC_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build
       - name: Copy CNAME to build output
         # Ensure CNAME is in the root of the artifact, which is the root of /docs
