@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+project_dir="$repo_root/tasty-trappist"
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/amp/orb-setup"
+install_marker="$cache_dir/website-npm-install.sha256"
+
+step() {
+  local description="$1"
+  shift
+  local started_at="$SECONDS"
+  printf '\n[%s] %s\n' "$(date --iso-8601=seconds)" "$description"
+  "$@"
+  printf '[%s] completed in %ss\n' "$(date --iso-8601=seconds)" "$((SECONDS - started_at))"
+}
+
+printf 'Preparing %s for Amp orb work\n' "$repo_root"
+
+node --version
+npm --version
+node -e 'const [major, minor] = process.versions.node.split(".").map(Number); if (major < 22 || (major === 22 && minor < 12)) { console.error("Node.js 22.12.0 or newer is required (matching the Astro 6 toolchain in CI)."); process.exit(1); }'
+
+mkdir -p "$cache_dir"
+lock_hash="$(sha256sum "$project_dir/package-lock.json" | cut -d ' ' -f 1)"
+install_fingerprint="$(printf '%s\n%s\n%s\n' "$lock_hash" "$(node --version)" "$(npm --version)" | sha256sum | cut -d ' ' -f 1)"
+
+if [[ -d "$project_dir/node_modules" && -f "$project_dir/node_modules/.package-lock.json" && -f "$install_marker" && "$(<"$install_marker")" == "$install_fingerprint" ]]; then
+  printf '\nDependencies already match package-lock.json and the active Node/npm versions; skipping npm ci.\n'
+else
+  step 'Installing locked npm dependencies' npm --prefix "$project_dir" ci --no-audit --no-fund
+  printf '%s\n' "$install_fingerprint" > "$install_marker.tmp"
+  mv "$install_marker.tmp" "$install_marker"
+fi
+
+printf '\nOrb setup complete.\n'
