@@ -15,7 +15,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
     <!-- Page-Level Background Portrait -->
     <div slot="page-background" class="hero-background">
         <PixelatedCanvas
-            src="/hero-contact.png"
+            src="/hero-contact.webp"
             alt=""
             className="background-portrait"
             pixelSize={7}
@@ -139,12 +139,13 @@ import StatusIndicator from "../components/StatusIndicator.astro";
 
                 <!-- Contact Form -->
                 <BorderBox variant="clipped" class="contact-form-wrapper">
-                    <h2 class="form-heading">▲ SEND MESSAGE</h2>
+                    <h2 class="form-heading">▲ DRAFT AN EMAIL</h2>
+                    <p id="email-handoff">This opens your email app with a draft. Review and send it there; this website does not send or store your message.</p>
 
                     <form
                         class="contact-form"
                         id="contact-form"
-                        novalidate
+                        aria-describedby="email-handoff"
                     >
                         <div class="form-group">
                             <label for="name" class="form-label">NAME:</label>
@@ -203,13 +204,17 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                             <span id="message-error" class="form-error" role="alert" aria-live="polite"></span>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-full">
-                            TRANSMIT MESSAGE →
+                        <button type="submit" class="btn btn-primary btn-full" disabled>
+                            OPEN EMAIL APP →
                         </button>
+                        <noscript><p>Enable JavaScript to prepare a draft, or <a href="mailto:me+website@samanthamyers.au">email me directly</a>.</p></noscript>
                     </form>
 
                     <script>
-                        document.getElementById('contact-form')?.addEventListener('submit', function(e) {
+                        const form = document.querySelector<HTMLFormElement>('#contact-form')!;
+                        form.noValidate = true;
+                        form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled = false;
+                        form.addEventListener('submit', function(e) {
                             e.preventDefault();
 
                             const errors = [];
@@ -220,6 +225,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
 
                             // Clear previous errors
                             document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
+                            form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
 
                             // Validate
                             if (!name.trim()) {
@@ -239,6 +245,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                             }
 
                             if (errors.length > 0) {
+                                errors.forEach(id => document.getElementById(id.toLowerCase())!.setAttribute('aria-invalid', 'true'));
                                 // Focus the first errored field
                                 const firstError = document.getElementById(errors[0].toLowerCase());
                                 if (firstError) firstError.focus();
@@ -289,7 +296,7 @@ ${message}`;
                         <div class="status-icon">●</div>
                         <div class="status-content">
                             <div class="status-label">TIMEZONE</div>
-                            <div class="status-value">AEST (UTC+10)</div>
+                            <div class="status-value">Australia/Melbourne<br />AEST / AEDT</div>
                         </div>
                     </div>
 
@@ -591,7 +598,7 @@ ${message}`;
 
     .status-icon--active {
         color: var(--accent-green);
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) 2;
     }
 
     .status-label {

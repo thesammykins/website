@@ -262,7 +262,7 @@ const experiences = [
     <!-- Page-Level Background Portrait -->
     <div slot="page-background" class="hero-background">
         <PixelatedCanvas
-            src="/hero-experience.png"
+            src="/hero-experience.webp"
             alt=""
             className="background-portrait"
             pixelSize={6}
@@ -400,8 +400,8 @@ const experiences = [
 
                 <div class="stat-box">
                     <div class="stat-icon">⬢</div>
-                    <div class="stat-number">9</div>
-                    <div class="stat-label">ORGANIZATIONS SERVED</div>
+                    <div class="stat-number">{new Set(experiences.filter((experience) => experience.companyUrl).map((experience) => experience.company)).size}</div>
+                    <div class="stat-label">ORGANIZATIONS IN THIS HISTORY</div>
                 </div>
 
                 <div class="stat-box">
@@ -547,7 +547,7 @@ const experiences = [
 
     .timeline-item[data-index="0"] .marker-dot {
         background: var(--accent-green);
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) 2;
     }
 
     .marker-line {

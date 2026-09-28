@@ -4,7 +4,7 @@
   export let animate = true;
 </script>
 
-<svg class="grid-pattern" width="100%" height="100%" class:animate>
+<svg class="grid-pattern" width="100%" height="100%" class:animate aria-hidden="true">
   <defs>
     <pattern id="technical-grid" width={gridSize} height={gridSize} patternUnits="userSpaceOnUse">
       <path
@@ -30,7 +30,7 @@
   }
 
   .grid-pattern.animate {
-    animation: gridPulse 8s ease-in-out infinite;
+    animation: gridPulse 4s ease-in-out;
   }
 
   @keyframes gridPulse {

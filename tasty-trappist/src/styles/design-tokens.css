@@ -7,7 +7,7 @@
      ============================================ */
 
   /* Font Families */
-  --font-primary: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-primary: 'Space Grotesk Variable', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'Courier New', Courier, monospace;
   --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
@@ -52,7 +52,7 @@
 
   /* Borders & Lines */
   --border-heavy: #000000;      /* Black - primary borders (3-5px) */
-  --border-medium: #1a1a1a;     /* Near-black - secondary borders (2px) */
+  --border-medium-color: #1a1a1a; /* Separate color from the medium width token. */
   --border-light: #333333;      /* Dark grey - tertiary borders (1px) */
   --border-accent: #00eaff;     /* Cyan - interactive borders */
 
@@ -174,7 +174,7 @@
 
   /* Borders & Lines - Brightened for better visibility */
   --border-heavy: #00eaff;      /* Bright cyan - primary borders (5px) */
-  --border-medium: #00d4e6;     /* Mid-bright cyan - secondary borders (2-3px) */
+  --border-medium-color: #00d4e6;
   --border-light: #00b3cc;      /* Light cyan - tertiary borders (1px) */
   --border-accent: #00ff88;     /* Bright green - interactive */
 
@@ -241,8 +241,9 @@
     --transition-elastic: 0.01ms;
   }
 
-  * {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }

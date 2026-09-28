@@ -30,7 +30,7 @@ const coordinates = '37°48\'S 144°57\'E';
 
     {showTimestamp && (
       <span class="readout-item">
-        <span class="readout-label">TIMESTAMP:</span>
+        <span class="readout-label">BUILD (UTC):</span>
         <span class="readout-value">{timestamp}</span>
       </span>
     )}
@@ -102,7 +102,7 @@ const coordinates = '37°48\'S 144°57\'E';
   .readout-value--alert {
     color: var(--accent-red);
     font-weight: var(--font-bold);
-    animation: blink 1s infinite;
+    animation: blink 1s 3;
   }
 
   @media (max-width: 768px) {

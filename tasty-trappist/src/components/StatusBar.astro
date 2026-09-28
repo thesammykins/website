@@ -15,19 +15,16 @@ const {
 
 <div class={`status-bar status-bar--${position}`} role="presentation" aria-hidden="true" tabindex="-1">
   <div class="status-bar__content">
-<div class="status-bar__ticker">
-      {items.map((item, index) => (
-        <>
-          <span class="status-bar__item">{item}</span>
-          {index < items.length - 1 && <span class="status-bar__separator">{separator}</span>}
-        </>
-      ))}
-      <span class="status-bar__separator">{separator}</span>
-      {items.map((item, index) => (
-        <>
-          <span class="status-bar__item">{item}</span>
-          {index < items.length - 1 && <span class="status-bar__separator">{separator}</span>}
-        </>
+    <div class="status-bar__ticker">
+      {[0, 1].map(() => (
+        <div class="status-bar__group">
+          {items.map((item) => (
+            <>
+              <span class="status-bar__item">{item}</span>
+              <span class="status-bar__separator">{separator}</span>
+            </>
+          ))}
+        </div>
       ))}
     </div>
   </div>
@@ -56,12 +53,18 @@ const {
 
   .status-bar__ticker {
     display: flex;
+    width: max-content;
+    animation: ticker 4s linear forwards;
+  }
+
+  /* Repeated decoration also fills wide screens without stretching the text. */
+  .status-bar__group {
+    display: flex;
+    flex: none;
     align-items: center;
     gap: var(--space-2);
+    padding-right: var(--space-2);
     white-space: nowrap;
-    animation: ticker 30s linear infinite;
-    /* Start from fully off-screen right */
-    will-change: transform;
   }
 
   .status-bar__item {
@@ -83,7 +86,7 @@ const {
       transform: translateX(0);
     }
     100% {
-      transform: translateX(-50%);
+      transform: translateX(-120px);
     }
   }
 

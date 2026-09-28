@@ -4,6 +4,8 @@ import Navigation from "../components/Navigation.astro";
 import Footer from "../components/Footer.astro";
 import GridPattern from "../components/GridPattern.svelte";
 import StatusBar from "../components/StatusBar.astro";
+import headingFont from "@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url";
+import bodyFont from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url";
 import "../styles/global.css";
 
 export interface Props {
@@ -15,15 +17,14 @@ export interface Props {
 
 const {
     title,
-    description = "Corporate Engineering Manager specializing in IT operations, infrastructure, and team leadership.",
+    description = "Samantha Myers — corporate engineering, IT operations, technical support and team leadership in Melbourne, Australia.",
     showStatusBar = true,
     statusBarItems = [
         "FIELD TESTED IN ADELAIDE, AU",
         "OPERATIONAL IN MELBOURNE, AU",
         "SYSTEMS OPERATIONAL",
-        "LAST UPDATED: JUN 2026",
         "AVAILABLE FOR OPPORTUNITIES",
-        "10+ YEARS EXPERIENCE",
+        "CORPORATE ENGINEERING",
         "ENGINEERING LEADERSHIP",
         "IT SUPPORT",
         "AI EVANGELISM",
@@ -43,17 +44,15 @@ const fullTitle = `${title} | Samantha Myers`;
 
         <title>{fullTitle}</title>
 
-        <!-- Apply theme synchronously before any rendering to prevent flash -->
-        <script>
+        <!-- Run before rendering; storage may be unavailable in private contexts. -->
+        <script is:inline>
             (function () {
-                var theme = localStorage.getItem("theme");
-                if (!theme) {
-                    theme = window.matchMedia(
-                        "(prefers-color-scheme: dark)",
-                    ).matches
-                        ? "dark"
-                        : "light";
-                }
+                document.documentElement.classList.add("js");
+                var theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                try {
+                    var saved = localStorage.getItem("theme");
+                    if (saved === "light" || saved === "dark") theme = saved;
+                } catch { /* Browser storage is optional; system preferences still apply. */ }
                 document.documentElement.setAttribute("data-theme", theme);
             })();
         </script>
@@ -79,15 +78,16 @@ const fullTitle = `${title} | Samantha Myers`;
         <link rel="manifest" href="/favicon_io/site.webmanifest" />
         <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico" />
 
-        <!-- Preconnect to Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
 
         <!-- Open Graph / Social Meta -->
         <meta property="og:type" content="website" />
         <meta property="og:title" content={fullTitle} />
         <meta property="og:description" content={description} />
-        <meta property="og:url" content={Astro.url.href} />
+        <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+        <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable profile" />
 
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image" />
@@ -100,10 +100,10 @@ const fullTitle = `${title} | Samantha Myers`;
         <a href="#main-content" class="skip-link">Skip to main content</a>
 
         <!-- Background grid pattern -->
-        <GridPattern client:load opacity={0.3} gridSize={40} animate={true} />
+        <GridPattern opacity={0.3} gridSize={40} animate={true} />
 
         <!-- Page-level background (optional, for index page) -->
-        <slot name="page-background" />
+        <div aria-hidden="true"><slot name="page-background" /></div>
 
         <!-- Top status bar (optional) -->
         {showStatusBar && <StatusBar position="top" items={statusBarItems} />}
@@ -112,7 +112,7 @@ const fullTitle = `${title} | Samantha Myers`;
         <Navigation />
 
         <!-- Main content -->
-        <main id="main-content" class="main-content">
+        <main id="main-content" class="main-content" tabindex="-1">
             <slot />
         </main>
 
@@ -130,7 +130,8 @@ const fullTitle = `${title} | Samantha Myers`;
 
 <style>
     :global(html) {
-        scroll-padding-top: 80px; /* Account for sticky nav */
+        /* Globe height, nav padding/border, and a gap above focused content. */
+        scroll-padding-top: calc(64px + var(--space-4) + var(--border-thick) + var(--space-2));
     }
 
     :global(body) {

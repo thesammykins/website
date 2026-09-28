@@ -80,7 +80,7 @@ const certifications = [
     <!-- Page-Level Background Portrait -->
     <div slot="page-background" class="hero-background">
         <PixelatedCanvas
-            src="/hero-skills.png"
+            src="/hero-skills.webp"
             alt=""
             className="background-portrait"
             pixelSize={4}
@@ -279,44 +279,6 @@ const certifications = [
     </section>
 </MainLayout>
 
-<script>
-    function animateProgressBars() {
-        // Animate skill progress bars
-        const skillBars = document.querySelectorAll(".skill-progress");
-        skillBars.forEach((bar, index) => {
-            setTimeout(
-                () => {
-                    bar.classList.add("loaded");
-                },
-                100 + index * 50,
-            ); // Stagger the animations
-        });
-
-        // Animate meter fills
-        const meterFills = document.querySelectorAll(".meter-fill");
-        meterFills.forEach((fill, index) => {
-            setTimeout(
-                () => {
-                    fill.classList.add("loaded");
-                },
-                600 + index * 150,
-            ); // Start after skills, with stagger
-        });
-    }
-
-    // Run on initial page load
-    document.addEventListener("astro:page-load", () => {
-        animateProgressBars();
-    });
-
-    // Also run immediately if script loads after DOMContentLoaded
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", animateProgressBars);
-    } else {
-        animateProgressBars();
-    }
-</script>
-
 <style>
     /* Hero Background */
     :global(.hero-background .background-portrait) {
@@ -458,12 +420,14 @@ const certifications = [
     .skill-progress {
         height: 100%;
         background: var(--accent-blue);
-        width: 0 !important;
-        transition: width 1s ease-out;
+        width: var(--target-width);
+        transform-origin: left;
+        animation: fill-bar 650ms ease-out;
     }
 
-    .skill-progress.loaded {
-        width: var(--target-width) !important;
+    @keyframes fill-bar {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
     }
 
     .skill-progress[data-level="95"],
@@ -587,12 +551,7 @@ const certifications = [
         align-items: center;
         justify-content: flex-end;
         padding-right: var(--space-2);
-        width: 0 !important;
-        transition: width 1.5s ease-out;
-    }
-
-    .meter-fill.loaded {
-        width: var(--target-width) !important;
+        width: var(--target-width);
     }
 
     .meter-value {

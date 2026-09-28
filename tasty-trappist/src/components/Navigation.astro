@@ -2,7 +2,7 @@
 // Navigation Component - Military-style top navigation
 import SpinningGlobe from "./SpinningGlobe.svelte";
 
-const currentPath = Astro.url.pathname;
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 
 const navLinks = [
     { href: "/", label: "HOME" },
@@ -13,9 +13,9 @@ const navLinks = [
 ];
 ---
 
-<nav class="main-nav">
+<nav class="main-nav" aria-label="Primary">
     <div class="container nav-container">
-        <a href="/" class="nav-logo">
+        <a href="/" class="nav-logo" aria-label="Samantha Myers — Home">
             <div class="logo-icon">
                 <SpinningGlobe client:load />
             </div>
@@ -24,15 +24,16 @@ const navLinks = [
 
         <button
             class="mobile-menu-toggle"
-            aria-label="Toggle menu"
+            aria-label="Open menu"
             aria-expanded="false"
+            aria-controls="primary-links"
         >
             <span class="hamburger"></span>
             <span class="hamburger"></span>
             <span class="hamburger"></span>
         </button>
 
-        <div class="nav-links">
+        <div class="nav-links" id="primary-links">
             {
                 navLinks.map((link) => (
                     <a
@@ -54,82 +55,62 @@ const navLinks = [
 </nav>
 
 <script>
-    // Set active nav link based on current pathname (handles static build trailing slashes)
-    function updateActiveNav() {
-        const path = window.location.pathname.replace(/\/$/, "");
-        document.querySelectorAll(".nav-link").forEach((link) => {
-            const href = new URL(link.href).pathname.replace(/\/$/, "");
-            const isActive = path === href;
-            link.classList.toggle("nav-link--active", isActive);
-            link.setAttribute("aria-current", isActive ? "page" : null);
-        });
-    }
+    const nav = document.querySelector<HTMLElement>(".main-nav")!;
+    const toggle = nav.querySelector<HTMLButtonElement>(".mobile-menu-toggle")!;
+    const links = nav.querySelector<HTMLElement>(".nav-links")!;
+    const mobile = window.matchMedia("(max-width: 1199px)");
+    const theme = nav.querySelector<HTMLButtonElement>(".theme-toggle")!;
+    // CSS can blur a newly hidden control before the media-query event fires.
+    let lastFocused: EventTarget | null = null;
+    document.addEventListener("focusin", (event) => { lastFocused = event.target; });
 
-    function applyTheme() {
-        const savedTheme = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const currentTheme = savedTheme || (prefersDark ? "dark" : "light");
-        document.documentElement.setAttribute("data-theme", currentTheme);
-        return currentTheme;
+    function save(key: string, value: string) {
+        // Preferences still work in this document when browser storage is blocked.
+        try { localStorage.setItem(key, value); } catch { /* Storage is optional. */ }
     }
-
-    function handleThemeToggle() {
-        const currentTheme = document.documentElement.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-        document.documentElement.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-        const btn = document.querySelector(".theme-toggle");
-        if (btn) btn.setAttribute("aria-pressed", newTheme === "dark" ? "true" : "false");
+    function setOpen(open: boolean) {
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        links.classList.toggle("nav-links--open", open);
+        links.inert = mobile.matches && !open;
     }
-
-    function init() {
-        updateActiveNav();
-        const currentTheme = applyTheme();
-        const themeToggle = document.querySelector(".theme-toggle");
-        if (themeToggle) {
-            themeToggle.setAttribute("aria-pressed", currentTheme === "dark" ? "true" : "false");
-            themeToggle.addEventListener("click", handleThemeToggle);
+    setOpen(false);
+    toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+    nav.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+            setOpen(false);
+            toggle.focus();
         }
-
-        const toggle = document.querySelector(".mobile-menu-toggle");
-        const navEl = document.querySelector(".nav-links");
-        const logo = document.querySelector(".nav-logo");
-
-        if (logo) {
-            logo.addEventListener("click", (e) => {
-                if (window.location.pathname === new URL(logo.href).pathname) {
-                    e.preventDefault();
-                }
-            });
+    });
+    nav.addEventListener("focusout", (event) => {
+        if (!nav.contains(event.relatedTarget as Node | null)) setOpen(false);
+    });
+    document.addEventListener("pointerdown", (event) => {
+        if (!nav.contains(event.target as Node)) {
+            lastFocused = null;
+            setOpen(false);
         }
-
-        if (toggle && navEl) {
-            toggle.addEventListener("click", () => {
-                const expanded = toggle.getAttribute("aria-expanded") === "true";
-                toggle.setAttribute("aria-expanded", (!expanded).toString());
-                navEl.classList.toggle("nav-links--open");
-                document.body.classList.toggle("nav-open");
-            });
-
-            navEl.querySelectorAll("a.nav-link, a.nav-cta").forEach((link) => {
-                link.addEventListener("click", () => {
-                    toggle.setAttribute("aria-expanded", "false");
-                    navEl.classList.remove("nav-links--open");
-                    document.body.classList.remove("nav-open");
-                });
-            });
-        }
-    }
-
-    applyTheme();
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-    } else {
-        init();
-    }
+    });
+    mobile.addEventListener("change", () => {
+        if (mobile.matches && links.contains(lastFocused as Node | null)) toggle.focus();
+        const restoreDesktopFocus = !mobile.matches && lastFocused === toggle;
+        setOpen(false);
+        if (restoreDesktopFocus) links.querySelector<HTMLAnchorElement>("a")?.focus();
+    });
+    theme.setAttribute("aria-pressed", String(document.documentElement.dataset.theme === "dark"));
+    theme.addEventListener("click", () => {
+        const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        document.documentElement.dataset.theme = next;
+        theme.setAttribute("aria-pressed", String(next === "dark"));
+        save("theme", next);
+    });
 </script>
 
 <style>
+    :global(html:not(.js)) .theme-toggle {
+        display: none;
+    }
+
     .main-nav {
         background: var(--bg-elevated);
         border-bottom: var(--border-thick) solid var(--border-heavy);
@@ -211,7 +192,7 @@ const navLinks = [
     .nav-links {
         display: flex;
         align-items: center;
-        gap: var(--space-4);
+        gap: var(--space-1);
     }
 
     .nav-link {
@@ -224,7 +205,7 @@ const navLinks = [
         text-decoration: none;
         padding: var(--space-1) var(--space-2);
         border-bottom: 2px solid transparent;
-        transition: all var(--transition-fast);
+        transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
     }
 
     /* Prevent global underline from leaking into nav links or their ::before */
@@ -259,7 +240,7 @@ const navLinks = [
         display: flex;
         align-items: center;
         gap: var(--space-1);
-        transition: all var(--transition-fast);
+        transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
         font-size: var(--text-lg);
     }
 
@@ -295,7 +276,7 @@ const navLinks = [
         padding: var(--space-2) var(--space-3);
         border: var(--border-medium) solid var(--border-heavy);
         text-decoration: none;
-        transition: all var(--transition-fast);
+        transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
     }
 
     .nav-cta::before,
@@ -310,41 +291,52 @@ const navLinks = [
     }
 
     /* Mobile styles */
-    @media (max-width: 768px) {
+    @media (max-width: 1199px) {
         .nav-container {
             padding: var(--space-2);
+            flex-wrap: wrap;
         }
 
         .logo-text {
             font-size: var(--text-base);
         }
 
-        .mobile-menu-toggle {
+        :global(.js) .mobile-menu-toggle {
             display: flex;
+            min-width: 44px;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
         }
 
         .nav-links {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 280px;
-            max-width: 80vw;
-            height: 100vh;
-            height: 100dvh; /* Use dynamic viewport height on mobile */
+            width: 100%;
             background: var(--bg-elevated);
-            border-left: var(--border-thick) solid var(--border-heavy);
             flex-direction: column;
             align-items: stretch;
             gap: 0;
-            padding-top: 80px;
-            transition: right var(--transition-base);
-            /* Prevent menu from extending beyond viewport */
             overflow-y: auto;
             overscroll-behavior: contain;
         }
 
-        .nav-links--open {
+        :global(.js) .nav-links {
+            position: absolute;
+            top: 100%;
             right: 0;
+            width: min(360px, 100%);
+            /* Reserve room for the nav and ticker even before the page scrolls. */
+            max-height: calc(100dvh - 150px);
+            border: var(--border-thick) solid var(--border-heavy);
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
+        }
+
+        :global(.js) .nav-links--open {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .nav-link {
@@ -371,21 +363,15 @@ const navLinks = [
             text-align: center;
         }
 
-        /* Prevent body scroll when menu is open */
-        :global(body.nav-open) {
-            overflow: hidden;
-            position: fixed;
-            width: 100%;
-            height: 100vh;
-            /* Prevent any horizontal movement */
-            overscroll-behavior: none;
-            touch-action: none;
-        }
     }
 
     @media (max-width: 480px) {
         .logo-text {
             display: none;
+        }
+
+        :global(.js) .nav-links {
+            width: 100%;
         }
     }
 </style>

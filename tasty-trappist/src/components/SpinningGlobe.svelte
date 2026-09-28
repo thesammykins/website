@@ -5,7 +5,10 @@
     let ctx: CanvasRenderingContext2D | null;
     let animationId: number;
     let rotation = 0;
-    let worldData: any = null;
+    let worldData: ReturnType<typeof project>[][] | null = null;
+    let lastFrame = 0;
+    let reducedMotion = false;
+    let visible = true;
 
     // Globe configuration - larger for better visibility
     const GLOBE_SIZE = 64;
@@ -17,14 +20,25 @@
     const MELBOURNE_LON = 144.9631;
 
     // Fetch world map data - using GeoJSON directly
-    onMount(async () => {
-        try {
-            const response = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
-            const data = await response.json();
-            worldData = extractGeoJSON(data);
-        } catch (e) {
-            console.error('Failed to load world data:', e);
+    onMount(() => {
+        const controller = new AbortController();
+        async function loadWorld() {
+            try {
+                const response = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json', { signal: controller.signal });
+                if (!response.ok) throw new Error(`World data HTTP ${response.status}`);
+                const data = await response.json();
+                if (controller.signal.aborted) return;
+                // Geography is fixed; only the view rotation changes per frame.
+                worldData = extractGeoJSON(data).map(shape =>
+                    shape.map(([lon, lat]) => project(lon, lat, 0))
+                );
+                if (!document.hidden && visible) drawGlobe();
+            } catch (e) {
+                if (!controller.signal.aborted) console.error('Failed to load world data:', e);
+            }
         }
+        void loadWorld();
+        return () => controller.abort();
     });
 
     // Extract GeoJSON from TopoJSON
@@ -156,6 +170,9 @@
 
         // Draw continents with brutalist styling
         if (worldData) {
+            const angle = rotation * Math.PI / 180;
+            const sin = Math.sin(angle);
+            const cos = Math.cos(angle);
             ctx.fillStyle = '#ff5722'; // Orange accent for land
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 0.5;
@@ -164,12 +181,10 @@
                 ctx.beginPath();
                 let first = true;
 
-                for (const [lon, lat] of shape) {
-                    const pos = project(lon, lat, rotation);
-
-                    if (pos.z > 0) {
-                        const x = centerX + pos.x * (radius - 2);
-                        const y = centerY + pos.y * (radius - 2);
+                for (const point of shape) {
+                    if (point.z * cos + point.x * sin > 0) {
+                        const x = centerX + (point.x * cos - point.z * sin) * (radius - 2);
+                        const y = centerY + point.y * (radius - 2);
 
                         if (first) {
                             ctx.moveTo(x, y);
@@ -216,15 +231,34 @@
         }
     }
 
-    function animate() {
-        rotation += ROTATION_SPEED;
+    function animate(timestamp = performance.now()) {
+        if (!reducedMotion && lastFrame && timestamp - lastFrame < 1000 / 30) {
+            animationId = requestAnimationFrame(animate);
+            return;
+        }
+        const elapsed = lastFrame ? Math.min(timestamp - lastFrame, 50) : 0;
+        lastFrame = timestamp;
+        rotation += ROTATION_SPEED * elapsed / (1000 / 60);
         if (rotation >= 360) rotation -= 360;
 
         drawGlobe();
-        animationId = requestAnimationFrame(animate);
+        if (!reducedMotion) animationId = requestAnimationFrame(animate);
     }
 
     onMount(() => {
+        const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let settled = false;
+        const syncAnimation = () => {
+            cancelAnimationFrame(animationId);
+            lastFrame = 0;
+            reducedMotion = motion.matches || settled;
+            if (motion.matches) rotation = MELBOURNE_LON;
+            if (!document.hidden && visible) animate();
+        };
+        const observer = new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting;
+            syncAnimation();
+        });
         if (canvas) {
             ctx = canvas.getContext('2d');
 
@@ -236,14 +270,25 @@
 
             if (ctx) {
                 ctx.scale(dpr, dpr);
-                animate();
+                syncAnimation();
             }
         }
+        observer.observe(canvas);
+        motion.addEventListener('change', syncAnimation);
+        document.addEventListener('visibilitychange', syncAnimation);
+        const settleTimer = window.setTimeout(() => {
+            settled = true;
+            syncAnimation();
+        }, 4000);
 
         return () => {
             if (animationId) {
                 cancelAnimationFrame(animationId);
             }
+            observer.disconnect();
+            motion.removeEventListener('change', syncAnimation);
+            document.removeEventListener('visibilitychange', syncAnimation);
+            clearTimeout(settleTimer);
         };
     });
 </script>
@@ -251,6 +296,8 @@
 <canvas
     bind:this={canvas}
     class="globe-canvas"
+    width="64"
+    height="64"
     aria-label="Spinning globe with Melbourne highlighted"
 ></canvas>
 

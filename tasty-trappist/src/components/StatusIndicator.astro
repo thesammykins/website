@@ -109,11 +109,11 @@ const statusLabels = {
 
   /* Pulse animation */
   .status-light--pulse .status-dot {
-    animation: statusPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: statusPulse 2s cubic-bezier(0.4, 0, 0.6, 1) 2;
   }
 
   .status-light--alert.status-light--pulse .status-dot {
-    animation: statusBlink 1s linear infinite;
+    animation: statusBlink 1s linear 3;
   }
 
   @keyframes statusPulse {
@@ -145,7 +145,7 @@ const statusLabels = {
     border-radius: 50%;
     background: currentColor;
     opacity: 0.2;
-    animation: statusGlow 2s ease-in-out infinite;
+    animation: statusGlow 2s ease-in-out 2;
   }
 
   @keyframes statusGlow {

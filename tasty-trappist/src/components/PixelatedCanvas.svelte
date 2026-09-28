@@ -60,35 +60,79 @@
     let animationId: number;
     let fadeIntervalId: number;
     let isHovering = false;
+    let reducedMotion = false;
+    let visible = true;
+    let lastFrame = 0;
+    let frameScale = 1;
+    let pixelBuffer: ImageData;
+    let pixelCanvas: HTMLCanvasElement;
+    let pixelContext: CanvasRenderingContext2D;
 
     onMount(() => {
-        ctx = canvas.getContext("2d", { willReadFrequently: true });
+        ctx = canvas.getContext("2d");
         if (!ctx) return;
+
+        const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let disposed = false;
+        let settled = false;
+        const syncAnimation = () => {
+            cancelAnimationFrame(animationId);
+            clearInterval(fadeIntervalId);
+            reducedMotion = motion.matches || settled;
+            lastFrame = 0;
+            if (!pixelGrid.length) return;
+            if (reducedMotion) {
+                hoverState = [];
+                for (const row of pixelStates) {
+                    for (const state of row) state.currentOpacity = state.targetOpacity = 1;
+                }
+            }
+            if (!document.hidden && visible) {
+                animate();
+                if (!reducedMotion) startFadeInterval();
+            }
+        };
+        const observer = new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting;
+            syncAnimation();
+        });
+        observer.observe(canvas);
+        motion.addEventListener("change", syncAnimation);
+        document.addEventListener("visibilitychange", syncAnimation);
+        // Brief decoration, not indefinite autoplay requiring another UI control.
+        const settleTimer = window.setTimeout(() => {
+            settled = true;
+            syncAnimation();
+        }, 4000);
+        const ready = () => {
+            if (disposed) return;
+            initializeCanvas();
+            syncAnimation();
+        };
 
         const cached = imageCache.get(src);
         if (cached && cached.complete && cached.naturalWidth > 0) {
             img = cached;
-            initializeCanvas();
-            animate();
-            startFadeInterval();
-            return;
+            ready();
+        } else {
+            img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = () => {
+                if (disposed) return;
+                imageCache.set(src, img);
+                ready();
+            };
+            img.src = src;
         }
 
-        img = new Image();
-        img.crossOrigin = "anonymous";
-
-        img.onload = () => {
-            imageCache.set(src, img);
-            initializeCanvas();
-            animate();
-            startFadeInterval();
-        };
-
-        img.src = src;
-
         return () => {
+            disposed = true;
             if (animationId) cancelAnimationFrame(animationId);
             if (fadeIntervalId) clearInterval(fadeIntervalId);
+            observer.disconnect();
+            motion.removeEventListener("change", syncAnimation);
+            document.removeEventListener("visibilitychange", syncAnimation);
+            clearTimeout(settleTimer);
         };
     });
 
@@ -111,6 +155,12 @@
         // Calculate grid dimensions
         const cols = Math.floor(canvas.width / pixelSize);
         const rows = Math.floor(canvas.height / pixelSize);
+        pixelCanvas = document.createElement("canvas");
+        pixelCanvas.width = cols;
+        pixelCanvas.height = rows;
+        pixelContext = pixelCanvas.getContext("2d")!;
+        pixelBuffer = pixelContext.createImageData(cols, rows);
+        ctx.imageSmoothingEnabled = false;
 
         // Validate dimensions for pixel-perfect rendering
         const perfectWidth = cols * pixelSize;
@@ -167,19 +217,24 @@
     ): PixelData {
         if (!imageData) return { r: 0, g: 0, b: 0, a: 0 };
 
+        // Avoid DOM dimension getters and reactive reads for every source pixel.
+        const data = imageData.data;
+        const stride = imageData.width;
+        const endX = Math.min(startX + width, stride);
+        const endY = Math.min(startY + height, imageData.height);
         let r = 0,
             g = 0,
             b = 0,
             a = 0;
         let count = 0;
 
-        for (let y = startY; y < startY + height && y < canvas.height; y++) {
-            for (let x = startX; x < startX + width && x < canvas.width; x++) {
-                const index = (y * canvas.width + x) * 4;
-                r += imageData.data[index];
-                g += imageData.data[index + 1];
-                b += imageData.data[index + 2];
-                a += imageData.data[index + 3];
+        for (let y = startY; y < endY; y++) {
+            for (let x = startX; x < endX; x++) {
+                const index = (y * stride + x) * 4;
+                r += data[index];
+                g += data[index + 1];
+                b += data[index + 2];
+                a += data[index + 3];
                 count++;
             }
         }
@@ -216,7 +271,7 @@
     }
 
     function handleMouseMove(e: MouseEvent) {
-        if (!canvas || !pixelGrid.length || !enableHover) return;
+        if (!canvas || !pixelGrid.length || !enableHover || reducedMotion) return;
 
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
@@ -260,10 +315,17 @@
         hoverState = [];
     }
 
-    function animate() {
+    function animate(timestamp = performance.now()) {
         if (!ctx || !pixelGrid.length) return;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Slow opacity changes need at most 30 updates/sec, not every display refresh.
+        if (!reducedMotion && lastFrame && timestamp - lastFrame < 1000 / 30) {
+            animationId = requestAnimationFrame(animate);
+            return;
+        }
+        // Preserve the original 60 Hz fade rate on high-refresh and slower displays.
+        frameScale = lastFrame ? Math.min((timestamp - lastFrame) / (1000 / 60), 3) : 1;
+        lastFrame = timestamp;
 
         const rows = pixelGrid.length;
         const cols = pixelGrid[0]?.length || 0;
@@ -279,12 +341,10 @@
             for (let col = 0; col < cols; col++) {
                 const pixel = pixelGrid[row][col];
                 const state = pixelStates[row][col];
-                const x = col * pixelSize;
-                const y = row * pixelSize;
 
                 // Interpolate current opacity toward target
                 const diff = state.targetOpacity - state.currentOpacity;
-                state.currentOpacity += diff * state.speed;
+                state.currentOpacity += diff * (1 - Math.pow(1 - state.speed, frameScale));
 
                 // Snap to target when very close
                 if (Math.abs(diff) < 0.001) {
@@ -348,7 +408,7 @@
                 }
 
                 // Check if this pixel is being hovered
-                const hoverStrength = hoverMap.get(`${row},${col}`) || 0;
+                const hoverStrength = hoverMap.size ? hoverMap.get(`${row},${col}`) || 0 : 0;
 
                 let r = pixel.r;
                 let g = pixel.g;
@@ -366,15 +426,25 @@
                 // Combine fade opacity and edge blur
                 const finalOpacity = state.currentOpacity * edgeOpacity;
 
-                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${(a / 255) * finalOpacity})`;
-                ctx.fillRect(x, y, pixelSize, pixelSize);
+                const offset = (row * cols + col) * 4;
+                pixelBuffer.data[offset] = r;
+                pixelBuffer.data[offset + 1] = g;
+                pixelBuffer.data[offset + 2] = b;
+                pixelBuffer.data[offset + 3] = a * finalOpacity;
             }
         }
 
-        animationId = requestAnimationFrame(animate);
+        // Upload one low-resolution bitmap instead of issuing a draw call per block.
+        // Nearest-neighbour scaling preserves the existing pixel grid and edge fade.
+        pixelContext.putImageData(pixelBuffer, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(pixelCanvas, 0, 0, cols * pixelSize, rows * pixelSize);
+        if (!reducedMotion) animationId = requestAnimationFrame(animate);
     }
 </script>
 
+<!-- Discover the decorative image in HTML without competing with fonts and text. -->
+<link rel="preload" as="image" href={src} fetchpriority="low" crossorigin="anonymous" />
 <canvas
     bind:this={canvas}
     class={className}

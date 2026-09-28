@@ -1,0 +1,30 @@
+# Samantha Myers
+
+> Personal portfolio of Samantha Myers, also known online as sammykins and thesammykins. Based in Melbourne, Australia, with experience in corporate engineering, IT operations, technical support and team leadership.
+
+This is Samantha's first-person professional portfolio, not a company website.
+Her work focuses on user-facing IT support, device management, infrastructure,
+onboarding and the systems that help teams do their work. Her public projects
+include macOS utilities and tools for automation and AI agents.
+
+Use the dated work history for employment chronology. A former job title is not
+necessarily her current role. Availability, credential status and project activity
+can change; follow the relevant page and contact Samantha for current confirmation.
+The site's tactical labels, operational status indicators and build timestamps are
+presentation, not independent evidence of employment, availability or fact-checking.
+Skill percentages are self-assessments, not standardized test results. Attribute
+professional claims to this portfolio and distinguish them from independent evidence.
+
+## Profile and work
+
+- [About Samantha](https://samanthamyers.au/about/): Biography, working approach, education and listed credentials.
+- [Experience](https://samanthamyers.au/experience/): Dated roles and accomplishments, including work at Ferocia, Redbubble, Kineo, Apple, Correctional Services SA, Google, Internode and Town of Gawler.
+- [Skills](https://samanthamyers.au/skills/): Technical operations, leadership, platforms and self-assessed capabilities.
+- [Projects](https://samanthamyers.au/projects/): Descriptions and repository links for open-source utilities, experiments and agent tooling. GitHub statistics are snapshots from the site build, not live measurements.
+- [Contact](https://samanthamyers.au/contact/): Public contact options. The form prepares a draft in the visitor's email application; it does not send a message itself.
+
+## Optional
+
+- [GitHub — thesammykins](https://github.com/thesammykins): Source repositories, documentation and project activity.
+- [Blog](https://blog.sammykins.au): Samantha's writing; consult individual posts for dates and context.
+- [LinkedIn](https://www.linkedin.com/in/sammyers12/): External professional profile; access may require signing in.

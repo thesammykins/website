@@ -6,6 +6,7 @@ export interface Props {
   subtitle?: string;
   showCorners?: boolean;
   class?: string;
+  headingLevel?: 2 | 3;
 }
 
 const {
@@ -13,13 +14,15 @@ const {
   meta,
   subtitle,
   showCorners = false,
+  headingLevel = 3,
   class: className = ''
 } = Astro.props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
 ---
 
 <div class={`technical-card ${showCorners ? 'technical-card--corners' : ''} ${className}`}>
   <div class="card-header">
-    <h3 class="card-title">{title}</h3>
+    <Heading class="card-title">{title}</Heading>
     {subtitle && <p class="card-subtitle">{subtitle}</p>}
     {meta && <span class="card-meta">{meta}</span>}
   </div>

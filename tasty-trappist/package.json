@@ -8,8 +8,10 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/svelte": "^8.1.2",
-    "astro": "^6.4.2",
+    "@astrojs/svelte": "9.0.1",
+    "@fontsource-variable/space-grotesk": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "astro": "7.3.5",
     "svelte": "^5.56.1"
   }
 }
