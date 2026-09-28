@@ -51,6 +51,7 @@
    - 8.3 [Design Consistency Checklist](#design-consistency-checklist) - L602-L614
 9. [Common CSS Patterns](#common-css-patterns) - L615-L653
 10. [Build & Deployment](#build--deployment) - L655-L675
+   - 10.1 [Orb Preview Portals](#orb-preview-portals)
 11. [Key Terminology & Language](#key-terminology--language) - L677-L694
 12. [Visual Identity Elements](#visual-identity-elements) - L696-L716
 13. [Accessibility Notes](#accessibility-notes) - L718-L726
@@ -737,6 +738,20 @@ npm run build
 - Automatic via GitHub Actions (`.github/workflows/gh-pages.yml`)
 - Pushes to `gh-pages` branch
 - Served via GitHub Pages with custom domain
+
+### Orb Preview Portals
+
+When an in-progress build should be reviewed by the user, expose it through an Amp portal so it is reachable outside the orb:
+
+- If `.amp/services.yaml` declares the preview service, run `amp orb services ensure` and share the portal URL it prints.
+- For a one-off Astro development preview, start a supervised service from the repository root:
+  ```bash
+  amp orb service start portfolio-preview --command 'npm --prefix tasty-trappist run dev -- --host 0.0.0.0 --port "$PORT"' --portal
+  ```
+- To show the built output instead, run `npm --prefix tasty-trappist run build` first, then start `npm --prefix tasty-trappist run preview -- --host 0.0.0.0 --port "$PORT"` as the supervised service command. Amp supplies `$PORT`; preview commands must listen on it.
+- If a preview server is already running but has no portal, register it with `amp orb portal 4321 --title 'Portfolio preview'`.
+- Share only the exact HTTP(S) portal URL returned by Amp, formatted as `[Portfolio preview](<exact portal URL> "amp-portal")`. Never give the user a `localhost`, `127.0.0.1`, `[::1]`, or direct sandbox-host URL.
+- Do not leave preview servers running from a shell command, background process, or tmux; use the supervised service commands above. Include the portal link in the progress update so the user can review the current build.
 
 ---
 
