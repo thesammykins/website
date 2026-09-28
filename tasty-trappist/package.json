@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "preview:portal": "PORTFOLIO_PORTAL_PREVIEW=1 astro build && PORTFOLIO_PORTAL_PREVIEW=1 astro preview"
   },
   "dependencies": {
     "@astrojs/svelte": "9.0.1",

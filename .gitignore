@@ -22,6 +22,7 @@ docs/
 
 # Amp portal metadata is generated per orb
 .amp/portals/*
+.amp/preview/
 
 # Design documentation (local reference only)
 DESIGN_MIGRATION_PLAN.md
