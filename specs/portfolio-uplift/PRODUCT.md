@@ -28,19 +28,22 @@ These are exploratory references, not approved layouts or verified accessibility
 3. Pixel portraits retain their block geometry, color treatment and edge fades.
    Animation pace is consistent across refresh rates, without large jumps after
    returning to a background tab. Invisible decoration does not animate.
-4. OS reduced-motion preference stops canvas motion as well as CSS motion,
-   including live preference changes. Do not add a visible motion button or a
-   site-specific stored override. Static artwork remains visible. Normal-mode
-   decorative introductions settle within four seconds; switching preferences
-   must not restart a completed introduction or duplicate drawing loops.
+4. Per Samantha's subsequent autoplay decision, normal-mode decorative animation
+   continues rather than stopping after four seconds. With OS reduced motion
+   enabled, CSS and canvas autoplay stop after a shared four-second introduction.
+   Enabling reduced motion live starts that four-second window; disabling it
+   resumes autoplay. Late-hydrating components follow the existing page clock.
+   Static artwork remains visible, with no visible motion button or stored
+   override. Preference changes must not duplicate drawing loops.
 5. Keyboard users can bypass navigation, see focus, open and close the mobile
    navigation, and never focus links in a closed drawer. Escape closes the drawer
    and restores focus to its trigger. Resizing does not strand focus or scroll lock.
 6. Light and dark themes remain available. Text, controls and focus indicators
    target WCAG 2.2 AA contrast; pages reflow at 320 CSS pixels without hiding
    essential information. Automated scores alone do not establish conformance.
-7. Nonessential autoplay is brief rather than continuous. Removing decoration
-   must not remove unique information. Functional hover/focus transitions remain.
+7. Normal-mode decorative autoplay is continuous; reduced-motion autoplay is
+   bounded to four seconds. Removing decoration must not remove unique
+   information. Functional hover/focus transitions remain.
 8. Contact clearly explains that its action opens the visitor's email application,
    rather than claiming to deliver a message. Invalid fields have linked errors
    and focus moves to the first invalid field. No new message service is introduced.

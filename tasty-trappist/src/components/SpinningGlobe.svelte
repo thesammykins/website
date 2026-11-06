@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { autoplay } from './autoplay';
     // World Atlas 2.0.2 / Natural Earth; notice: /licenses/world-atlas.txt.
     import worldMapUrl from '../data/countries-110m.json?url';
 
@@ -244,13 +245,10 @@
     }
 
     onMount(() => {
-        const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-        let settled = false;
         const syncAnimation = () => {
             cancelAnimationFrame(animationId);
             lastFrame = 0;
-            reducedMotion = motion.matches || settled;
-            if (motion.matches) rotation = MELBOURNE_LON;
+            if (reducedMotion) rotation = MELBOURNE_LON;
             if (!document.hidden && visible) animate();
         };
         const observer = new IntersectionObserver(([entry]) => {
@@ -272,21 +270,19 @@
             }
         }
         observer.observe(canvas);
-        motion.addEventListener('change', syncAnimation);
-        document.addEventListener('visibilitychange', syncAnimation);
-        const settleTimer = window.setTimeout(() => {
-            settled = true;
+        const unsubscribe = autoplay.subscribe((playing) => {
+            reducedMotion = !playing;
             syncAnimation();
-        }, 4000);
+        });
+        document.addEventListener('visibilitychange', syncAnimation);
 
         return () => {
             if (animationId) {
                 cancelAnimationFrame(animationId);
             }
             observer.disconnect();
-            motion.removeEventListener('change', syncAnimation);
+            unsubscribe();
             document.removeEventListener('visibilitychange', syncAnimation);
-            clearTimeout(settleTimer);
         };
     });
 </script>

@@ -30,7 +30,7 @@
   }
 
   .grid-pattern.animate {
-    animation: gridPulse 4s ease-in-out;
+    animation: gridPulse 4s ease-in-out infinite;
   }
 
   @keyframes gridPulse {

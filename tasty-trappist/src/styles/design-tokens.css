@@ -242,9 +242,20 @@
   }
 
   *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Without JavaScript there is no four-second autoplay clock. */
+  :root:not(.js) *, :root:not(.js) *::before, :root:not(.js) *::after {
     animation-duration: 0.01ms !important;
     animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
+}
+
+/* The shared autoplay clock pauses CSS alongside the canvas animations. */
+:root[data-autoplay="paused"] *,
+:root[data-autoplay="paused"] *::before,
+:root[data-autoplay="paused"] *::after {
+  animation-play-state: paused !important;
 }

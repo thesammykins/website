@@ -5,6 +5,7 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
+    import { autoplay } from "./autoplay";
 
     // Core props
     export let src: string;
@@ -73,12 +74,9 @@
         ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        let settled = false;
         const syncAnimation = () => {
             cancelAnimationFrame(animationId);
             clearInterval(fadeIntervalId);
-            reducedMotion = motion.matches || settled;
             lastFrame = 0;
             if (!pixelGrid.length) return;
             if (reducedMotion) {
@@ -97,13 +95,11 @@
             syncAnimation();
         });
         observer.observe(canvas);
-        motion.addEventListener("change", syncAnimation);
-        document.addEventListener("visibilitychange", syncAnimation);
-        // Brief decoration, not indefinite autoplay requiring another UI control.
-        const settleTimer = window.setTimeout(() => {
-            settled = true;
+        const unsubscribe = autoplay.subscribe((playing) => {
+            reducedMotion = !playing;
             syncAnimation();
-        }, 4000);
+        });
+        document.addEventListener("visibilitychange", syncAnimation);
         const ready = async () => {
             if (disposed) return;
             await initializeCanvas();
@@ -131,9 +127,8 @@
             if (animationId) cancelAnimationFrame(animationId);
             if (fadeIntervalId) clearInterval(fadeIntervalId);
             observer.disconnect();
-            motion.removeEventListener("change", syncAnimation);
+            unsubscribe();
             document.removeEventListener("visibilitychange", syncAnimation);
-            clearTimeout(settleTimer);
         };
     });
 

@@ -109,11 +109,11 @@ const statusLabels = {
 
   /* Pulse animation */
   .status-light--pulse .status-dot {
-    animation: statusPulse 2s cubic-bezier(0.4, 0, 0.6, 1) 2;
+    animation: statusPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .status-light--alert.status-light--pulse .status-dot {
-    animation: statusBlink 1s linear 3;
+    animation: statusBlink 1s linear infinite;
   }
 
   @keyframes statusPulse {
@@ -145,7 +145,7 @@ const statusLabels = {
     border-radius: 50%;
     background: currentColor;
     opacity: 0.2;
-    animation: statusGlow 2s ease-in-out 2;
+    animation: statusGlow 2s ease-in-out infinite;
   }
 
   @keyframes statusGlow {
@@ -206,11 +206,4 @@ const statusLabels = {
     color: var(--accent-red);
   }
 
-  /* Disable animations for reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .status-light--pulse .status-dot,
-    .status-dot::before {
-      animation: none;
-    }
-  }
 </style>

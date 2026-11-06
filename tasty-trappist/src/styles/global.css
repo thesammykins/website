@@ -117,7 +117,7 @@ body::after {
   pointer-events: none;
   z-index: 9999;
   opacity: 0.4;
-  animation: noise 4s;
+  animation: noise 4s infinite;
 }
 
 @keyframes noise {
@@ -147,10 +147,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   body {
     --scan-line-display: none;
-  }
-
-  body::after {
-    animation: none;
   }
 }
 
@@ -577,7 +573,7 @@ label {
 }
 
 .animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) 2;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* ============================================
