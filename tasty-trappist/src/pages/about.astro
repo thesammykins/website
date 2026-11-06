@@ -6,6 +6,7 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
 import TechnicalHeader from "../components/TechnicalHeader.astro";
 import TechnicalDivider from "../components/TechnicalDivider.astro";
 import StatusIndicator from "../components/StatusIndicator.astro";
+import { deployment } from "../data/employment";
 ---
 
 <MainLayout
@@ -35,7 +36,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             edgeBlurTop={150}
             edgeBlurLeft={200}
             edgeBlurBottom={150}
-            client:load
+            client:idle={{ timeout: 500 }}
         />
         <div class="background-gradient"></div>
     </div>
@@ -121,11 +122,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                             frustrate them.
                         </p>
                         <p class="bio-text">
-                            After Ferocia, I'm actively
-                            seeking my next opportunity. If you know of a role
-                            in corporate engineering, IT operations, or
-                            engineering leadership that might be a good fit,
-                            I'd love to hear about it.
+                            {deployment.description}
                         </p>
                     </BorderBox>
 

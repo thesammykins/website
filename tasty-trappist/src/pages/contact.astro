@@ -39,7 +39,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             pixelOffsetY={0}
             enableAlignment={false}
             enableRandomFade={true}
-            client:load
+            client:idle={{ timeout: 500 }}
         />
         <div class="background-gradient"></div>
     </div>

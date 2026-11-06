@@ -7,6 +7,7 @@ import StatusBar from "../components/StatusBar.astro";
 import headingFont from "@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url";
 import bodyFont from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url";
 import "../styles/global.css";
+import { employment } from "../data/employment";
 
 export interface Props {
     title: string;
@@ -23,7 +24,7 @@ const {
         "FIELD TESTED IN ADELAIDE, AU",
         "OPERATIONAL IN MELBOURNE, AU",
         "SYSTEMS OPERATIONAL",
-        "AVAILABLE FOR OPPORTUNITIES",
+        employment.availableForDeployment ? "AVAILABLE FOR OPPORTUNITIES" : `${employment.currentRole.title} AT ${employment.currentRole.company.toUpperCase()}`,
         "CORPORATE ENGINEERING",
         "ENGINEERING LEADERSHIP",
         "IT SUPPORT",
@@ -43,7 +44,22 @@ const fullTitle = `${title} | Samantha Myers`;
         <meta name="description" content={description} />
 
         <title>{fullTitle}</title>
-        <script is:inline src="https://ampcode.com/w/client_01M6R22GADAY9T3THMPMJGVHNG.js" async></script>
+        <!-- Feedback remains available, but must not compete with initial content. -->
+        <script is:inline>
+            window.addEventListener("load", function () {
+                function loadFeedback() {
+                    var script = document.createElement("script");
+                    script.src = "https://ampcode.com/w/client_01M6R22GADAY9T3THMPMJGVHNG.js";
+                    script.async = true;
+                    document.head.appendChild(script);
+                }
+                if ("requestIdleCallback" in window) {
+                    window.requestIdleCallback(loadFeedback, { timeout: 2000 });
+                } else {
+                    window.setTimeout(loadFeedback, 0);
+                }
+            }, { once: true });
+        </script>
 
         <!-- Run before rendering; storage may be unavailable in private contexts. -->
         <script is:inline>

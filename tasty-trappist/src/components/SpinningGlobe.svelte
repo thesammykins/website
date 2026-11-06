@@ -1,5 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    // World Atlas 2.0.2 / Natural Earth; notice: /licenses/world-atlas.txt.
+    import worldMapUrl from '../data/countries-110m.json?url';
 
     let canvas: HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D | null;
@@ -19,12 +21,26 @@
     const MELBOURNE_LAT = -37.8136;
     const MELBOURNE_LON = 144.9631;
 
+    // Grid geography is fixed too; rotate cached points rather than doing
+    // thousands of latitude/longitude trigonometric calculations every frame.
+    const graticule: ReturnType<typeof project>[][] = [];
+    for (let lat = -80; lat <= 80; lat += 20) {
+        const line = [];
+        for (let lon = -180; lon <= 180; lon += 5) line.push(project(lon, lat, 0));
+        graticule.push(line);
+    }
+    for (let lon = -180; lon <= 180; lon += 30) {
+        const line = [];
+        for (let lat = -90; lat <= 90; lat += 5) line.push(project(lon, lat, 0));
+        graticule.push(line);
+    }
+
     // Fetch world map data - using GeoJSON directly
     onMount(() => {
         const controller = new AbortController();
         async function loadWorld() {
             try {
-                const response = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json', { signal: controller.signal });
+                const response = await fetch(worldMapUrl, { signal: controller.signal });
                 if (!response.ok) throw new Error(`World data HTTP ${response.status}`);
                 const data = await response.json();
                 if (controller.signal.aborted) return;
@@ -117,6 +133,9 @@
         const centerX = canvas.width / (2 * dpr);
         const centerY = canvas.height / (2 * dpr);
         const radius = RADIUS - 3;
+        const angle = rotation * Math.PI / 180;
+        const sin = Math.sin(angle);
+        const cos = Math.cos(angle);
 
         // BRUTALIST STYLING
         // Heavy border for globe
@@ -136,31 +155,13 @@
         ctx.strokeStyle = '#00eaff33';
         ctx.lineWidth = 0.5;
 
-        // Latitude lines
-        for (let lat = -80; lat <= 80; lat += 20) {
+        for (const line of graticule) {
             ctx.beginPath();
             let first = true;
-            for (let lon = -180; lon <= 180; lon += 5) {
-                const pos = project(lon, lat, rotation);
-                if (pos.z > 0) {
-                    const x = centerX + pos.x * (radius - 2);
-                    const y = centerY + pos.y * (radius - 2);
-                    first ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-                    first = false;
-                }
-            }
-            ctx.stroke();
-        }
-
-        // Longitude lines
-        for (let lon = -180; lon <= 180; lon += 30) {
-            ctx.beginPath();
-            let first = true;
-            for (let lat = -90; lat <= 90; lat += 5) {
-                const pos = project(lon, lat, rotation);
-                if (pos.z > 0) {
-                    const x = centerX + pos.x * (radius - 2);
-                    const y = centerY + pos.y * (radius - 2);
+            for (const point of line) {
+                if (point.z * cos + point.x * sin > 0) {
+                    const x = centerX + (point.x * cos - point.z * sin) * (radius - 2);
+                    const y = centerY + point.y * (radius - 2);
                     first ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
                     first = false;
                 }
@@ -170,9 +171,6 @@
 
         // Draw continents with brutalist styling
         if (worldData) {
-            const angle = rotation * Math.PI / 180;
-            const sin = Math.sin(angle);
-            const cos = Math.cos(angle);
             ctx.fillStyle = '#ff5722'; // Orange accent for land
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 0.5;

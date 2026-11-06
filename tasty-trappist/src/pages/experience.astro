@@ -3,45 +3,15 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import TechnicalCard from "../components/TechnicalCard.astro";
 import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
-
-// Get logo.dev token from environment (PUBLIC_ prefix makes it available at build time)
-const LOGO_DEV_TOKEN = import.meta.env.PUBLIC_LOGO_DEV_TOKEN || '';
-
-// Helper to generate logo.dev URL from company domain
-const getLogoUrl = (domain: string | null) => {
-    if (!domain) return null;
-    if (!LOGO_DEV_TOKEN) {
-        // Fallback to local logos if no token provided
-        return null;
-    }
-    // Use size=120 for display, retina=true for 2x resolution (240px source)
-    // This ensures crisp logos on high-DPI displays
-    return `https://img.logo.dev/${domain}?token=${LOGO_DEV_TOKEN}&format=png&size=120&retina=true`;
-};
+import { deployment } from "../data/employment";
 
 const experiences = [
-    {
-        title: "AVAILABLE FOR DEPLOYMENT",
-        company: "Actively Seeking New Opportunities",
-        companyUrl: null,
-        companyDomain: null,
-        logoFallback: null,
-        location: "Melbourne",
-        period: "Jun 2026 – Present",
-        description:
-            "After wrapping up at Ferocia, I'm actively exploring my next move. If you know of a role — or someone who might — that you think would be a good fit, I'd love to hear about it.",
-        achievements: [
-            "Open to Corporate Engineering Manager, Technical Support Lead, and IT Operations roles",
-            "If something comes to mind, reach out via the contact page — I'd appreciate the lead",
-        ],
-        tags: ["OPEN TO WORK", "SEEKING", "LEADERSHIP", "OPERATIONS"],
-    },
+    deployment,
     {
         title: "TECHNICAL SUPPORT ENGINEER",
         company: "Ferocia",
         companyUrl: "https://ferocia.com.au/",
-        companyDomain: "ferocia.com.au",
-        logoFallback: null,
+        logo: "/logos/ferocia.png",
         location: "Melbourne (Hybrid)",
         period: "Jun 2025 – May 2026",
         description:
@@ -58,8 +28,7 @@ const experiences = [
         title: "CORPORATE ENGINEERING MANAGER",
         company: "Ferocia",
         companyUrl: "https://ferocia.com.au/",
-        companyDomain: "ferocia.com.au",
-        logoFallback: null,
+        logo: "/logos/ferocia.png",
         location: "Melbourne (Hybrid)",
         period: "Nov 2024 – Jun 2025",
         description:
@@ -76,8 +45,7 @@ const experiences = [
         title: "TECHNICAL SUPPORT ENGINEER",
         company: "Ferocia",
         companyUrl: "https://ferocia.com.au/",
-        companyDomain: "ferocia.com.au",
-        logoFallback: null,
+        logo: "/logos/ferocia.png",
         location: "Melbourne (Hybrid)",
         period: "Jan 2023 – Nov 2024",
         description:
@@ -94,8 +62,7 @@ const experiences = [
         title: "SERVICE DESK LEAD",
         company: "Redbubble",
         companyUrl: "https://www.redbubble.com/",
-        companyDomain: "redbubble.com",
-        logoFallback: "/company-logo-redbubble.jpg",
+        logo: "/company-logo-redbubble.jpg",
         location: "Melbourne",
         period: "Jun 2022 – Dec 2022",
         description:
@@ -112,8 +79,7 @@ const experiences = [
         title: "IT SUPPORT TECHNICIAN",
         company: "Redbubble",
         companyUrl: "https://www.redbubble.com/",
-        companyDomain: "redbubble.com",
-        logoFallback: "/company-logo-redbubble.jpg",
+        logo: "/company-logo-redbubble.jpg",
         location: "Melbourne",
         period: "May 2021 – Jun 2022",
         description:
@@ -130,8 +96,7 @@ const experiences = [
         title: "SERVICE DESK AGENT",
         company: "Kineo (Asia Pacific)",
         companyUrl: "https://kineo.com/",
-        companyDomain: "kineo.com",
-        logoFallback: null,
+        logo: "/logos/kineo.webp",
         location: "Adelaide",
         period: "May 2019 – May 2021",
         description:
@@ -148,8 +113,7 @@ const experiences = [
         title: "PRODUCT SPECIALIST - AT HOME ADVISOR",
         company: "Apple",
         companyUrl: "https://www.apple.com/",
-        companyDomain: "apple.com",
-        logoFallback: "/company-logo-apple.jpg",
+        logo: "/company-logo-apple.jpg",
         location: "Remote (APAC/US)",
         period: "Apr 2017 – Feb 2018",
         description:
@@ -165,9 +129,8 @@ const experiences = [
     {
         title: "SERVICE DESK OFFICER",
         company: "Dept. of Correctional Services SA",
-        companyUrl: null,
-        companyDomain: null,
-        logoFallback: null,
+        companyUrl: "https://www.corrections.sa.gov.au/",
+        logo: "/logos/corrections-sa.png",
         location: "Adelaide",
         period: "Sep 2016 – Jan 2017",
         description:
@@ -184,8 +147,7 @@ const experiences = [
         title: "FRONTLINE SUPPORT - IT RESIDENCY PROGRAM",
         company: "Google",
         companyUrl: "https://www.google.com/",
-        companyDomain: "google.com",
-        logoFallback: "/company-logo-google.jpg",
+        logo: "/company-logo-google.jpg",
         location: "Sydney",
         period: "Aug 2015 – Aug 2016",
         description:
@@ -202,8 +164,7 @@ const experiences = [
         title: "CUSTOMER SERVICE REPRESENTATIVE",
         company: "Internode",
         companyUrl: "https://www.internode.on.net/",
-        companyDomain: "internode.on.net",
-        logoFallback: "/company-logo-internode.jpg",
+        logo: "/company-logo-internode.jpg",
         location: "Adelaide",
         period: "Sep 2014 – Apr 2015",
         description:
@@ -220,8 +181,7 @@ const experiences = [
         title: "IT SUPPORT OFFICER",
         company: "Town of Gawler",
         companyUrl: "https://www.gawler.sa.gov.au/",
-        companyDomain: "gawler.sa.gov.au",
-        logoFallback: "/company-logo-gawler.jpg",
+        logo: "/company-logo-gawler.jpg",
         location: "Gawler, SA",
         period: "Aug 2011 – Aug 2014",
         description:
@@ -238,8 +198,7 @@ const experiences = [
         title: "DIGITAL LOCAL GOVERNMENT PROJECT OFFICER",
         company: "Town of Gawler",
         companyUrl: "https://www.gawler.sa.gov.au/",
-        companyDomain: "gawler.sa.gov.au",
-        logoFallback: "/company-logo-gawler.jpg",
+        logo: "/company-logo-gawler.jpg",
         location: "Gawler, SA",
         period: "Aug 2013 – Aug 2014",
         description:
@@ -286,7 +245,7 @@ const experiences = [
             pixelOffsetY={0}
             enableAlignment={false}
             enableRandomFade={true}
-            client:load
+            client:idle={{ timeout: 500 }}
         />
         <div class="background-gradient"></div>
     </div>
@@ -326,38 +285,15 @@ const experiences = [
                                     subtitle={`${exp.company} | ${exp.location}`}
                                     meta={exp.period}
                                     showCorners={index === 0}
+                                    logo={exp.logo ?? undefined}
+                                    logoAlt={`${exp.company} logo`}
+                                    logoHref={exp.companyUrl ?? undefined}
                                 >
-                                    {(getLogoUrl(exp.companyDomain) || exp.logoFallback) && (
-                                        <div class="company-logo-wrapper">
-                                            {exp.companyUrl ? (
-                                                <a
-                                                    href={exp.companyUrl}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    class="company-logo-link"
-                                                >
-                                                    <img
-                                                        src={getLogoUrl(exp.companyDomain) || exp.logoFallback}
-                                                        alt={`${exp.company} logo`}
-                                                        class="company-logo"
-                                                        loading="lazy"
-                                                    />
-                                                </a>
-                                            ) : (
-                                                <img
-                                                    src={getLogoUrl(exp.companyDomain) || exp.logoFallback}
-                                                    alt={`${exp.company} logo`}
-                                                    class="company-logo"
-                                                    loading="lazy"
-                                                />
-                                            )}
-                                        </div>
-                                    )}
                                     <p class="experience-description">
                                         {exp.description}
                                     </p>
 
-                                    <div class="achievements-section">
+                                    {exp.achievements.length > 0 && <div class="achievements-section">
                                         <h4 class="achievements-title">
                                             KEY ACHIEVEMENTS:
                                         </h4>
@@ -368,7 +304,7 @@ const experiences = [
                                                 ),
                                             )}
                                         </ul>
-                                    </div>
+                                    </div>}
 
                                     <div slot="footer">
                                         {exp.tags.map((tag) => (
@@ -515,7 +451,7 @@ const experiences = [
 
     .timeline-item {
         display: grid;
-        grid-template-columns: 60px 1fr;
+        grid-template-columns: 60px minmax(0, 1fr);
         gap: var(--space-4);
         margin-bottom: var(--space-6);
     }
@@ -559,42 +495,6 @@ const experiences = [
 
     .timeline-content {
         padding-bottom: var(--space-2);
-    }
-
-    /* Company Logo */
-    .company-logo-wrapper {
-        float: right;
-        margin: 0 0 var(--space-3) var(--space-3);
-    }
-
-    .company-logo-link {
-        display: block;
-        transition: all var(--transition-base);
-    }
-
-    .company-logo-link:hover {
-        transform: scale(1.05);
-        opacity: 0.8;
-    }
-
-    .company-logo {
-        width: 120px;
-        height: 120px;
-        object-fit: contain;
-        border: var(--border-medium) solid var(--border-heavy);
-        background: var(--bg-elevated);
-        padding: var(--space-3);
-        border-radius: 4px;
-        transition: filter var(--transition-base);
-    }
-
-    /* Desaturate logos in dark mode */
-    :global([data-theme="dark"]) .company-logo {
-        filter: grayscale(60%) brightness(0.9);
-    }
-
-    :global([data-theme="dark"]) .company-logo-link:hover .company-logo {
-        filter: grayscale(30%) brightness(1);
     }
 
     /* Experience Content */
@@ -753,10 +653,6 @@ const experiences = [
             grid-template-columns: repeat(2, 1fr);
         }
 
-        .company-logo {
-            width: 100px;
-            height: 100px;
-        }
     }
 
     @media (max-width: 768px) {
@@ -769,7 +665,7 @@ const experiences = [
         }
 
         .timeline-item {
-            grid-template-columns: 40px 1fr;
+            grid-template-columns: 40px minmax(0, 1fr);
             gap: var(--space-2);
         }
 
@@ -786,10 +682,5 @@ const experiences = [
             font-size: var(--text-3xl);
         }
 
-        .company-logo {
-            width: 80px;
-            height: 80px;
-            padding: var(--space-2);
-        }
     }
 </style>

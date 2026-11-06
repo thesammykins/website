@@ -17,7 +17,7 @@ const navLinks = [
     <div class="container nav-container">
         <a href="/" class="nav-logo" aria-label="Samantha Myers — Home">
             <div class="logo-icon">
-                <SpinningGlobe client:load />
+                <SpinningGlobe client:idle={{ timeout: 500 }} />
             </div>
             <span class="logo-text">SAMANTHA MYERS</span>
         </a>

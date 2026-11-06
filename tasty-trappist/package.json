@@ -5,14 +5,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "test:content": "node --test tests/*.test.mjs",
     "preview": "astro preview",
     "preview:portal": "PORTFOLIO_PORTAL_PREVIEW=1 astro build && PORTFOLIO_PORTAL_PREVIEW=1 astro preview"
   },
   "dependencies": {
-    "@astrojs/svelte": "9.0.1",
+    "@astrojs/svelte": "9.1.2",
     "@fontsource-variable/space-grotesk": "5.3.0",
     "@fontsource/ibm-plex-mono": "5.3.0",
-    "astro": "7.3.5",
-    "svelte": "^5.56.1"
+    "astro": "7.4.7",
+    "svelte": "5.57.3"
   }
 }

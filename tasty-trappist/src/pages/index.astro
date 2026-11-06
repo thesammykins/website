@@ -6,11 +6,15 @@ import PixelatedCanvas from "../components/PixelatedCanvas.svelte";
 import TechnicalHeader from "../components/TechnicalHeader.astro";
 import TechnicalDivider from "../components/TechnicalDivider.astro";
 import StatusIndicator from "../components/StatusIndicator.astro";
+import { deployment, employment } from "../data/employment";
+import { projectDefs } from "../data/projects";
 ---
 
 <MainLayout
     title="Home"
-    description="Samantha Myers - Technical Support Engineer specializing in IT support, backend enablement, and strategic systems engineering."
+    description={employment.availableForDeployment
+        ? "Samantha Myers — IT support, corporate engineering, and IT operations. Open to new opportunities."
+        : `Samantha Myers — ${employment.currentRole.title} at ${employment.currentRole.company}. Specializing in IT support, backend enablement, and strategic systems engineering.`}
 >
     <!-- Page-Level Background Portrait - rendered at body level -->
     <div slot="page-background" class="hero-background">
@@ -35,7 +39,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             edgeBlurTop={150}
             edgeBlurLeft={200}
             edgeBlurBottom={150}
-            client:load
+            client:idle={{ timeout: 500 }}
         />
         <div class="background-gradient"></div>
     </div>
@@ -129,10 +133,6 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         </div>
     </section>
 
-    <div class="container">
-      <TechnicalDivider label="DEPLOYMENT STATUS" variant="default" />
-    </div>
-
     <!-- Current Role Highlight - Minimal -->
     <section class="current-role">
         <div class="container">
@@ -144,14 +144,15 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             <BorderBox variant="clipped">
                 <div class="role-grid">
                     <div class="role-info">
-                        <h3 class="role-title">AVAILABLE FOR DEPLOYMENT</h3>
-                        <p class="role-company">Actively Seeking New Opportunities</p>
-                        <p class="role-period">Jun 2026 – Present</p>
-                        <p class="role-desc">
-                            After Ferocia, I'm looking for my next role.
-                            If you know of something that might be a good fit,
-                            I'd love to hear from you.
-                        </p>
+                        <div class="role-heading">
+                            {deployment.logo && <img class="role-logo" src={deployment.logo} alt={`${deployment.company} logo`} width="48" height="48" loading="lazy" decoding="async" />}
+                            <div>
+                                <h3 class="role-title">{deployment.title}</h3>
+                                <p class="role-company">{deployment.company}</p>
+                                <p class="role-period">{deployment.period}</p>
+                            </div>
+                        </div>
+                        <p class="role-desc">{deployment.description}</p>
                     </div>
                     <div class="role-actions">
                         <a href="/contact" class="btn btn-primary"
@@ -169,10 +170,6 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         </div>
     </section>
 
-    <div class="container">
-      <TechnicalDivider label="FEATURED PROJECTS" variant="default" />
-    </div>
-
     <!-- Featured Projects - Homepage Teaser -->
     <section class="featured-projects">
         <div class="container">
@@ -181,32 +178,21 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             </h2>
 
             <div class="featured-grid">
-        <a href="/projects" class="featured-card">
-                    <div class="featured-icon">◆</div>
-                    <h3 class="featured-name">LGTV MENU BAR</h3>
-                    <span class="featured-lang lang-tag--swift">SWIFT</span>
-                    <p class="featured-desc">
-                        Native macOS menu bar app for LG WebOS TVs
-                    </p>
-                </a>
-
-                <a href="/projects" class="featured-card">
-                    <div class="featured-icon">▲</div>
-                    <h3 class="featured-name">PTV_CLI</h3>
-                    <span class="featured-lang lang-tag--go">GO</span>
-                    <p class="featured-desc">
-                        CLI tool for agentic PTV automation
-                    </p>
-                </a>
-
-                <a href="/projects" class="featured-card">
-                    <div class="featured-icon">■</div>
-                    <h3 class="featured-name">PTV_MCP</h3>
-                    <span class="featured-lang lang-tag--ts">TYPESCRIPT</span>
-                    <p class="featured-desc">
-                        MCP server for the Victorian PTV API
-                    </p>
-                </a>
+                {projectDefs.filter((project) => project.featured).map((project) => (
+                    <a href="/projects" class="featured-card">
+                        <div class="featured-heading">
+                            {project.logo
+                                ? <img class="featured-logo" src={project.logo} alt="" width="48" height="48" loading="lazy" decoding="async" />
+                                : <span class="featured-initials" aria-hidden="true">{project.initials}</span>}
+                            <div>
+                                <h3 class="featured-name">{project.name}</h3>
+                                <span class={`featured-lang lang-tag--${project.language.toLowerCase()}`}>{project.language}</span>
+                            </div>
+                        </div>
+                        <p class="featured-desc">{project.description}</p>
+                        <span class="featured-arrow" aria-hidden="true">→</span>
+                    </a>
+                ))}
             </div>
 
             <div class="featured-cta">
@@ -407,7 +393,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
 
     .role-title {
         font-family: var(--font-primary);
-        font-size: var(--text-lg);
+        font-size: var(--text-2xl);
         font-weight: var(--font-bold);
         text-transform: uppercase;
         letter-spacing: var(--tracking-wide);
@@ -415,9 +401,27 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         color: var(--text-primary);
     }
 
+    .role-logo {
+        flex: 0 0 48px;
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+    }
+
+    .role-heading {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+    }
+
+    .role-heading > div {
+        min-width: 0;
+    }
+
     .role-company {
-        font-family: var(--font-mono);
-        font-size: var(--text-sm);
+        font-family: var(--font-primary);
+        font-size: var(--text-xl);
+        font-weight: var(--font-semibold);
         color: var(--accent-blue);
         margin-bottom: 0.25rem;
     }
@@ -426,7 +430,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         font-family: var(--font-mono);
         font-size: var(--text-xs);
         color: var(--text-tertiary);
-        margin-bottom: var(--space-1);
+        margin-bottom: var(--space-2);
     }
 
     .role-desc {
@@ -520,6 +524,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
 
         .role-actions {
             flex-direction: row;
+            flex-wrap: wrap;
         }
 
         .featured-grid {
@@ -568,9 +573,6 @@ import StatusIndicator from "../components/StatusIndicator.astro";
             font-size: var(--text-2xl);
         }
 
-        .featured-grid {
-            grid-template-columns: 1fr;
-        }
     }
 
     /* Featured Projects Section */
@@ -590,8 +592,8 @@ import StatusIndicator from "../components/StatusIndicator.astro";
     .featured-card {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        text-align: center;
+        align-items: stretch;
+        text-align: left;
         padding: var(--space-4) var(--space-3);
         background: var(--bg-elevated);
         border: var(--border-thick) solid var(--border-heavy);
@@ -600,16 +602,52 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         position: relative;
     }
 
-    .featured-card:hover {
+    .featured-card:hover,
+    .featured-card:focus-visible {
         border-color: var(--accent-blue);
         transform: translate(-2px, -2px);
         box-shadow: var(--shadow-brutal-sm);
     }
 
-    .featured-icon {
-        font-size: var(--text-2xl);
-        color: var(--accent-orange);
-        margin-bottom: var(--space-2);
+    .featured-card:focus-visible {
+        outline: var(--border-thick) solid var(--accent-orange);
+        outline-offset: 4px;
+    }
+
+    .featured-heading {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-bottom: var(--space-3);
+    }
+
+    .featured-heading > div {
+        min-width: 0;
+    }
+
+    .featured-logo,
+    .featured-initials {
+        flex: 0 0 48px;
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+    }
+
+    .featured-arrow {
+        align-self: flex-end;
+        margin-top: auto;
+        padding-top: var(--space-2);
+        color: var(--accent-blue);
+        font-size: var(--text-xl);
+    }
+
+    .featured-initials {
+        display: grid;
+        place-items: center;
+        color: var(--text-tertiary);
+        font-family: var(--font-mono);
+        font-size: var(--text-lg);
+        font-weight: var(--font-bold);
     }
 
     .featured-name {
@@ -636,16 +674,9 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         background: var(--accent-orange);
     }
 
-    :global(.lang-tag--go) {
+    :global(.lang-tag--go),
+    :global(.lang-tag--typescript) {
         background: var(--accent-blue);
-    }
-
-    :global(.lang-tag--ts) {
-        background: var(--accent-blue);
-    }
-
-    :global(.lang-tag--python) {
-        background: var(--accent-green);
     }
 
     .featured-desc {
@@ -661,6 +692,12 @@ import StatusIndicator from "../components/StatusIndicator.astro";
         gap: var(--space-3);
         justify-content: center;
         flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+        .featured-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* Mobile - smallest screens */

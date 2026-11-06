@@ -67,13 +67,13 @@
     let pixelBuffer: ImageData;
     let pixelCanvas: HTMLCanvasElement;
     let pixelContext: CanvasRenderingContext2D;
+    let disposed = false;
 
     onMount(() => {
         ctx = canvas.getContext("2d");
         if (!ctx) return;
 
         const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        let disposed = false;
         let settled = false;
         const syncAnimation = () => {
             cancelAnimationFrame(animationId);
@@ -104,23 +104,24 @@
             settled = true;
             syncAnimation();
         }, 4000);
-        const ready = () => {
+        const ready = async () => {
             if (disposed) return;
-            initializeCanvas();
+            await initializeCanvas();
+            if (disposed) return;
             syncAnimation();
         };
 
         const cached = imageCache.get(src);
         if (cached && cached.complete && cached.naturalWidth > 0) {
             img = cached;
-            ready();
+            void ready();
         } else {
             img = new Image();
             img.crossOrigin = "anonymous";
             img.onload = () => {
                 if (disposed) return;
                 imageCache.set(src, img);
-                ready();
+                void ready();
             };
             img.src = src;
         }
@@ -145,7 +146,7 @@
         }
     }
 
-    function initializeCanvas() {
+    async function initializeCanvas() {
         if (!ctx || !img) return;
 
         // Set canvas size to match image
@@ -156,8 +157,8 @@
         const cols = Math.floor(canvas.width / pixelSize);
         const rows = Math.floor(canvas.height / pixelSize);
         pixelCanvas = document.createElement("canvas");
-        pixelCanvas.width = cols;
-        pixelCanvas.height = rows;
+        pixelCanvas.width = canvas.width;
+        pixelCanvas.height = canvas.height;
         pixelContext = pixelCanvas.getContext("2d")!;
         pixelBuffer = pixelContext.createImageData(cols, rows);
         ctx.imageSmoothingEnabled = false;
@@ -175,14 +176,15 @@
             );
         }
 
-        // Draw full image to get pixel data
-        ctx.drawImage(img, 0, 0);
-        imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        // Sample off-screen: yielding must not flash the unpixelated photograph.
+        pixelContext.drawImage(img, 0, 0);
+        imageData = pixelContext.getImageData(0, 0, canvas.width, canvas.height);
 
         // Build pixel grid by sampling average color of each block
-        pixelGrid = [];
-        pixelStates = [];
+        const grid: PixelData[][] = [];
+        const states: PixelState[][] = [];
         for (let row = 0; row < rows; row++) {
+            if (disposed) return;
             const rowData: PixelData[] = [];
             const rowStates: PixelState[] = [];
             for (let col = 0; col < cols; col++) {
@@ -192,6 +194,14 @@
                     pixelSize,
                     pixelSize,
                 );
+                // Edge fades are fixed for this image; bake them into its alpha
+                // once rather than recalculating four distances per block/frame.
+                let edgeOpacity = 1;
+                if (edgeBlurTop > 0) edgeOpacity *= Math.min(1, row * pixelSize / edgeBlurTop);
+                if (edgeBlurBottom > 0) edgeOpacity *= Math.min(1, (rows - row - 1) * pixelSize / edgeBlurBottom);
+                if (edgeBlurLeft > 0) edgeOpacity *= Math.min(1, col * pixelSize / edgeBlurLeft);
+                if (edgeBlurRight > 0) edgeOpacity *= Math.min(1, (cols - col - 1) * pixelSize / edgeBlurRight);
+                avgColor.a *= edgeOpacity;
                 rowData.push(avgColor);
 
                 // Initialize pixel state with random initial opacity
@@ -204,9 +214,19 @@
                     speed: fadeSpeed * (0.5 + Math.random() * 0.5),
                 });
             }
-            pixelGrid.push(rowData);
-            pixelStates.push(rowStates);
+            grid.push(rowData);
+            states.push(rowStates);
+            // Yield between batches so decorative setup does not hold up input.
+            if (row % 10 === 9 && row < rows - 1) {
+                await new Promise<void>(resolve => window.setTimeout(resolve, 0));
+            }
         }
+        // Publish only the complete grid; visibility/motion events must not
+        // start rendering a partially prepared portrait while setup is yielding.
+        pixelCanvas.width = cols;
+        pixelCanvas.height = rows;
+        pixelGrid = grid;
+        pixelStates = states;
     }
 
     function getAverageColor(
@@ -360,53 +380,6 @@
                     }
                 }
 
-                // Calculate edge blur opacity multiplier
-                let edgeOpacity = 1.0;
-
-                // Top edge blur
-                if (edgeBlurTop > 0) {
-                    const distanceFromTop = row * pixelSize;
-                    if (distanceFromTop < edgeBlurTop) {
-                        edgeOpacity *= Math.max(
-                            0,
-                            distanceFromTop / edgeBlurTop,
-                        );
-                    }
-                }
-
-                // Bottom edge blur
-                if (edgeBlurBottom > 0) {
-                    const distanceFromBottom = (rows - row - 1) * pixelSize;
-                    if (distanceFromBottom < edgeBlurBottom) {
-                        edgeOpacity *= Math.max(
-                            0,
-                            distanceFromBottom / edgeBlurBottom,
-                        );
-                    }
-                }
-
-                // Left edge blur
-                if (edgeBlurLeft > 0) {
-                    const distanceFromLeft = col * pixelSize;
-                    if (distanceFromLeft < edgeBlurLeft) {
-                        edgeOpacity *= Math.max(
-                            0,
-                            distanceFromLeft / edgeBlurLeft,
-                        );
-                    }
-                }
-
-                // Right edge blur
-                if (edgeBlurRight > 0) {
-                    const distanceFromRight = (cols - col - 1) * pixelSize;
-                    if (distanceFromRight < edgeBlurRight) {
-                        edgeOpacity *= Math.max(
-                            0,
-                            distanceFromRight / edgeBlurRight,
-                        );
-                    }
-                }
-
                 // Check if this pixel is being hovered
                 const hoverStrength = hoverMap.size ? hoverMap.get(`${row},${col}`) || 0 : 0;
 
@@ -423,14 +396,11 @@
                     b = Math.min(255, Math.round(b * factor));
                 }
 
-                // Combine fade opacity and edge blur
-                const finalOpacity = state.currentOpacity * edgeOpacity;
-
                 const offset = (row * cols + col) * 4;
                 pixelBuffer.data[offset] = r;
                 pixelBuffer.data[offset + 1] = g;
                 pixelBuffer.data[offset + 2] = b;
-                pixelBuffer.data[offset + 3] = a * finalOpacity;
+                pixelBuffer.data[offset + 3] = a * state.currentOpacity;
             }
         }
 

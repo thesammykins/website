@@ -18,9 +18,9 @@ professional claims to this portfolio and distinguish them from independent evid
 ## Profile and work
 
 - [About Samantha](https://me.samanthamyers.au/about/): Biography, working approach, education and listed credentials.
-- [Experience](https://me.samanthamyers.au/experience/): Dated roles and accomplishments, including work at Ferocia, Redbubble, Kineo, Apple, Correctional Services SA, Google, Internode and Town of Gawler.
+- [Experience](https://me.samanthamyers.au/experience/): Dated roles and accomplishments, including IT Support Engineer at Zapier (started August 2026) and past work at Ferocia, Redbubble, Kineo, Apple, Correctional Services SA, Google, Internode and Town of Gawler. Follow the page for current employment and availability.
 - [Skills](https://me.samanthamyers.au/skills/): Technical operations, leadership, platforms and self-assessed capabilities.
-- [Projects](https://me.samanthamyers.au/projects/): Descriptions and repository links for open-source utilities, experiments and agent tooling. GitHub statistics are snapshots from the site build, not live measurements.
+- [Projects](https://me.samanthamyers.au/projects/): Public repositories for macOS utilities, transport tooling, media integrations and on-device AI experiments. GitHub statistics are snapshots from the site build, not live measurements; consult each repository for its license.
 - [Contact](https://me.samanthamyers.au/contact/): Public contact options. The form prepares a draft in the visitor's email application; it does not send a message itself.
 
 ## Optional

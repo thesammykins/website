@@ -4,11 +4,11 @@
 
 /* Self-host fonts to avoid a render-blocking third-party stylesheet chain. */
 @import '@fontsource-variable/space-grotesk';
-@import '@fontsource/ibm-plex-mono/300.css';
-@import '@fontsource/ibm-plex-mono/400.css';
-@import '@fontsource/ibm-plex-mono/500.css';
-@import '@fontsource/ibm-plex-mono/600.css';
-@import '@fontsource/ibm-plex-mono/700.css';
+/* The English portfolio uses Latin text and weights 400–700. */
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+@import '@fontsource/ibm-plex-mono/latin-600.css';
+@import '@fontsource/ibm-plex-mono/latin-700.css';
 
 /* ============================================
    RESET & BASE STYLES

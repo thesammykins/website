@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22 # Astro 6 requires >=22.12.0
+          node-version: 22 # Latest Node 22; Astro 7.4 requires >=22.23.4
           cache: 'npm' # Optional: cache npm dependencies
           cache-dependency-path: tasty-trappist/package-lock.json # Path to package-lock
       - name: Install dependencies
@@ -38,9 +38,11 @@ jobs:
         working-directory: ./tasty-trappist # Run commands in tasty-trappist directory
         # The astro.config.mjs outDir is '../docs', so this builds to the root /docs directory
         env:
-          PUBLIC_LOGO_DEV_TOKEN: ${{ secrets.LOGO_DEV_TOKEN }}
           PUBLIC_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build
+      - name: Verify portfolio content
+        working-directory: ./tasty-trappist
+        run: npm run test:content
       - name: Copy CNAME to build output
         # Ensure CNAME is in the root of the artifact, which is the root of /docs
         run: cp CNAME docs/CNAME
@@ -59,4 +61,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # Use latest version 
+        uses: actions/deploy-pages@v4 # Use latest version

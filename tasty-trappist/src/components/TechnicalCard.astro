@@ -7,6 +7,10 @@ export interface Props {
   showCorners?: boolean;
   class?: string;
   headingLevel?: 2 | 3;
+  logo?: string;
+  logoAlt?: string;
+  logoHref?: string;
+  initials?: string;
 }
 
 const {
@@ -15,16 +19,30 @@ const {
   subtitle,
   showCorners = false,
   headingLevel = 3,
+  logo,
+  logoAlt = '',
+  logoHref,
+  initials,
   class: className = ''
 } = Astro.props;
 const Heading = headingLevel === 2 ? 'h2' : 'h3';
+const LogoWrapper = logoHref ? 'a' : 'div';
 ---
 
 <div class={`technical-card ${showCorners ? 'technical-card--corners' : ''} ${className}`}>
   <div class="card-header">
-    <Heading class="card-title">{title}</Heading>
-    {subtitle && <p class="card-subtitle">{subtitle}</p>}
-    {meta && <span class="card-meta">{meta}</span>}
+    {(logo || initials) && (
+      <LogoWrapper class="card-logo" href={logoHref} target={logoHref ? '_blank' : undefined} rel={logoHref ? 'noopener noreferrer' : undefined}>
+        {logo
+          ? <img src={logo} alt={logoAlt} width="48" height="48" loading="lazy" decoding="async" />
+          : <span class="card-initials" aria-hidden="true">{initials}</span>}
+      </LogoWrapper>
+    )}
+    <div class="card-heading">
+      <Heading class="card-title">{title}</Heading>
+      {subtitle && <p class="card-subtitle">{subtitle}</p>}
+      {meta && <span class="card-meta">{meta}</span>}
+    </div>
   </div>
   <div class="card-body">
     <slot />
@@ -43,9 +61,12 @@ const Heading = headingLevel === 2 ? 'h2' : 'h3';
     padding: var(--space-4);
     position: relative;
     transition: all var(--transition-base);
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
-  .technical-card:hover {
+  .technical-card:hover,
+  .technical-card:focus-within {
     border-color: var(--accent-blue);
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0 var(--border-heavy);
@@ -76,9 +97,48 @@ const Heading = headingLevel === 2 ? 'h2' : 'h3';
   }
 
   .card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     margin-bottom: var(--space-3);
     padding-bottom: var(--space-2);
     border-bottom: 2px solid var(--border-light);
+  }
+
+  .card-heading {
+    min-width: 0;
+  }
+
+  .card-logo {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    text-decoration: none;
+  }
+
+  .card-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .card-initials {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+  }
+
+  @media (max-width: 480px) {
+    .card-logo {
+      flex-basis: 40px;
+      width: 40px;
+      height: 40px;
+    }
   }
 
   .card-title {
