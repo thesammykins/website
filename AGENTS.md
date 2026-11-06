@@ -841,3 +841,7 @@ Use military/technical language consistently:
 
 **Questions or Issues?**
 Refer to `DESIGN_MIGRATION_PLAN.md` for detailed design specifications and implementation guidelines.
+
+## Standing approvals
+
+- Sammy approved deploying this thread's feedback widget and domain configuration to `me.samanthamyers.au` through `thesammykins/website` on GitHub Pages: “Sweet, I don’t see the widget though so let’s deploy” ([approval in this thread](https://ampcode.com/threads/T-01a1b01e-dc91-7588-b5b2-9885df66e78e)). This approval covers this deployment, not unrelated future releases.
