@@ -57,8 +57,9 @@ body {
   position: relative;
 }
 
-/* Military Grid Overlay - Tactical mapping grid */
-body::before {
+/* Keep the tactical grid in the content snapshot, not underneath it where
+   it disappears during a wipe and abruptly returns when capture ends. */
+.page-content::before {
   content: '';
   position: fixed;
   top: 0;
@@ -104,12 +105,8 @@ body::before {
 body::after {
   content: '';
   position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200%;
-  height: 200%;
+  /* The grain moves only 2px: a 4px bleed avoids a four-viewport layer. */
+  inset: -4px;
   background-image:
     repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
     repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
@@ -168,6 +165,21 @@ h1 {
   font-size: var(--text-5xl);
   letter-spacing: var(--tracking-wider);
   margin-bottom: var(--space-4);
+}
+
+/* Equivalent route headings share one scale, rhythm and tracking. The homepage
+   hero is a distinct display treatment, not another route heading variant. */
+.page-title {
+  font-size: var(--text-5xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: var(--text-4xl);
+  }
 }
 
 h2 {

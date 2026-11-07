@@ -145,6 +145,7 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                     <form
                         class="contact-form"
                         id="contact-form"
+                        data-astro-reload
                         aria-describedby="email-handoff"
                     >
                         <div class="form-group">
@@ -211,59 +212,62 @@ import StatusIndicator from "../components/StatusIndicator.astro";
                     </form>
 
                     <script>
-                        const form = document.querySelector<HTMLFormElement>('#contact-form')!;
-                        form.noValidate = true;
-                        form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled = false;
-                        form.addEventListener('submit', function(e) {
-                            e.preventDefault();
+                        document.addEventListener('astro:page-load', () => {
+                            const form = document.querySelector<HTMLFormElement>('#contact-form');
+                            if (!form) return;
+                            form.noValidate = true;
+                            form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled = false;
+                            form.addEventListener('submit', function(e) {
+                                e.preventDefault();
 
-                            const errors = [];
-                            const name = (document.getElementById('name') as HTMLInputElement)?.value || '';
-                            const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
-                            const company = (document.getElementById('company') as HTMLInputElement)?.value || '';
-                            const message = (document.getElementById('message') as HTMLTextAreaElement)?.value || '';
+                                const errors = [];
+                                const name = (document.getElementById('name') as HTMLInputElement)?.value || '';
+                                const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
+                                const company = (document.getElementById('company') as HTMLInputElement)?.value || '';
+                                const message = (document.getElementById('message') as HTMLTextAreaElement)?.value || '';
 
-                            // Clear previous errors
-                            document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
-                            form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+                                // Clear previous errors
+                                document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
+                                form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
 
-                            // Validate
-                            if (!name.trim()) {
-                                errors.push('NAME');
-                                document.getElementById('name-error')!.textContent = 'Name is required';
-                            }
-                            if (!email.trim()) {
-                                errors.push('EMAIL');
-                                document.getElementById('email-error')!.textContent = 'Email is required';
-                            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                                errors.push('EMAIL');
-                                document.getElementById('email-error')!.textContent = 'Enter a valid email address';
-                            }
-                            if (!message.trim()) {
-                                errors.push('MESSAGE');
-                                document.getElementById('message-error')!.textContent = 'Message is required';
-                            }
+                                // Validate
+                                if (!name.trim()) {
+                                    errors.push('NAME');
+                                    document.getElementById('name-error')!.textContent = 'Name is required';
+                                }
+                                if (!email.trim()) {
+                                    errors.push('EMAIL');
+                                    document.getElementById('email-error')!.textContent = 'Email is required';
+                                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                    errors.push('EMAIL');
+                                    document.getElementById('email-error')!.textContent = 'Enter a valid email address';
+                                }
+                                if (!message.trim()) {
+                                    errors.push('MESSAGE');
+                                    document.getElementById('message-error')!.textContent = 'Message is required';
+                                }
 
-                            if (errors.length > 0) {
-                                errors.forEach(id => document.getElementById(id.toLowerCase())!.setAttribute('aria-invalid', 'true'));
-                                // Focus the first errored field
-                                const firstError = document.getElementById(errors[0].toLowerCase());
-                                if (firstError) firstError.focus();
-                                return;
-                            }
+                                if (errors.length > 0) {
+                                    errors.forEach(id => document.getElementById(id.toLowerCase())!.setAttribute('aria-invalid', 'true'));
+                                    // Focus the first errored field
+                                    const firstError = document.getElementById(errors[0].toLowerCase());
+                                    if (firstError) firstError.focus();
+                                    return;
+                                }
 
-                            const subject = company
-                                ? `Website Contact: ${name} (${company})`
-                                : `Website Contact: ${name}`;
+                                const subject = company
+                                    ? `Website Contact: ${name} (${company})`
+                                    : `Website Contact: ${name}`;
 
-                            const body = `Name: ${name}
+                                const body = `Name: ${name}
 Email: ${email}
 ${company ? `Company: ${company}\n` : ''}
 Message:
 ${message}`;
 
-                            const mailtoLink = `mailto:me+website@samanthamyers.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                            window.location.href = mailtoLink;
+                                const mailtoLink = `mailto:me+website@samanthamyers.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                                window.location.href = mailtoLink;
+                            });
                         });
                     </script>
                 </BorderBox>
@@ -407,11 +411,6 @@ ${message}`;
         align-items: center;
         gap: var(--space-2);
         margin-bottom: var(--space-2);
-    }
-
-    .page-title {
-        font-size: var(--text-5xl);
-        margin-bottom: var(--space-3);
     }
 
     .header-description {
@@ -710,10 +709,6 @@ ${message}`;
     }
 
     @media (max-width: 768px) {
-        .page-title {
-            font-size: var(--text-4xl);
-        }
-
         .header-description {
             font-size: var(--text-base);
         }

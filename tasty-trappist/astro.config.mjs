@@ -11,7 +11,5 @@ export default defineConfig({
   compressHTML: true,
   outDir: portalPreview ? "../.amp/preview" : "../docs",
   integrations: [svelte()],
-  // Avoid blocking stylesheet round trips in the high-latency orb preview.
-  // Normal builds keep Astro's default CSS splitting and production output.
-  ...(portalPreview ? { build: { inlineStylesheets: 'always' } } : {})
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 });

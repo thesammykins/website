@@ -70,9 +70,17 @@
     let pixelContext: CanvasRenderingContext2D;
     let disposed = false;
 
+    function finishLoading(state: "ready" | "error") {
+        canvas.dataset.pixelatedState = state;
+        canvas.dispatchEvent(new Event("pixelated:ready", { bubbles: true }));
+    }
+
     onMount(() => {
         ctx = canvas.getContext("2d");
-        if (!ctx) return;
+        if (!ctx) {
+            finishLoading("error");
+            return;
+        }
 
         const syncAnimation = () => {
             cancelAnimationFrame(animationId);
@@ -102,9 +110,16 @@
         document.addEventListener("visibilitychange", syncAnimation);
         const ready = async () => {
             if (disposed) return;
-            await initializeCanvas();
-            if (disposed) return;
-            syncAnimation();
+            try {
+                await initializeCanvas();
+                if (disposed) return;
+                syncAnimation();
+                finishLoading("ready");
+            } catch (error) {
+                if (disposed) return;
+                finishLoading("error");
+                console.error("PixelatedCanvas: Unable to prepare portrait", error);
+            }
         };
 
         const cached = imageCache.get(src);
@@ -118,6 +133,9 @@
                 if (disposed) return;
                 imageCache.set(src, img);
                 void ready();
+            };
+            img.onerror = () => {
+                if (!disposed) finishLoading("error");
             };
             img.src = src;
         }
@@ -413,6 +431,7 @@
 <canvas
     bind:this={canvas}
     class={className}
+    data-pixelated-state="loading"
     on:mousemove={handleMouseMove}
     on:mouseenter={handleMouseEnter}
     on:mouseleave={handleMouseLeave}

@@ -49,7 +49,7 @@ const navLinks = [
                 <span class="theme-icon theme-icon--light">☀</span>
                 <span class="theme-icon theme-icon--dark">☾</span>
             </button>
-            <a href="/contact" class="nav-cta">CONTACT</a>
+            <a href="/contact" class="nav-cta" aria-current={currentPath === "/contact" ? "page" : undefined}>CONTACT</a>
         </div>
     </div>
 </nav>
@@ -74,6 +74,33 @@ const navLinks = [
         links.classList.toggle("nav-links--open", open);
         links.inert = mobile.matches && !open;
     }
+    document.addEventListener("astro:before-preparation", () => {
+        if (mobile.matches && links.contains(document.activeElement)) toggle.focus();
+        setOpen(false);
+    });
+    document.addEventListener("astro:after-swap", () => {
+        const path = location.pathname.replace(/\/$/, "") || "/";
+        nav.querySelectorAll<HTMLAnchorElement>(".nav-link, .nav-cta").forEach((link) => {
+            const active = new URL(link.href).pathname === path;
+            link.classList.toggle("nav-link--active", active && link.classList.contains("nav-link"));
+            if (active) link.setAttribute("aria-current", "page");
+            else link.removeAttribute("aria-current");
+        });
+    });
+    // Native snapshot capture briefly suppresses hit testing, retargeting clicks to
+    // <html>. Recover header links only in that window so rapid clicks aren't lost.
+    document.addEventListener("click", (event) => {
+        if (event.target !== document.documentElement || !document.activeViewTransition || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const link = [...nav.querySelectorAll<HTMLAnchorElement>("a")].find((link) => {
+            if (link.closest("[inert]")) return false;
+            const box = link.getBoundingClientRect();
+            return event.clientX >= box.left && event.clientX < box.right && event.clientY >= box.top && event.clientY < box.bottom;
+        });
+        if (link) {
+            event.preventDefault();
+            link.click();
+        }
+    });
     setOpen(false);
     toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
     nav.addEventListener("keydown", (event) => {
@@ -114,10 +141,6 @@ const navLinks = [
     .main-nav {
         background: var(--bg-elevated);
         border-bottom: var(--border-thick) solid var(--border-heavy);
-        position: sticky;
-        top: 0;
-        z-index: var(--z-sticky);
-        backdrop-filter: blur(8px);
     }
 
     .nav-container {
@@ -196,6 +219,7 @@ const navLinks = [
     }
 
     .nav-link {
+        position: relative;
         font-family: var(--font-primary);
         font-size: var(--text-sm);
         font-weight: var(--font-semibold);
@@ -223,12 +247,17 @@ const navLinks = [
     .nav-link--active {
         color: var(--accent-orange);
         border-bottom-color: var(--accent-orange);
-        position: relative;
     }
 
     .nav-link--active::before {
         content: "\25B8";
-        margin-right: 0.25em;
+        /* Use the existing inset, not text flow: active links must not push
+           their neighbours sideways when the persistent menu updates. */
+        position: absolute;
+        left: 2px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.75em;
     }
 
     .theme-toggle {
@@ -343,6 +372,10 @@ const navLinks = [
             padding: var(--space-3) var(--space-4);
             border-bottom: 1px solid var(--border-light);
             border-left: 3px solid transparent;
+        }
+
+        .nav-link--active::before {
+            left: var(--space-2);
         }
 
         .nav-link:hover,

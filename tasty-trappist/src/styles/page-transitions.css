@@ -1,0 +1,100 @@
+/* Only changing content wipes; the persistent header remains above it.
+   Do not intercept clicks while an earlier transition is finishing. */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(*) {
+  animation: none;
+}
+
+::view-transition-group(content) {
+  max-height: 100dvh;
+  overflow: clip;
+}
+
+::view-transition-image-pair(content) {
+  isolation: auto;
+  height: 100%;
+}
+
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation: none;
+  mix-blend-mode: normal;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+::view-transition-new(content) {
+  z-index: 0;
+}
+
+::view-transition-old(content) {
+  z-index: 1;
+  /* Keep the pixel-shaped edge, not an 80ms pause between edge positions. */
+  animation: pixel-reveal 1920ms linear both;
+}
+
+/* Keep the outgoing snapshot visible while fonts, images and the portrait settle.
+   Slowing the wipe alone would only disguise a fast connection's loading gaps. */
+html[data-page-preparing]::view-transition-old(content) {
+  animation-play-state: paused;
+}
+
+/* Uneven block rows echo the portrait pixels without scaling or blurring text.
+   Twice as many rows and half the offsets make the edge blocks half-size.
+   Every vertex advances by the same amount, keeping the edge rigid. */
+@keyframes pixel-reveal {
+  from {
+    clip-path: polygon(
+      100% 0, -5% 0, -5% 4.167%, -12.5% 4.167%,
+      -12.5% 8.333%, -7.5% 8.333%, -7.5% 12.5%, -15% 12.5%,
+      -15% 16.667%, -2.5% 16.667%, -2.5% 20.833%, -10% 20.833%,
+      -10% 25%, 0% 25%, 0% 29.167%, -7.5% 29.167%,
+      -7.5% 33.333%, -15% 33.333%, -15% 37.5%, -5% 37.5%,
+      -5% 41.667%, -10% 41.667%, -10% 45.833%, -2.5% 45.833%,
+      -2.5% 50%, -10% 50%, -10% 54.167%, -5% 54.167%,
+      -5% 58.333%, -15% 58.333%, -15% 62.5%, -7.5% 62.5%,
+      -7.5% 66.667%, 0% 66.667%, 0% 70.833%, -12.5% 70.833%,
+      -12.5% 75%, -2.5% 75%, -2.5% 79.167%, -10% 79.167%,
+      -10% 83.333%, -5% 83.333%, -5% 87.5%, -15% 87.5%,
+      -15% 91.667%, -7.5% 91.667%, -7.5% 95.833%, -2.5% 95.833%,
+      -2.5% 100%, 100% 100%
+    );
+  }
+  to {
+    clip-path: polygon(
+      100% 0, 110% 0, 110% 4.167%, 102.5% 4.167%,
+      102.5% 8.333%, 107.5% 8.333%, 107.5% 12.5%, 100% 12.5%,
+      100% 16.667%, 112.5% 16.667%, 112.5% 20.833%, 105% 20.833%,
+      105% 25%, 115% 25%, 115% 29.167%, 107.5% 29.167%,
+      107.5% 33.333%, 100% 33.333%, 100% 37.5%, 110% 37.5%,
+      110% 41.667%, 105% 41.667%, 105% 45.833%, 112.5% 45.833%,
+      112.5% 50%, 105% 50%, 105% 54.167%, 110% 54.167%,
+      110% 58.333%, 100% 58.333%, 100% 62.5%, 107.5% 62.5%,
+      107.5% 66.667%, 115% 66.667%, 115% 70.833%, 102.5% 70.833%,
+      102.5% 75%, 112.5% 75%, 112.5% 79.167%, 105% 79.167%,
+      105% 83.333%, 110% 83.333%, 110% 87.5%, 100% 87.5%,
+      100% 91.667%, 107.5% 91.667%, 107.5% 95.833%, 112.5% 95.833%,
+      112.5% 100%, 100% 100%
+    );
+  }
+}
+
+/* Navigation is functional motion: avoid a full-screen wipe for this preference.
+   The separate four-second decorative autoplay policy remains unchanged. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(content) {
+    animation: none;
+    visibility: hidden;
+  }
+
+  /* Retain the old view while loading, then swap without a moving wipe. */
+  html[data-page-preparing]::view-transition-old(content) {
+    /* Override Astro's blanket reduced-motion reset only for the static hold. */
+    visibility: visible;
+    animation: pixel-reveal 1ms steps(1, end) both paused !important;
+  }
+}

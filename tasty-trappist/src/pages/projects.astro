@@ -124,24 +124,6 @@ const languages = [...new Set(projects.map((p) => p.language))];
       </div>
     </div>
   </section>
-
-  <script>
-    // Staggered card entrance animation
-    function animateCards() {
-      const cards = document.querySelectorAll(".projects-grid > *");
-      cards.forEach((card, i) => {
-        (card as HTMLElement).style.setProperty("--card-index", String(i));
-        card.classList.add("card-visible");
-      });
-    }
-
-    document.addEventListener("astro:page-load", animateCards);
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", animateCards);
-    } else {
-      animateCards();
-    }
-  </script>
 </MainLayout>
 
 <style>
@@ -165,17 +147,6 @@ const languages = [...new Set(projects.map((p) => p.language))];
     margin-bottom: var(--space-2);
   }
 
-  .page-title {
-    font-family: var(--font-primary);
-    font-size: var(--text-5xl);
-    font-weight: var(--font-bold);
-    line-height: 0.9;
-    letter-spacing: var(--tracking-tight);
-    text-transform: uppercase;
-    margin-bottom: var(--space-3);
-    color: var(--text-primary);
-  }
-
   .header-description {
     font-family: var(--font-mono);
     font-size: var(--text-lg);
@@ -197,23 +168,6 @@ const languages = [...new Set(projects.map((p) => p.language))];
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-4);
-  }
-
-  /* Content is visible without JavaScript; enhancement only adds the entrance. */
-  .projects-grid > *.card-visible {
-    animation: card-enter 0.5s ease-out both;
-    animation-delay: calc(var(--card-index, 0) * 80ms);
-  }
-
-  @keyframes card-enter {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 
   .project-description {
@@ -297,12 +251,6 @@ const languages = [...new Set(projects.map((p) => p.language))];
      REDUCED MOTION
      ============================================ */
   @media (prefers-reduced-motion: reduce) {
-    .projects-grid > * {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
-
     :global(.github-link) {
       transition: none;
     }
@@ -312,10 +260,6 @@ const languages = [...new Set(projects.map((p) => p.language))];
      RESPONSIVE
      ============================================ */
   @media (max-width: 768px) {
-    .page-title {
-      font-size: var(--text-4xl);
-    }
-
     .header-description {
       font-size: var(--text-base);
     }

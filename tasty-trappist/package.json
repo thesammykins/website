@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "test:content": "node --test tests/*.test.mjs",
+    "test:navigation": "node scripts/check-navigation.mjs",
     "preview": "astro preview",
     "preview:portal": "PORTFOLIO_PORTAL_PREVIEW=1 astro build && PORTFOLIO_PORTAL_PREVIEW=1 astro preview"
   },

@@ -36,7 +36,14 @@ const {
       (entry.target as HTMLElement).style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
     }
   });
-  document.querySelectorAll('.status-bar__ticker').forEach((ticker) => observer.observe(ticker));
+  function observeTickers() {
+    // The header never moves now, so its CSS clock needs no restoration.
+    // Release the outgoing footer and observe the replacement ticker.
+    observer.disconnect();
+    document.querySelectorAll('.status-bar__ticker').forEach((ticker) => observer.observe(ticker));
+  }
+  observeTickers();
+  document.addEventListener('astro:after-swap', observeTickers);
 </script>
 
 <style>

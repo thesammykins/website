@@ -4,9 +4,11 @@ import Navigation from "../components/Navigation.astro";
 import Footer from "../components/Footer.astro";
 import GridPattern from "../components/GridPattern.svelte";
 import StatusBar from "../components/StatusBar.astro";
+import { ClientRouter } from "astro:transitions";
 import headingFont from "@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url";
 import bodyFont from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url";
 import "../styles/global.css";
+import "../styles/page-transitions.css";
 import { employment } from "../data/employment";
 
 export interface Props {
@@ -42,13 +44,102 @@ const fullTitle = `${title} | Samantha Myers`;
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={description} />
+        <ClientRouter fallback="swap" />
 
         <title>{fullTitle}</title>
         <script>
             import { autoplay } from "../components/autoplay";
+            import { swapFunctions } from "astro:transitions/client";
+            import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from "astro:transitions/client";
 
             autoplay.subscribe((playing) => {
                 document.documentElement.dataset.autoplay = playing ? "playing" : "paused";
+            });
+            let activeTransition: TransitionBeforeSwapEvent["viewTransition"] | undefined;
+            let contentReady: Promise<void> = Promise.resolve();
+            document.addEventListener("astro:before-preparation", (event) => {
+                const preparation = event as TransitionBeforePreparationEvent;
+                const previous = activeTransition;
+                if (!previous) return;
+                const loader = preparation.loader;
+                // Fetch immediately, but let the existing edge reach its end
+                // instead of Astro cancelling it and exposing a whole page at once.
+                const handoff = Promise.allSettled([previous.ready, contentReady]).then(async () => {
+                    if (activeTransition !== previous) return;
+                    const wipe = document.getAnimations().find(animation =>
+                        animation instanceof CSSAnimation && animation.animationName === "pixel-reveal",
+                    );
+                    if (wipe?.effect && typeof wipe.currentTime === "number") {
+                        const remaining = Number(wipe.effect.getComputedTiming().endTime) - wipe.currentTime;
+                        if (remaining > 160) wipe.playbackRate = remaining / 160;
+                    }
+                    await previous.finished;
+                });
+                preparation.loader = async () => {
+                    await Promise.all([loader(), handoff]);
+                };
+            });
+            document.addEventListener("astro:before-swap", (event) => {
+                const transition = event as TransitionBeforeSwapEvent;
+                activeTransition = transition.viewTransition;
+                void transition.viewTransition.finished.finally(() => {
+                    if (activeTransition === transition.viewTransition) activeTransition = undefined;
+                });
+                const nextRoot = transition.newDocument.documentElement;
+                const currentRoot = document.documentElement;
+                nextRoot.classList.add("js");
+                nextRoot.dataset.theme = currentRoot.dataset.theme;
+                nextRoot.dataset.autoplay = currentRoot.dataset.autoplay;
+                nextRoot.dataset.pagePreparing = "";
+
+                // Keep the shell in its original DOM position, not merely retained
+                // and lifted into <html> during Astro's whole-body replacement.
+                transition.swap = () => {
+                    swapFunctions.deselectScripts(transition.newDocument);
+                    swapFunctions.swapRootAttributes(transition.newDocument);
+                    swapFunctions.swapHeadElements(transition.newDocument);
+                    const restoreFocus = swapFunctions.saveFocus();
+                    swapFunctions.swapBodyElement(
+                        transition.newDocument.querySelector(".page-content")!,
+                        document.querySelector(".page-content")!,
+                    );
+                    restoreFocus();
+                };
+
+                // Astro prepares HTML/CSS before swapping, but islands and images
+                // can still be loading. Hold the old snapshot until the first view
+                // is ready, without waiting for lazy content below the fold.
+                contentReady = transition.viewTransition.updateCallbackDone.then(async () => {
+                    // A new request aborts Astro's fetch signal, not the view
+                    // already on screen: that view still needs a clean handoff.
+                    const signal = AbortSignal.timeout(8000);
+                    const content = document.querySelector(".page-content");
+                    const assets: Promise<unknown>[] = [];
+                    for (const canvas of document.querySelectorAll<HTMLCanvasElement>('[data-pixelated-state="loading"]')) {
+                        if (!canvas.getBoundingClientRect().width) continue;
+                        assets.push(new Promise(resolve => {
+                            canvas.addEventListener("pixelated:ready", resolve, { once: true, signal });
+                        }));
+                    }
+                    for (const image of document.querySelectorAll<HTMLImageElement>(".page-content img")) {
+                        const box = image.getBoundingClientRect();
+                        if (box.width && box.bottom > 0 && box.top < innerHeight) {
+                            image.loading = "eager";
+                            assets.push(image.decode());
+                        }
+                    }
+                    assets.push(document.fonts.ready);
+                    // A failed asset must not trap navigation; a stalled island
+                    // has a bounded fallback.
+                    await Promise.race([
+                        Promise.allSettled(assets),
+                        new Promise(resolve => {
+                            if (signal.aborted) resolve(undefined);
+                            else signal.addEventListener("abort", resolve, { once: true });
+                        }),
+                    ]);
+                    if (content === document.querySelector(".page-content")) delete currentRoot.dataset.pagePreparing;
+                }, () => { /* Interrupted snapshots need no readiness work. */ });
             });
         </script>
         <!-- Feedback remains available, but must not compete with initial content. -->
@@ -123,39 +214,41 @@ const fullTitle = `${title} | Samantha Myers`;
         <!-- Skip to main content link for keyboard users -->
         <a href="#main-content" class="skip-link">Skip to main content</a>
 
-        <!-- Background grid pattern -->
-        <GridPattern opacity={0.3} gridSize={40} animate={true} />
+        <!-- Keep the complete header in place, even when navigating from deep scroll. -->
+        <header class="site-header" transition:persist="header">
+            {showStatusBar && <StatusBar position="top" items={statusBarItems} />}
+            <Navigation />
+        </header>
 
-        <!-- Page-level background (optional, for index page) -->
-        <div aria-hidden="true"><slot name="page-background" /></div>
-
-        <!-- Top status bar (optional) -->
-        {showStatusBar && <StatusBar position="top" items={statusBarItems} />}
-
-        <!-- Navigation -->
-        <Navigation />
-
-        <!-- Main content -->
-        <main id="main-content" class="main-content" tabindex="-1">
-            <slot />
-        </main>
-
-        <!-- Footer -->
-        <Footer />
-
-        <!-- Bottom status bar (optional) -->
-        {
-            showStatusBar && (
-                <StatusBar position="bottom" items={statusBarItems} />
-            )
-        }
+        <!-- Snapshot only this region so the header stays live during navigation. -->
+        <div class="page-content">
+            <GridPattern opacity={0.3} gridSize={40} animate={true} transition:persist="grid" />
+            <div aria-hidden="true"><slot name="page-background" /></div>
+            <main id="main-content" class="main-content" tabindex="-1">
+                <slot />
+            </main>
+            <Footer />
+            {showStatusBar && <StatusBar position="bottom" items={statusBarItems} />}
+        </div>
     </body>
 </html>
 
 <style>
     :global(html) {
-        /* Globe height, nav padding/border, and a gap above focused content. */
-        scroll-padding-top: calc(64px + var(--space-4) + var(--border-thick) + var(--space-2));
+        /* Globe, nav spacing, ticker and a gap above focused content. */
+        scroll-padding-top: calc(64px + var(--space-4) + var(--border-thick) + var(--space-6) + var(--space-2));
+        view-transition-name: none;
+    }
+
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-sticky);
+    }
+
+    .page-content {
+        background: var(--bg-primary);
+        view-transition-name: content;
     }
 
     :global(body) {
